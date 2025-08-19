@@ -9,7 +9,24 @@ redirect_from:
 
 Highly experienced Consultant and applied Data Scientist with 7 years of experience in delivering enterprise-grade AI/ML solutions on Azure driving £8M+ projected savings through £10M+ project Nacross finance, healthcare and public sectors. PhD trained Engineer from University of Cambridge with a proven track record in leading cross-disciplinary teams, managing full product lifecycles, and driving digital transformation through data-driven strategies, automation, and stakeholder engagement.
 
+My research focuses on applied machine learning that is reliable at scale. On the scientific side, I develop computer-vision pipelines for high-throughput microscopy to quantify drug-induced cellular changes and accelerate cancer research. On the enterprise side, I design and deploy GenAI systems on cloud platforms with an emphasis on safety, robustness, and cost-aware MLOps. A core thread is AI cybersecurity—mapping threat vectors across data, model, and deployment layers—and translating them into governance patterns, evaluation harnesses, and guardrails. Broadly, I’m interested in human-centred, interpretable AI that delivers measurable value in healthcare, finance, and the public sector. 
 
+
+Publications
+------
+
+1. Rittick Barua, Jamie Crossman-Smirth, Yonghong Peng, Mohammed Al-Khalidi<br />
+<span style="color:navy">Cyber security risks to artificial intelligence (Whitepaper)</span>      
+*Department of Science, Innovation and Technology - 2024*      
+[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://rittickbarua.github.io/files/Cyber_security_risks_to_AI.pdf)
+
+
+1. Adam Colbourne, Thomas Blythe, Rittick Barua, Sean Lovett, Jonathan Mitchell, Andrew Sederman, Lynn F Gladden<br />
+<span style="color:navy">Validation of a low field Rheo-NMR instrument and application to shear-induced migration of suspended non-colloidal particles in Couette flow</span>      
+*Journal of Magnetic Resonance - 2018*      
+[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://www.repository.cam.ac.uk/bitstreams/57073ea8-f6f6-4495-81e5-75c509654f74/download)
+
+<!-- 
 Select Projects
 ------
 
@@ -31,4 +48,4 @@ For those users that need more advanced functionality, the template also support
 Project 1, 2, 3
 ------
 The main configuration file for the site is in the base directory in [_config.yml](https://github.com/academicpages/academicpages.github.io/blob/master/_config.yml), which defines the content in the sidebars and other site-wide features. You will need to replace the default variables with ones about yourself and your site's github repository. The configuration file for the top menu is in [_data/navigation.yml](https://github.com/academicpages/academicpages.github.io/blob/master/_data/navigation.yml). For example, if you don't have a portfolio or blog posts, you can remove those items from that navigation.yml file to remove them from the header. 
-
+ -->
