@@ -9,7 +9,7 @@
 
 main:
   - title: "CV"
-    url: https://rittickbarua.github.io/files/cv-short.pdf/
+    url: https://rittickbarua.github.io/files/cv-short.pdf
 
   - title: "Publications"
     url: /publications/
