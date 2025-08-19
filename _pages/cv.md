@@ -14,19 +14,6 @@ redirect_from:
 # Summary
 Highly experienced Consultant and applied Data Scientist with 7 years of experience in delivering enterprise-grade AI/ML solutions on Azure driving £8M+ projected savings through £10M+ project portfolio across finance, healthcare and public sectors. PhD trained Engineer from University of Cambridge with a proven track record in leading cross-disciplinary teams, managing full product lifecycles, and driving digital transformation through data-driven strategies, automation, and stakeholder engagement.
 
-
-# Education
-
-- **Visiting Researcher**, *UCL Hospital – Department of Surgical Biotechnology* — London, UK - **Mar 2025 – Present**
-
-- **Visiting Research Fellow**, *Manchester Metropolitan University* — Manchester, UK - **Apr 2024 – Present**
-
-- **PhD in Chemical Engineering and Biotechnology**, *University of Cambridge* — Cambridge, UK - **Oct 2014 – Sep 2018**  
-  - To improve oil well integrity and drilling operations, I proposed a novel flow model to describe the behaviour of complex fluid.  
-  - Fully funded scholarship; authored 1 peer-reviewed paper; awarded Best Poster prize at conference.
-
-- **BSc in Chemical Engineering (1st Class Hons.)**, *University College London* — London, UK - **Oct 2007 – Jun 2011**
-
 # Professional Experience
 
 - **Expert Consultant (contract)**, *Rud Pedersen Group / Bloch.ai* — London, UK - **Jan 2025 – Present**  
@@ -56,6 +43,20 @@ Highly experienced Consultant and applied Data Scientist with 7 years of experie
 - **Research Engineer**, *Thames Water Utilities, Ltd.* — Reading, UK - **Jan 2012 – Dec 2013**  
   - Engineered multi-stage reactor systems that increased anaerobic-digestion efficiency and boosted biogas production by **33–52%**; reduced grid-energy dependency and plant OPEX via self-sustaining biogas utilisation.  
   - Established a **£120K** industry–academia partnership; led a 4-person team from experimental design to conference presentation, publishing peer-reviewed findings on digestion efficiency.
+
+
+
+# Education
+
+- **Visiting Researcher**, *UCL Hospital – Department of Surgical Biotechnology* — London, UK - **Mar 2025 – Present**
+
+- **Visiting Research Fellow**, *Manchester Metropolitan University* — Manchester, UK - **Apr 2024 – Present**
+
+- **PhD in Chemical Engineering and Biotechnology**, *University of Cambridge* — Cambridge, UK - **Oct 2014 – Sep 2018**  
+  - To improve oil well integrity and drilling operations, I proposed a novel flow model to describe the behaviour of complex fluid.  
+  - Fully funded scholarship; authored 1 peer-reviewed paper; awarded Best Poster prize at conference.
+
+- **BSc in Chemical Engineering (1st Class Hons.)**, *University College London* — London, UK - **Oct 2007 – Jun 2011**
 
 
 # Skills
