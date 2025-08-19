@@ -12,7 +12,7 @@ site_theme               : "default" # Currently available options are "default"
 title                    : "Rittick Barua"
 title_separator          : "-"
 name                     : &name "Rittick Barua, PhD"
-description              : &description "personal description"
+description              : &description "Consultant and data scientist with a love for neat plots"
 url                      : https://academicpages.github.io # the base hostname & protocol for your site e.g. "https://[your GitHub username].github.io" or if you already have some other page hosted on Github then use "https://[your GitHub username].github.io/[Your Repo Name]"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "academicpages/academicpages.github.io"
@@ -25,10 +25,10 @@ author:
   avatar           : "profile.png"
   name             : "Rittick Barua"
   pronouns         : # example: "she/her"  
-  bio              : "Short biography for the left-hand sidebar"
+  bio              : "consultant, data scientist with a love for neat plots"
   location         : "London"
   employer         : "University of Cambridge"
-  uri              : # URL
+  uri              : rittickbarua.com # URL to your personal website or blog
   email            : "email@rittickbarua.com" 
 
   # Academic websites
@@ -62,7 +62,7 @@ author:
   keybase          : # Username
   instagram        : # Username
   lastfm           : # Username
-  linkedin         : https://www.linkedin.com/in/rittickbarua/
+  linkedin         : rittickbarua
   mastodon         : # URL
   medium           : # URL
   pinterest        : # Username
