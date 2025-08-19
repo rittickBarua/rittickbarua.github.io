@@ -9,7 +9,7 @@
 # Basic Site Settings
 locale                   : "en-US"
 site_theme               : "default" # Currently available options are "default", "air"
-title                    : "Rittick Barua"
+title                    : "Rittick Barua, PhD"
 title_separator          : "-"
 name                     : &name "Rittick Barua, PhD"
 description              : &description "Consultant and data scientist with a love for neat plots"
@@ -22,13 +22,13 @@ repository               : "rittickbarua/rittickbarua.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
+  avatar           : "profile.jpeg"
   name             : "Rittick Barua"
   pronouns         : # example: "she/her"  
   bio              : "consultant, data scientist with a love for neat plots"
   location         : "London"
   employer         : "University of Cambridge"
-  uri              : rittickbarua.com # URL to your personal website or blog
+  uri              : https://rittickbarua.com # URL to your personal website or blog
   email            : "email@rittickbarua.com" 
 
   # Academic websites
