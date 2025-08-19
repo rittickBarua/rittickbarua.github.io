@@ -15,10 +15,10 @@ My research focuses on applied machine learning that is reliable at scale. On th
 Publications
 ------
 
-1. Rittick Barua, Jamie Crossman-Smirth, Yonghong Peng, Mohammed Al-Khalidi<br />
+1. Rittick Barua, Kevin McCay, Yonghong Peng, Mohammed Al-Khalidi, Jamie Crossman-Smith<br />
 <span style="color:navy">Cyber security risks to artificial intelligence (Whitepaper)</span>      
 *Department of Science, Innovation and Technology - 2024*      
-[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://rittickbarua.github.io/files/Cyber_security_risks_to_AI.pdf)
+[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://assets.publishing.service.gov.uk/media/664333b1ae748c43d3793a40/Cyber_security_risks_to_artificial_intelligence.pdf)
 
 
 1. Adam Colbourne, Thomas Blythe, Rittick Barua, Sean Lovett, Jonathan Mitchell, Andrew Sederman, Lynn F Gladden<br />
