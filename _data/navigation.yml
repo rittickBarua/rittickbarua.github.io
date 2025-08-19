@@ -8,11 +8,13 @@
 #      Markdown formatted page while the second is generated using JSON.
 
 main:
-  - title: "CV"
-    url: https://rittickbarua.github.io/files/cv-short.pdf
 
   - title: "Publications"
     url: /publications/
+
+  - title: "CV"
+    url: https://rittickbarua.github.io/files/cv-short.pdf
+
 
   # - title: "Talks"
   #   url: /talks/    
