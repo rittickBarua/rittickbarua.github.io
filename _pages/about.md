@@ -11,7 +11,7 @@ Highly experienced Consultant and applied Data Scientist with 7 years of experie
 
 
 Select Projects
-======
+------
 
 List with numbers 
 1. Register a GitHub account if you don't have one and confirm your e-mail (required!)
