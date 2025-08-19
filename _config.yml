@@ -8,8 +8,8 @@
 
 # Basic Site Settings
 locale                   : "en-US"
-site_theme               : "default" # Currently available options are "default", "air"
-title                    : "Rittick Barua, PhD"
+site_theme               : "air" # Currently available options are "default", "air"
+title                    : "Home"
 title_separator          : "-"
 name                     : &name "Rittick Barua, PhD"
 description              : &description "Consultant and data scientist with a love for neat plots"
@@ -23,7 +23,7 @@ repository               : "rittickbarua/rittickbarua.github.io"
 author:
   # Biographic information
   avatar           : "https://rittickbarua.github.io/files/profile.jpeg"
-  name             : "Rittick Barua"
+  name             : "Rittick Barua, PhD"
   pronouns         : # example: "she/her"  
   bio              : "consultant, data scientist with a love for neat plots"
   location         : "London"
