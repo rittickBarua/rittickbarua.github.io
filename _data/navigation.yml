@@ -13,8 +13,8 @@ main:
     url: /publications/
 
   - title: "CV"
-    url: /cv/
-    # url: https://rittickbarua.github.io/files/cv-short.pdf
+    # url: /cv/
+    url: https://rittickbarua.github.io/files/cv-short.pdf
 
 
   # - title: "Talks"
