@@ -12,7 +12,9 @@ redirect_from:
 [<button type="button" class="btn btn-info" style="background-color:skyblue">Download PDF</button>](https://rittickbarua.github.io/files/cv-short.pdf)
 
 # Summary
-Highly experienced Consultant and applied Data Scientist with 7 years of experience in delivering enterprise-grade AI/ML solutions on Azure driving £8M+ projected savings through £10M+ project portfolio across finance, healthcare and public sectors. PhD trained Engineer from University of Cambridge with a proven track record in leading cross-disciplinary teams, managing full product lifecycles, and driving digital transformation through data-driven strategies, automation, and stakeholder engagement.
+Applied Data Scientist \& Consultant with 7+ years delivering data driven ML solutions across finance, healthcare and the public sector; generating £8M+ projected savings across a £10M+ programme portfolio. PhD in Engineering (University of Cambridge); lead cross-functional teams from concept to production to automate workflows, scale reliable models and drive executive adoption.
+
+<!-- Highly experienced Consultant and applied Data Scientist with 7 years of experience in delivering enterprise-grade AI/ML solutions on Azure driving £8M+ projected savings through £10M+ project portfolio across finance, healthcare and public sectors. PhD trained Engineer from University of Cambridge with a proven track record in leading cross-disciplinary teams, managing full product lifecycles, and driving digital transformation through data-driven strategies, automation, and stakeholder engagement. -->
 
 # Professional Experience
 

@@ -7,7 +7,10 @@ redirect_from:
   - /about.html
 ---
 
-Highly experienced Consultant and applied Data Scientist with 7 years of experience in delivering enterprise-grade AI/ML solutions on Azure driving £8M+ projected savings through £10M+ project Nacross finance, healthcare and public sectors. PhD trained Engineer from University of Cambridge with a proven track record in leading cross-disciplinary teams, managing full product lifecycles, and driving digital transformation through data-driven strategies, automation, and stakeholder engagement.
+Applied Data Scientist \& Consultant with 7+ years delivering data driven ML solutions across finance, healthcare and the public sector; generating £8M+ projected savings across a £10M+ programme portfolio. PhD in Engineering (University of Cambridge); lead cross-functional teams from concept to production to automate workflows, scale reliable models and drive executive adoption.
+
+
+<!-- Highly experienced Consultant and applied Data Scientist with 7 years of experience in delivering enterprise-grade AI/ML solutions on Azure driving £8M+ projected savings through £10M+ project Nacross finance, healthcare and public sectors. PhD trained Engineer from University of Cambridge with a proven track record in leading cross-disciplinary teams, managing full product lifecycles, and driving digital transformation through data-driven strategies, automation, and stakeholder engagement. -->
 
 My research focuses on applied machine learning that is reliable at scale. On the scientific side, I develop computer-vision pipelines for high-throughput microscopy to quantify drug-induced cellular changes and accelerate cancer research. On the enterprise side, I design and deploy GenAI systems on cloud platforms with an emphasis on safety, robustness, and cost-aware MLOps. A core thread is AI cybersecurity—mapping threat vectors across data, model, and deployment layers—and translating them into governance patterns, evaluation harnesses, and guardrails. Broadly, I’m interested in human-centred, interpretable AI that delivers measurable value in healthcare, finance, and the public sector. 
 
