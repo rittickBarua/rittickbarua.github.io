@@ -19,3 +19,9 @@ My research focuses on applied machine learning that is reliable at scale. On th
 <span style="color:navy">Validation of a low field Rheo-NMR instrument and application to shear-induced migration of suspended non-colloidal particles in Couette flow</span>      
 *Journal of Magnetic Resonance - 2018*      
 [<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://www.repository.cam.ac.uk/bitstreams/57073ea8-f6f6-4495-81e5-75c509654f74/download)
+
+
+1. Barua, R., Lee, K., Mills, N., Ouki, S., Thorpe, R.<br />
+<span style="color:navy">The effects of steam explosion and hydrolysing time on the digestibility of sewage sludge in anaerobic digestion</span>      
+*AcquEnviro - 2014*      
+[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://conferences.aquaenviro.co.uk/proceedings/the-effects-of-steam-explosion-and-hydrolysing-time-on-the-digestibility-of-sewage-sludge-in-anaerobic-digestion)
