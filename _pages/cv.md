@@ -9,7 +9,7 @@ redirect_from:
 
 {% include base_path %}
 
-[<button type="button" class="btn btn-info" style="background-color:skyblue">Download PDF</button>](https://rittickbarua.github.io/files/cv-short.pdf)
+[<button type="button" class="btn btn-info" style="background-color:skyblue">Download PDF</button>](/files/cv-short.pdf)
 
 # Summary
 <!-- Applied Data Scientist and Consultant with 7+ years of experience delivering production ML/GenAI solutions across finance, healthcare and the public sector. Drove £8M+ in projected savings across a £10M programme portfolio. PhD in Engineering from University of Cambridge with a track record of leading cross-functional teams from concept to production and driving executive adoption. -->
