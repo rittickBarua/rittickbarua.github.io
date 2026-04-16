@@ -1,6 +1,6 @@
 # Site-hardening report — rittickbarua.com
 
-Branch: `site-hardening`, 17 commits ahead of `master`. Rollback anchor: `git reset --hard pre-site-hardening` on `master` restores the pre-work state.
+Branch: `site-hardening`, 18 commits ahead of `master`. Rollback anchor: `git reset --hard pre-site-hardening` on `master` restores the pre-work state.
 
 ---
 
@@ -8,23 +8,24 @@ Branch: `site-hardening`, 17 commits ahead of `master`. Rollback anchor: `git re
 
 | # | SHA | Message |
 |---|---|---|
-| 1 | `3b48446` | `chore: remove AcademicPages demo collection content` |
-| 2 | `5f39b00` | `chore: remove AcademicPages demo pages and misleading terms page` |
-| 3 | `a1ca090` | `chore: remove JSON CV path and unused template author data` |
-| 4 | `f45aede` | `chore: remove AcademicPages dev tooling and talks CI workflow` |
-| 5 | `1bbbcb0` | `docs: replace upstream README and CONTRIBUTING with minimal versions` |
-| 6 | `1e29100` | `fix: use relative paths for profile image and CV PDF` |
-| 7 | `b522813` | `feat(publications): add real publication entries to the collection` |
-| 8 | `b2f5a4d` | `chore: prune template cruft from about page and tighten sitemap page` |
-| 9 | `f0ac606` | `feat(seo): install jekyll-seo-tag and replace custom SEO include` |
-| 10 | `767cbc9` | `feat(seo): populate _config.yml and trim template cruft` |
-| 11 | `40f4d8c` | `feat(seo): add Person JSON-LD and fix homepage title composition` |
-| 12 | `efe56c3` | `feat(seo): add robots.txt, humans.txt, proper 404 and verification placeholders` |
-| 13 | `1fc186d` | `chore(a11y, perf): set html lang to en-GB and drop unused CDN scripts` |
-| 14 | `30cdeb2` | `fix(a11y): move profile image to images/ and correct avatar resolution` |
-| 15 | `088199b` | `chore(a11y): add target=_blank and rel=noopener noreferrer me to external links` |
-| 16 | `ce4e4d8` | `chore(content): British English fixes and AquaEnviro typo correction` |
-| 17 | `9b512cf` | `chore(content): remove AcademicPages template boilerplate from CV` |
+| 1 | `d5115aa` | `chore: remove AcademicPages demo collection content` |
+| 2 | `27269b5` | `chore: remove AcademicPages demo pages and misleading terms page` |
+| 3 | `7d16b0e` | `chore: remove JSON CV path and unused template author data` |
+| 4 | `1cfd848` | `chore: remove AcademicPages dev tooling and talks CI workflow` |
+| 5 | `4ab9470` | `docs: replace upstream README and CONTRIBUTING with minimal versions` |
+| 6 | `defc30b` | `fix: use relative paths for profile image and CV PDF` |
+| 7 | `a2de1ed` | `feat(publications): add real publication entries to the collection` |
+| 8 | `434b87b` | `chore: prune template cruft from about page and tighten sitemap page` |
+| 9 | `fc999e4` | `feat(seo): install jekyll-seo-tag and replace custom SEO include` |
+| 10 | `0968591` | `feat(seo): populate _config.yml and trim template cruft` |
+| 11 | `11e24ce` | `feat(seo): add Person JSON-LD and fix homepage title composition` |
+| 12 | `16639ed` | `feat(seo): add robots.txt, humans.txt, proper 404 and verification placeholders` |
+| 13 | `1e0fd4a` | `chore(a11y, perf): set html lang to en-GB and drop unused CDN scripts` |
+| 14 | `f242ae4` | `fix(a11y): move profile image to images/ and correct avatar resolution` |
+| 15 | `4bac3ec` | `chore(a11y): add target=_blank and rel=noopener noreferrer me to external links` |
+| 16 | `4e34b4b` | `chore(content): British English fixes and AquaEnviro typo correction` |
+| 17 | `1121cca` | `chore(content): remove AcademicPages template boilerplate from CV` |
+| 18 | `107f745` | `docs: add AUDIT.md and REPORT.md from the site-hardening pass` |
 
 ---
 
