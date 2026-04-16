@@ -23,5 +23,5 @@ My research focuses on applied machine learning that is reliable at scale. On th
 
 1. Barua, R., Lee, K., Mills, N., Ouki, S., Thorpe, R.<br />
 <span style="color:navy">The effects of steam explosion and hydrolysing time on the digestibility of sewage sludge in anaerobic digestion</span>      
-*AcquEnviro - 2014*      
+*AquaEnviro conference proceedings — 2014*      
 [<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://conferences.aquaenviro.co.uk/proceedings/the-effects-of-steam-explosion-and-hydrolysing-time-on-the-digestibility-of-sewage-sludge-in-anaerobic-digestion){:target="_blank" rel="noopener noreferrer"}

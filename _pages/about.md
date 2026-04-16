@@ -6,7 +6,7 @@ redirect_from:
   - /about.html
 ---
 
-Product owner and applied data scientist with 7+ years of experience in delivering enterprise ML/GenAI solutions. Track record of partnering with academia to translate research into deployable products. Shaped product strategy, roadmap and adoption framework to embed cutting edge LLM tools into enterprise BAU workflows. Entrepreneurial founder with a solutions-driven mindset and proficiency in taking ideas from 0-to-1 through rigorous experimentation and stakeholder alignment creating measurable impact.
+Product owner and applied data scientist with 7+ years of experience delivering enterprise ML/GenAI solutions. Track record of partnering with academia to translate research into deployable products. Shaped product strategy, roadmap, and adoption framework to embed cutting-edge LLM tools into enterprise BAU workflows. Entrepreneurial founder with a solutions-driven mindset and proficiency in taking ideas from 0-to-1 through rigorous experimentation and stakeholder alignment, creating measurable impact.
 
 <!-- Highly experienced Consultant and applied Data Scientist with 7 years of experience in delivering enterprise-grade AI/ML solutions on Azure driving £8M+ projected savings through £10M+ project Nacross finance, healthcare and public sectors. PhD trained Engineer from University of Cambridge with a proven track record in leading cross-disciplinary teams, managing full product lifecycles, and driving digital transformation through data-driven strategies, automation, and stakeholder engagement. -->
 
@@ -29,5 +29,5 @@ Publications
 
 1. Barua, R., Lee, K., Mills, N., Ouki, S., Thorpe, R.<br />
 <span style="color:navy">The effects of steam explosion and hydrolysing time on the digestibility of sewage sludge in anaerobic digestion</span>      
-*AcquEnviro - 2014*      
+*AquaEnviro conference proceedings — 2014*      
 [<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://conferences.aquaenviro.co.uk/proceedings/the-effects-of-steam-explosion-and-hydrolysing-time-on-the-digestibility-of-sewage-sludge-in-anaerobic-digestion){:target="_blank" rel="noopener noreferrer"}

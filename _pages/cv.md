@@ -16,7 +16,7 @@ redirect_from:
 
 <!-- Highly experienced Consultant and applied Data Scientist with 7 years of experience in delivering enterprise-grade AI/ML solutions on Azure driving £8M+ projected savings through £10M+ project portfolio across finance, healthcare and public sectors. PhD trained Engineer from University of Cambridge with a proven track record in leading cross-disciplinary teams, managing full product lifecycles, and driving digital transformation through data-driven strategies, automation, and stakeholder engagement. -->
 
-Product owner and applied data scientist with 7+ years of experience in delivering enterprise ML/GenAI solutions. Track record of partnering with academia to translate research into deployable products. Shaped product strategy, roadmap and adoption framework to embed cutting edge LLM tools into enterprise BAU workflows. Entrepreneurial founder with a solutions-driven mindset and proficiency in taking ideas from 0-to-1 through rigorous experimentation and stakeholder alignment creating measurable impact.
+Product owner and applied data scientist with 7+ years of experience delivering enterprise ML/GenAI solutions. Track record of partnering with academia to translate research into deployable products. Shaped product strategy, roadmap, and adoption framework to embed cutting-edge LLM tools into enterprise BAU workflows. Entrepreneurial founder with a solutions-driven mindset and proficiency in taking ideas from 0-to-1 through rigorous experimentation and stakeholder alignment, creating measurable impact.
 
 # Professional Experience
 
@@ -27,7 +27,7 @@ Product owner and applied data scientist with 7+ years of experience in deliveri
 
   - Built sentiment analysis engine to evaluate 100K+ internal communications  near real-time leveraging LLM and classic ML on Azure 
 
-  - Built RAG-based solution to track and auto-summarize EU regulatory updates and notify relevant experts eliminating manual checks
+  - Built a RAG-based solution to track and auto-summarise EU regulatory updates and notify relevant experts, eliminating manual checks
 
 
 - **Head of Applied Science / Lead Consultant**, *Grant Thornton* — London, UK - **Jan 2022 – Nov 2024**  
@@ -35,7 +35,7 @@ Product owner and applied data scientist with 7+ years of experience in deliveri
   - Led GenAI adoption programme: defined the enterprise roadmap, identified/prioritised 25 use cases across 5 divisions, set intake, governance and success KPIs, designed ideation to product pipeline and launched 8 solutions (R&D/reporting/ops) saving £3M+
   - Designed and ran controlled pilots to automate 90% of audit report generation with LLMs, freeing 5 FTE annually, securing C-suite sponsorship and embedding the solution into BAU workflows with 100% full compliance
 
-  - Built adaptive residual value model for EV fleets (XGBoost): engineered self-improving lifecycle cost predictions using periodic repair/degradation data, optimizing sell/hold decisions for £65M asset portfolios
+  - Built an adaptive residual-value model for EV fleets (XGBoost): engineered self-improving lifecycle cost predictions using periodic repair/degradation data, optimising sell/hold decisions for £65M asset portfolios
 
   - Drove org-wide enablement and adoption: partnered with marketing to run a company-wide campaign, built a champions network across divisions and delivered demos to **2000+** staff, and mentored **7** junior data scientists
 
