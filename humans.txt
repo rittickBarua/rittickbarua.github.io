@@ -1,0 +1,9 @@
+/* TEAM */
+    Owner: Rittick Barua, PhD
+    Site:  https://rittickbarua.com
+
+/* SITE */
+    Language:   British English (en-GB)
+    Standards:  HTML5, CSS3
+    Built with: Jekyll, AcademicPages theme (MIT), a fork of Minimal Mistakes
+    Hosted on:  GitHub Pages

@@ -9,14 +9,14 @@ redirect_from:
 
 {% include base_path %}
 
-[<button type="button" class="btn btn-info" style="background-color:skyblue">Download PDF</button>](https://rittickbarua.github.io/files/cv-short.pdf)
+[<button type="button" class="btn btn-info" style="background-color:skyblue">Download PDF</button>](/files/cv-short.pdf)
 
 # Summary
 <!-- Applied Data Scientist and Consultant with 7+ years of experience delivering production ML/GenAI solutions across finance, healthcare and the public sector. Drove £8M+ in projected savings across a £10M programme portfolio. PhD in Engineering from University of Cambridge with a track record of leading cross-functional teams from concept to production and driving executive adoption. -->
 
 <!-- Highly experienced Consultant and applied Data Scientist with 7 years of experience in delivering enterprise-grade AI/ML solutions on Azure driving £8M+ projected savings through £10M+ project portfolio across finance, healthcare and public sectors. PhD trained Engineer from University of Cambridge with a proven track record in leading cross-disciplinary teams, managing full product lifecycles, and driving digital transformation through data-driven strategies, automation, and stakeholder engagement. -->
 
-Product owner and applied data scientist with 7+ years of experience in delivering enterprise ML/GenAI solutions. Track record of partnering with academia to translate research into deployable products. Shaped product strategy, roadmap and adoption framework to embed cutting edge LLM tools into enterprise BAU workflows. Entrepreneurial founder with a solutions-driven mindset and proficiency in taking ideas from 0-to-1 through rigorous experimentation and stakeholder alignment creating measurable impact.
+Product owner and applied data scientist with 7+ years of experience delivering enterprise ML/GenAI solutions. Track record of partnering with academia to translate research into deployable products. Shaped product strategy, roadmap, and adoption framework to embed cutting-edge LLM tools into enterprise BAU workflows. Entrepreneurial founder with a solutions-driven mindset and proficiency in taking ideas from 0-to-1 through rigorous experimentation and stakeholder alignment, creating measurable impact.
 
 # Professional Experience
 
@@ -27,7 +27,7 @@ Product owner and applied data scientist with 7+ years of experience in deliveri
 
   - Built sentiment analysis engine to evaluate 100K+ internal communications  near real-time leveraging LLM and classic ML on Azure 
 
-  - Built RAG-based solution to track and auto-summarize EU regulatory updates and notify relevant experts eliminating manual checks
+  - Built a RAG-based solution to track and auto-summarise EU regulatory updates and notify relevant experts, eliminating manual checks
 
 
 - **Head of Applied Science / Lead Consultant**, *Grant Thornton* — London, UK - **Jan 2022 – Nov 2024**  
@@ -35,7 +35,7 @@ Product owner and applied data scientist with 7+ years of experience in deliveri
   - Led GenAI adoption programme: defined the enterprise roadmap, identified/prioritised 25 use cases across 5 divisions, set intake, governance and success KPIs, designed ideation to product pipeline and launched 8 solutions (R&D/reporting/ops) saving £3M+
   - Designed and ran controlled pilots to automate 90% of audit report generation with LLMs, freeing 5 FTE annually, securing C-suite sponsorship and embedding the solution into BAU workflows with 100% full compliance
 
-  - Built adaptive residual value model for EV fleets (XGBoost): engineered self-improving lifecycle cost predictions using periodic repair/degradation data, optimizing sell/hold decisions for £65M asset portfolios
+  - Built an adaptive residual-value model for EV fleets (XGBoost): engineered self-improving lifecycle cost predictions using periodic repair/degradation data, optimising sell/hold decisions for £65M asset portfolios
 
   - Drove org-wide enablement and adoption: partnered with marketing to run a company-wide campaign, built a champions network across divisions and delivered demos to **2000+** staff, and mentored **7** junior data scientists
 
@@ -93,59 +93,3 @@ Product owner and applied data scientist with 7+ years of experience in deliveri
 | Time-series forecasting, anomaly detection | MLOps: CI/CD, model serving, monitoring           | Responsible AI & AI security (guardrails)   |
 | Residual value modelling (EV fleets)       | Power Automate/Apps, Microsoft Graph, Teams/SP    | Documentation, whitepapers, workshop design |
  -- -->
-
-
-<!-- 
-Education
-======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
-
-Work experience
-======
-* Spring 2024: Academic Pages Collaborator
-  * GitHub University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
-
-* Fall 2015: Research Assistant
-  * GitHub University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
-
-* Summer 2015: Research Assistant
-  * GitHub University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
-  
-Skills
-======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
-
-Publications
-======
-  <ul>{% for post in site.publications reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Talks
-======
-  <ul>{% for post in site.talks reversed %}
-    {% include archive-single-talk-cv.html  %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Service and leadership
-======
-* Currently signed in to 43 different slack teams -->

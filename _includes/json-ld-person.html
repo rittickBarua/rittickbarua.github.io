@@ -1,0 +1,30 @@
+{%- comment -%}
+  schema.org Person JSON-LD for the site owner. Reads from site.author
+  and site.social so all identity data has a single source of truth in
+  _config.yml. Complements the Person schema emitted by jekyll-seo-tag
+  with fields it doesn't expose (jobTitle, alumniOf, image).
+{%- endcomment -%}
+{%- comment -%}
+  site.logo is a root-relative path (e.g. /images/profile.jpeg).
+  Prepend site.url so the schema.org image field is a fully-qualified URL.
+{%- endcomment -%}
+{%- assign person_image = site.logo | default: "/images/profile.jpeg" -%}
+{%- unless person_image contains "://" -%}
+  {%- assign person_image = person_image | prepend: site.url -%}
+{%- endunless -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": {{ site.author.name | jsonify }},
+  "url": {{ site.url | append: "/" | jsonify }},
+  "image": {{ person_image | jsonify }},
+  "jobTitle": {{ site.tagline | default: site.author.bio | jsonify }},
+  "description": {{ site.description | jsonify }},
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "University of Cambridge"
+  },
+  "sameAs": {{ site.social.links | jsonify }}
+}
+</script>
