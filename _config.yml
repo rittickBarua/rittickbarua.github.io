@@ -17,7 +17,7 @@ description              : &description "Product leader and applied data scienti
 url                      : "https://rittickbarua.com"
 baseurl                  : ""
 repository               : "rittickbarua/rittickbarua.github.io"
-logo                     : "/files/profile.jpeg"
+logo                     : "/images/profile.jpeg"
 
 # -----------------------------------------------------------------------------
 # Author (sidebar + jekyll-seo-tag)
@@ -25,7 +25,7 @@ logo                     : "/files/profile.jpeg"
 # absent rather than placeholder-commented.
 # -----------------------------------------------------------------------------
 author:
-  avatar           : "/files/profile.jpeg"
+  avatar           : "profile.jpeg"
   name             : *name
   bio              : *description
   location         : "London"
@@ -78,7 +78,7 @@ bing_site_verification   :
 # og_image drives the default Open Graph image (used when a page has no own
 # header image). social.links feeds Person sameAs in schema.org JSON-LD.
 # -----------------------------------------------------------------------------
-og_image                 : "/files/profile.jpeg"
+og_image                 : "/images/profile.jpeg"
 
 social:
   type                   : "Person"

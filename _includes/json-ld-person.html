@@ -4,7 +4,11 @@
   _config.yml. Complements the Person schema emitted by jekyll-seo-tag
   with fields it doesn't expose (jobTitle, alumniOf, image).
 {%- endcomment -%}
-{%- assign person_image = site.author.avatar -%}
+{%- comment -%}
+  site.logo is a root-relative path (e.g. /images/profile.jpeg).
+  Prepend site.url so the schema.org image field is a fully-qualified URL.
+{%- endcomment -%}
+{%- assign person_image = site.logo | default: "/images/profile.jpeg" -%}
 {%- unless person_image contains "://" -%}
   {%- assign person_image = person_image | prepend: site.url -%}
 {%- endunless -%}
