@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rittickbarua.com/sitemap.xml
