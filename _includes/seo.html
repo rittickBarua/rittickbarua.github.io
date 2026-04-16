@@ -1,8 +1,15 @@
 {%- comment -%}
-  Delegate SEO meta, Open Graph, Twitter card and JSON-LD output to
-  the jekyll-seo-tag plugin. Configuration lives in _config.yml
-  (site.title, site.description, site.author, site.social,
-  site.logo, site.google_site_verification, etc.) and per-page
-  front-matter (title, description, image).
+  Emit <title> manually so the separator is an em-dash. jekyll-seo-tag
+  2.8.0 hard-codes " | " as TITLE_SEPARATOR and ignores site.title_separator.
+  Then delegate everything else (meta description, canonical, OG, Twitter
+  card, generator, verification meta, jsonld) to {% seo title=false %}.
 {%- endcomment -%}
-{% seo %}
+{%- assign sep = site.title_separator | default: "—" -%}
+{%- if page.title and page.title != site.title -%}
+<title>{{ page.title | markdownify | strip_html | strip_newlines | escape_once }} {{ sep }} {{ site.title | escape_once }}</title>
+{%- elsif site.title and site.tagline -%}
+<title>{{ site.title | escape_once }} {{ sep }} {{ site.tagline | escape_once }}</title>
+{%- elsif site.title -%}
+<title>{{ site.title | escape_once }}</title>
+{%- endif %}
+{% seo title=false %}

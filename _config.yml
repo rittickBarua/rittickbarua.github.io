@@ -133,6 +133,8 @@ exclude:
   - CONTRIBUTING.md
   - AUDIT.md
   - REPORT.md
+  - google-site-verification-PLACEHOLDER.html
+  - BingSiteAuth-PLACEHOLDER.xml
   - tmp
   - vendor
 keep_files:
