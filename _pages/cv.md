@@ -11,14 +11,14 @@ redirect_from:
 
 [<button type="button" class="btn btn-info" style="background-color:skyblue">Download PDF</button>](/files/cv-short.pdf)
 
-# Summary
+## Summary
 <!-- Applied Data Scientist and Consultant with 7+ years of experience delivering production ML/GenAI solutions across finance, healthcare and the public sector. Drove £8M+ in projected savings across a £10M programme portfolio. PhD in Engineering from University of Cambridge with a track record of leading cross-functional teams from concept to production and driving executive adoption. -->
 
 <!-- Highly experienced Consultant and applied Data Scientist with 7 years of experience in delivering enterprise-grade AI/ML solutions on Azure driving £8M+ projected savings through £10M+ project portfolio across finance, healthcare and public sectors. PhD trained Engineer from University of Cambridge with a proven track record in leading cross-disciplinary teams, managing full product lifecycles, and driving digital transformation through data-driven strategies, automation, and stakeholder engagement. -->
 
 Product owner and applied data scientist with 7+ years of experience delivering enterprise ML/GenAI solutions. Track record of partnering with academia to translate research into deployable products. Shaped product strategy, roadmap, and adoption framework to embed cutting-edge LLM tools into enterprise BAU workflows. Entrepreneurial founder with a solutions-driven mindset and proficiency in taking ideas from 0-to-1 through rigorous experimentation and stakeholder alignment, creating measurable impact.
 
-# Professional Experience
+## Professional Experience
 
 - **Head of Product & Delivery**, *Bloch.ai* — London, UK - **Jan 2025 – Present**  
   -  Led executive training on AI adoption and strategy, guiding senior leadership in AI vision setting, capability assessment and business value driven prioritisation resulting in discovery of 10+ high-impact use cases with £5M+ projected annual savings
@@ -61,7 +61,7 @@ Product owner and applied data scientist with 7+ years of experience delivering 
   <!-- - Won £120K in funding; led a 4 - person team from experimental design through to presenting findings at an international conference -->
   - Engineered multi-stage reactor systems that increased anaerobic-digestion efficiency of sludge treatment process and increased biogas production by 33–52\%; slashed grid-energy dependency and reduced plant OPEX through self-sustaining biogas utilisation
 
-# Appointments
+## Appointments
 - **Visiting Researcher**, *UCL Hospital – Department of Surgical Biotechnology* — London, UK - **Mar 2025 – Present**
 
   - Adapting CNN and traditional image processing and classification techniques to automate and de-bias the cancer-cell analysis process
@@ -69,7 +69,7 @@ Product owner and applied data scientist with 7+ years of experience delivering 
 - **Visiting Research Fellow**, *Manchester Metropolitan University* — Manchester, UK - **Apr 2024 – Present**
 
 
-# Education
+## Education
 - **PhD in Chemical Engineering and Biotechnology**, *University of Cambridge* — Cambridge, UK - **Oct 2014 – Sep 2018**  
   - Fully funded scholarship, authored 1 peer-reviewed paper and awarded Best Poster prize at conference
   - Proposed a novel flow model to describe the behaviour of complex fluid to improve oil well integrity and drilling operations
@@ -77,7 +77,7 @@ Product owner and applied data scientist with 7+ years of experience delivering 
 - **BSc in Chemical Engineering (1st Class Hons.)**, *University College London* — London, UK - **Oct 2007 – Jun 2011**
 
 
-# Skills
+## Skills
 
 **Skills** - Time-series forecasting, Classification, Residual Value Evaluation, Image, Signal and Noise processing, Image Segmentation
 
