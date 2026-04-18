@@ -12,16 +12,16 @@ My research focuses on applied machine learning that is reliable at scale. On th
 1. Rittick Barua, Kevin McCay, Mohammed Al-Khalidi, Yonghong Peng, Jamie Crossman-Smith<br />
 <span style="color:navy">Cyber security risks to artificial intelligence (Whitepaper)</span>      
 *Department of Science, Innovation and Technology - 2024*      
-[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://assets.publishing.service.gov.uk/media/664333b1ae748c43d3793a40/Cyber_security_risks_to_artificial_intelligence.pdf)
+[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://assets.publishing.service.gov.uk/media/664333b1ae748c43d3793a40/Cyber_security_risks_to_artificial_intelligence.pdf){:target="_blank" rel="noopener noreferrer"}
 
 
 1. Adam Colbourne, Thomas Blythe, Rittick Barua, Sean Lovett, Jonathan Mitchell, Andrew Sederman, Lynn F Gladden<br />
 <span style="color:navy">Validation of a low field Rheo-NMR instrument and application to shear-induced migration of suspended non-colloidal particles in Couette flow</span>      
 *Journal of Magnetic Resonance - 2018*      
-[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://www.repository.cam.ac.uk/bitstreams/57073ea8-f6f6-4495-81e5-75c509654f74/download)
+[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://www.repository.cam.ac.uk/bitstreams/57073ea8-f6f6-4495-81e5-75c509654f74/download){:target="_blank" rel="noopener noreferrer"}
 
 
 1. Barua, R., Lee, K., Mills, N., Ouki, S., Thorpe, R.<br />
 <span style="color:navy">The effects of steam explosion and hydrolysing time on the digestibility of sewage sludge in anaerobic digestion</span>      
-*AcquEnviro - 2014*      
-[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://conferences.aquaenviro.co.uk/proceedings/the-effects-of-steam-explosion-and-hydrolysing-time-on-the-digestibility-of-sewage-sludge-in-anaerobic-digestion)
+*AquaEnviro conference proceedings — 2014*      
+[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://conferences.aquaenviro.co.uk/proceedings/the-effects-of-steam-explosion-and-hydrolysing-time-on-the-digestibility-of-sewage-sludge-in-anaerobic-digestion){:target="_blank" rel="noopener noreferrer"}
