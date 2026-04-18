@@ -1,6 +1,7 @@
 ---
 layout: archive
 title: "Research"
+description: "Peer-reviewed and commissioned publications by Rittick Barua — AI cyber security (DSIT whitepaper, 2024), low-field Rheo-NMR validation (J. Magn. Reson., 2018), steam-explosion pretreatment of sewage sludge (AquaEnviro, 2014)."
 permalink: /publications/
 author_profile: true
 ---

@@ -1,6 +1,7 @@
 ---
 layout: archive
 title: "CV"
+description: "CV of Rittick Barua, PhD — product leader and applied data scientist. 7+ years delivering enterprise ML and GenAI solutions, Cambridge Engineering PhD. Download as PDF."
 permalink: /cv/
 author_profile: true
 redirect_from:

@@ -33,9 +33,12 @@ author:
   uri              : "https://rittickbarua.com"
   email            : "email@rittickbarua.com"
 
-  # Academic
+  # Academic — add your ORCID once registered (https://orcid.org/register).
+  # Format: the full URL, e.g. "https://orcid.org/0000-0000-0000-0000".
+  # Picked up automatically by the sidebar and by the Person JSON-LD.
+  orcid            :
   googlescholar    : "https://scholar.google.co.uk/citations?user=HLBqOMUAAAAJ&hl=en"
-  researchgate    : "https://www.researchgate.net/profile/Rittick-Barua-2"
+  researchgate     : "https://www.researchgate.net/profile/Rittick-Barua-2"
 
   # Code & professional
   github           : "rittickBarua"
