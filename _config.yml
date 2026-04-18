@@ -133,6 +133,10 @@ exclude:
   - CONTRIBUTING.md
   - AUDIT.md
   - REPORT.md
+  - TEST_REPORT.md
+  - HANDOFF.md
+  - docs
+  - e2e
   - google-site-verification-PLACEHOLDER.html
   - BingSiteAuth-PLACEHOLDER.xml
   - tmp
@@ -171,6 +175,13 @@ collections:
     permalink: /:collection/:path/
 
 defaults:
+  # Site-wide default og:image / twitter:image for jekyll-seo-tag
+  # (it reads page.image; this makes every page inherit the profile photo
+  # unless a page sets its own image in front matter).
+  - scope:
+      path: ""
+    values:
+      image: "/images/profile.jpeg"
   - scope:
       path: ""
       type: posts
