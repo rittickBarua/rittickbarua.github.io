@@ -16,14 +16,15 @@ Paste this into a fresh session so work picks up without re-deriving context.
 
 ## What's deployed on master now
 
-Two merges landed back-to-back:
+Three PRs landed:
 
 | PR | Merge SHA | Scope |
 |---|---|---|
 | #1 | `59c44c2` | Core site-hardening: purge template, SEO wire-up, publications, em-dash title separator, profile image fix, https/a11y link attrs, British-English content polish |
 | #2 | `6102394` | Follow-up: hamburger `<button>` aria-label, CV `# → ##` heading-hierarchy fix, site-wide `image` default for OG/Twitter, Playwright e2e suite, docs |
+| #3 | `67a9fc0` | SEO v2: `ScholarlyArticle` + `BreadcrumbList` JSON-LD on publication pages, per-page meta descriptions, ORCID scaffolding, avatar width/height, profile-image preload, `/categories/` + `/tags/` removed from sitemap |
 
-Combined, everything the user asked for across the two phases is on master.
+Combined, every code-doable SEO item from the analysis is on master.
 
 ### Template cruft removed (46 files)
 
@@ -51,8 +52,23 @@ Combined, everything the user asked for across the two phases is on master.
 - Homepage `<title>`: `Rittick Barua, PhD — AI & Data Science Product Leader`
 - Other pages: `{page.title} — {site.title}`
 - Site-wide `defaults` scope sets `image: "/images/profile.jpeg"` so every page emits an `og:image` / `twitter:image` (jekyll-seo-tag reads `page.image`, not `site.og_image`)
+- Per-page `description:` on `/cv/` and `/publications/` — targets page-specific search terms instead of inheriting the site default
 - `_config.yml` populated: `title`, `tagline`, `title_separator`, `description` (placeholder — see parked Q11), `og_image`, `logo`, `social.links` (Scholar / ResearchGate / GitHub / LinkedIn), `locale: en-GB`, `timezone: Europe/London`, `future: false`
 - `<html lang="en-GB">`
+
+### Structured data (four JSON-LD blocks on publication detail pages)
+
+- **Person** (site-wide, via `_includes/json-ld-person.html`): name, jobTitle, image, alumniOf University of Cambridge, sameAs → Scholar / ResearchGate / GitHub / LinkedIn (+ ORCID if set). Includes an ORCID `identifier` PropertyValue if `author.orcid` is populated.
+- **ScholarlyArticle** (publication detail pages, via `_includes/json-ld-scholarly-article.html`): headline, authors array (derived from `authors:` front-matter), datePublished, publisher, DOI as PropertyValue + sameAs to doi.org, mainEntityOfPage.
+- **BreadcrumbList** (publication detail pages, via `_includes/json-ld-breadcrumbs.html`): Home → Research → paper title.
+- jekyll-seo-tag's own Person / BlogPosting / WebPage / Organization blocks coexist.
+
+### Core Web Vitals
+
+- Avatar `<img>` has explicit `width="500" height="500"` + `decoding="async"` — reduces CLS.
+- `<link rel="preload" as="image" fetchpriority="high">` for profile image — improves LCP (sidebar avatar is above the fold on every page).
+- `/categories/` and `/tags/` archive pages have `sitemap: false` — empty until blogging starts; no more diluting crawl budget.
+- All CDN scripts removed; only `main.min.js` loads (theme-internal).
 
 ### A11y and perf
 
@@ -76,7 +92,8 @@ Combined, everything the user asked for across the two phases is on master.
 
 ### Test infrastructure on master
 
-- `e2e/` — Playwright 1.56.1 + `@axe-core/playwright` 4.10.1; specs: `smoke`, `seo`, `a11y`, `assets`, `interactive`; BASE_URL-parameterised; `chromium-desktop` + `chromium-mobile` projects. Last run: **76 pass / 2 skipped (documented) / 0 fail**.
+- `e2e/` — Playwright 1.56.1 + `@axe-core/playwright` 4.10.1; specs: `smoke`, `seo`, `a11y`, `assets`, `interactive`; BASE_URL-parameterised; `chromium-desktop` + `chromium-mobile` projects. Last run: **93 pass / 2 skipped (documented) / 0 fail**.
+- `seo.spec.ts` covers: per-page title / meta description / canonical / OG / Twitter / Person JSON-LD / lang / preload / avatar dimensions; publication-specific ScholarlyArticle (authors, publisher, DOI) + BreadcrumbList; sitemap structure; robots.txt; humans.txt.
 - `TEST_REPORT.md` — verification results, coverage gaps, skip justifications.
 - `docs/site-hardening.md` — longer-form engineering log.
 - `AUDIT.md` — Phase 0 snapshot of the pre-work state.
@@ -113,11 +130,40 @@ Author sidebar `bio` is aliased to `description` via YAML anchor `&description`,
 
 ## Manual TODOs — only the user can do these
 
+### Search-console indexing (do this first)
+
 1. **GitHub Pages settings** — Settings → Pages. Confirm custom domain = `rittickbarua.com`, HTTPS enforced, source = `master` / `/ (root)`.
 2. **Google Search Console** — add property `https://rittickbarua.com`, verify (either paste token into `_config.yml`'s `google_site_verification:` field, or use the HTML-file method with the real token replacing `google-site-verification-PLACEHOLDER.html`), submit sitemap, request indexing of `/`, `/publications/`, `/cv/`, and the three `/publications/<slug>/` detail pages.
 3. **Bing Webmaster Tools** — same pattern; field is `bing_site_verification:`.
-4. **`author.employer` review** — currently `"University of Cambridge"` (alma mater). The user's CV shows Bloch.ai as current employer (Jan 2025 – Present). The sidebar icon can read as either affiliation or current employer. User's call.
-5. **Favicons** — already present in `images/` (`favicon.ico`, `favicon.svg`, `favicon-32x32.png`, `favicon-192x192.png`, `favicon-512x512.png`, `apple-touch-icon-180x180.png`, `manifest.json`). No action needed unless fresh source art is wanted.
+4. **Google Rich Results Test** — test one publication URL at [search.google.com/test/rich-results](https://search.google.com/test/rich-results). Expect ScholarlyArticle + BreadcrumbList + Person to validate.
+
+### Identity & backlinks (real SEO juice)
+
+5. **Register an ORCID** at [orcid.org/register](https://orcid.org/register) (3 min). Once you have the ID, set `author.orcid: "https://orcid.org/XXXX-XXXX-XXXX-XXXX"` in `_config.yml` — the sidebar and Person JSON-LD pick it up automatically.
+6. **Add rittickbarua.com to your profiles:**
+    - LinkedIn (Edit intro → Website).
+    - GitHub (Profile → Edit profile → Website URL).
+    - Google Scholar (your profile → Edit → Homepage).
+    - ResearchGate (Info → Contact → Website).
+    - Cambridge alumni profile if applicable.
+7. **Claim publications on Google Scholar.** Make sure all three are attached to your author profile so Scholar indexing is clean.
+
+### Content (next few months)
+
+8. **Expand publication pages.** Each `_publications/*.md` has a 1-paragraph excerpt; a 300–500 word plain-English summary ("what we found / why it matters") gives Google meaningful crawlable text and helps you rank for topic keywords, not just paper titles.
+9. **Start blogging.** One real essay/month on applied AI, GenAI productisation, or AI-adoption case studies. Target phrases someone actually Googles: `AI product owner UK`, `GenAI adoption consultant`, `enterprise LLM product lead`. `_posts/` is already enabled; just drop a dated markdown file.
+10. **Consider a `/consulting/` or `/services/` landing page** if you're monetising advisory time — that's where SEO converts.
+
+### Config decisions still open
+
+11. **`author.employer` review** — currently `"University of Cambridge"` (alma mater). Your CV shows Bloch.ai as current (Jan 2025 – Present). The sidebar icon reads as either "affiliation" or "current employer" depending on visitor intuition.
+12. **Favicons** — already present in `images/` (`favicon.ico`, `.svg`, `32x32`, `192x192`, `512x512`, `apple-touch-icon-180x180.png`, `manifest.json`). No action unless you want fresh art.
+
+### Longer-term / when you have an hour
+
+13. **Cloudflare in front of GitHub Pages** — free tier gives you Brotli compression, HTTP/3, better TLS, edge caching, and the ability to set security headers GH Pages alone can't (HSTS, CSP, X-Content-Type-Options). DNS change + 30 min.
+14. **WebP / AVIF for images** — not urgent (profile.jpeg is ~100 KB) but a nice bandwidth cut. Use `cwebp` / `avifenc` in a pre-commit or GitHub Action; wrap avatar in `<picture>`.
+15. **PageSpeed Insights** ([pagespeed.web.dev](https://pagespeed.web.dev)) monthly — act on anything in the red (usually LCP, CLS).
 
 ---
 
@@ -159,6 +205,7 @@ cd e2e && BASE_URL=https://rittickbarua.com npx playwright test
 
 ## Rollback
 
+- **Undo PR #3 (SEO v2) only:** `git revert 67a9fc0`
 - **Undo PR #2 (follow-up) only:** `git revert 6102394`
 - **Undo PR #1 (core) only:** `git revert 59c44c2`
 - **Undo everything:** `git reset --hard pre-site-hardening` (the local tag pins master's pre-work head `9e65e6e`)
@@ -169,11 +216,13 @@ cd e2e && BASE_URL=https://rittickbarua.com npx playwright test
 ## Key files to understand
 
 - **`_includes/seo.html`** — hand-rolled `<title>` + `{% seo title=false %}`. Read the comment at the top before modifying.
-- **`_includes/json-ld-person.html`** — custom Person schema reading from `site.author`, `site.logo`, `site.social.links`. Auto-stays-in-sync with `_config.yml` changes.
+- **`_includes/json-ld-person.html`** — custom Person schema. Reads from `site.author`, `site.logo`, `site.social.links`, `site.author.orcid`. Auto-stays-in-sync with `_config.yml` changes.
+- **`_includes/json-ld-scholarly-article.html`** — ScholarlyArticle schema per publication. Reads from page front-matter (`authors:`, `venue:`, `doi:`, `paperurl:`).
+- **`_includes/json-ld-breadcrumbs.html`** — BreadcrumbList (Home → Research → paper title) on publication detail pages.
 - **`_config.yml`** — heavily commented; structure mirrors the theme sections. Changes require `docker compose restart` (not just live-reload).
 - **`AUDIT.md`** — pre-work snapshot if you need to understand why something was done.
 - **`REPORT.md`** — change log with `_config.yml` field-level diff + full manual checklist.
-- **`docs/site-hardening.md`** — longer-form narrative engineering log; same content as REPORT but reads like a post-mortem.
+- **`docs/site-hardening.md`** — longer-form narrative engineering log.
 - **`TEST_REPORT.md`** — e2e results; lists what each test covers and what is deliberately not covered.
 - **`e2e/README.md`** — how to re-run the suite locally or in CI.
 
@@ -185,8 +234,8 @@ cd e2e && BASE_URL=https://rittickbarua.com npx playwright test
 |---|---|
 | Live site | https://rittickbarua.com |
 | GitHub repo | https://github.com/rittickBarua/rittickbarua.github.io |
-| Merged PRs | [#1](https://github.com/rittickBarua/rittickbarua.github.io/pull/1), [#2](https://github.com/rittickBarua/rittickbarua.github.io/pull/2) |
-| Latest master commit | `6102394` (PR #2) |
+| Merged PRs | [#1](https://github.com/rittickBarua/rittickbarua.github.io/pull/1), [#2](https://github.com/rittickBarua/rittickbarua.github.io/pull/2), [#3](https://github.com/rittickBarua/rittickbarua.github.io/pull/3) |
+| Latest master commit | `67a9fc0` (PR #3) |
 | Pre-work anchor | tag `pre-site-hardening` → `9e65e6e` |
 | Local preview | `docker compose up` → http://localhost:4000 |
 | Playwright image | `mcr.microsoft.com/playwright:v1.56.1-noble` |
