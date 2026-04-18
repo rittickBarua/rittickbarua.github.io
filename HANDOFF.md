@@ -16,7 +16,14 @@ Paste this into a fresh session so work picks up without re-deriving context.
 
 ## What's deployed on master now
 
-Merged via PR #1 as commit **`59c44c2`** ("Production-hardening-(site-hardening branch) (#1)"). A single squashed commit — `git revert 59c44c2` peels off everything. Full rollback anchor: `git reset --hard pre-site-hardening` (local tag pointing at master's pre-work head `9e65e6e`).
+Two merges landed back-to-back:
+
+| PR | Merge SHA | Scope |
+|---|---|---|
+| #1 | `59c44c2` | Core site-hardening: purge template, SEO wire-up, publications, em-dash title separator, profile image fix, https/a11y link attrs, British-English content polish |
+| #2 | `6102394` | Follow-up: hamburger `<button>` aria-label, CV `# → ##` heading-hierarchy fix, site-wide `image` default for OG/Twitter, Playwright e2e suite, docs |
+
+Combined, everything the user asked for across the two phases is on master.
 
 ### Template cruft removed (46 files)
 
@@ -29,30 +36,34 @@ Merged via PR #1 as commit **`59c44c2`** ("Production-hardening-(site-hardening 
 
 ### Real content added
 
-- Three proper `_publications/*.md` entries:
+- Three `_publications/*.md` entries:
   - `2024-01-01-barua-dsit-cyber-security-risks-to-ai.md` (DSIT whitepaper, category: `whitepapers`)
   - `2018-01-01-colbourne-rheo-nmr-validation.md` (*J. Magn. Reson.*, DOI `10.1016/j.jmr.2017.11.010`)
   - `2014-01-01-barua-steam-explosion-sewage-sludge.md` (AquaEnviro 2014)
 - `_includes/json-ld-person.html` (schema.org Person: name, jobTitle, alumniOf Cambridge, sameAs)
 - `robots.txt`, `humans.txt`, proper `/404.html`
-- PLACEHOLDER files with instructions for GSC and Bing HTML-file verification
+- PLACEHOLDER files with instructions for Google Search Console and Bing Webmaster Tools HTML-file verification
 
 ### SEO wired up
 
 - `jekyll-seo-tag` in the Gemfile + `_config.yml` plugins/whitelist
-- `_includes/seo.html` emits `<title>` manually with em-dash separator (jekyll-seo-tag 2.8.0 hard-codes ` | ` in a constant, bypassed by emitting our own then `{% seo title=false %}`)
+- `_includes/seo.html` emits `<title>` manually with em-dash separator (jekyll-seo-tag 2.8.0 hard-codes ` | ` in a constant; bypassed by emitting our own then `{% seo title=false %}`)
 - Homepage `<title>`: `Rittick Barua, PhD — AI & Data Science Product Leader`
 - Other pages: `{page.title} — {site.title}`
+- Site-wide `defaults` scope sets `image: "/images/profile.jpeg"` so every page emits an `og:image` / `twitter:image` (jekyll-seo-tag reads `page.image`, not `site.og_image`)
 - `_config.yml` populated: `title`, `tagline`, `title_separator`, `description` (placeholder — see parked Q11), `og_image`, `logo`, `social.links` (Scholar / ResearchGate / GitHub / LinkedIn), `locale: en-GB`, `timezone: Europe/London`, `future: false`
 - `<html lang="en-GB">`
 
-### Fixes landed
+### A11y and perf
 
-- Profile image moved `files/` → `images/profile.jpeg` (theme hard-prepends `/images/` to avatar)
-- CV PDF link made root-relative
-- Theme toggle: `<a role="button">` → real `<button>` (html-proofer clean; `_sass/layout/_navigation.scss` updated with button reset)
-- `footer.html` `http://github.com` / `http://jekyllrb.com` / `http://bitbucket.org` upgraded to https; external links get `target="_blank" rel="noopener noreferrer me"`
+- Hamburger nav `<button>` has `type="button"` + `aria-label="Toggle navigation"` (closed a critical axe `button-name` violation on every page)
+- Theme toggle: `<a role="button">` → real `<button>`; `_sass/layout/_navigation.scss` updated with a button reset
+- `_pages/cv.md` section headings demoted from `#` to `##` so the page has exactly one `<h1>`
+- Every external link has `target="_blank"` + `rel="noopener noreferrer me"`
 - MathJax / Plotly / Mermaid / polyfill CDN scripts removed from every page
+- Profile image moved `files/` → `images/profile.jpeg` (theme hard-prepends `/images/` to `author.avatar`)
+- CV PDF link made root-relative
+- `footer.html` `http://github.com` / `http://jekyllrb.com` / `http://bitbucket.org` upgraded to https
 
 ### Content polish
 
@@ -63,45 +74,19 @@ Merged via PR #1 as commit **`59c44c2`** ("Production-hardening-(site-hardening 
 - 22-line fork-tutorial comment removed from `about.md`
 - `README.md` and `CONTRIBUTING.md` rewritten from upstream template docs to project-specific minimal versions
 
-### Docs committed to master
+### Test infrastructure on master
 
-- `AUDIT.md` — Phase 0 read-only audit (pre-work state, placeholder fields, question list)
-- `REPORT.md` — change log with field-level `_config.yml` diff + manual checklist
+- `e2e/` — Playwright 1.56.1 + `@axe-core/playwright` 4.10.1; specs: `smoke`, `seo`, `a11y`, `assets`, `interactive`; BASE_URL-parameterised; `chromium-desktop` + `chromium-mobile` projects. Last run: **76 pass / 2 skipped (documented) / 0 fail**.
+- `TEST_REPORT.md` — verification results, coverage gaps, skip justifications.
+- `docs/site-hardening.md` — longer-form engineering log.
+- `AUDIT.md` — Phase 0 snapshot of the pre-work state.
+- `REPORT.md` — change log with `_config.yml` field-level diff.
 
-Both excluded from `_site/` via `_config.yml` `exclude:`.
-
----
-
-## What's NOT on master (preserved as tag `site-hardening-e2e-unmerged` → commit `f7e87c2`)
-
-PR #1 was merged using an earlier version of the branch. These improvements exist locally but weren't in the merged tree:
-
-1. **`e2e/` Playwright test suite** — five specs (smoke, SEO, a11y via axe-core, assets, interactive), BASE_URL-parameterised, desktop + mobile projects. 76 pass / 2 skipped / 0 fail against `http://localhost:4000`. Pinned to Playwright 1.56.1 (matches the chatr-rp e2e setup the user asked to adapt from).
-2. **Masthead hamburger nav `<button>` a11y fix** — added `type="button"` + `aria-label="Toggle navigation"` + `aria-hidden="true"` on the icon. Without this, axe reports a **critical** `button-name` violation on every page.
-3. **`_pages/cv.md` heading hierarchy fix** — section headings `# Summary`, `# Professional Experience`, etc. demoted to `##` so the page has exactly one `<h1>`. Currently master has six `<h1>` elements on `/cv/`.
-4. **`og:image` / `twitter:image` default** — added a site-wide `defaults: { scope: { path: "" }, values: { image: "/images/profile.jpeg" } }` in `_config.yml` because jekyll-seo-tag reads `page.image`, not `site.og_image`. Without this, no page emits an `og:image`.
-5. **`docs/site-hardening.md`** — a permanent future-reference engineering log (longer form than this handoff).
-6. **`TEST_REPORT.md`** — e2e results, skip justifications, coverage gaps.
-
-To recover this work in another session:
-
-```sh
-# Option A: cherry-pick on top of master
-git cherry-pick site-hardening-e2e-unmerged
-# (will be a one-commit cherry because f7e87c2 is itself squashed)
-
-# Option B: branch from the tag and PR it
-git checkout -b site-hardening-followup site-hardening-e2e-unmerged
-git rebase master   # fast-forward, should be conflict-free
-git push -u origin site-hardening-followup
-gh pr create --base master
-```
-
-**Recommendation for next session:** land items 2, 3, 4 as a short follow-up PR — they're genuine bugs surfaced by the e2e run and the fix is trivial. Items 1, 5, 6 are infrastructure/docs; less urgent but valuable.
+All committed to master but listed in `_config.yml` `exclude:` so none ship to `_site/`.
 
 ---
 
-## Parked decisions (not actioned)
+## Parked decisions (the user explicitly deferred these)
 
 ### Q11 — site description wording
 
@@ -109,14 +94,14 @@ Current `_config.yml` `description:` is a 145-char placeholder:
 
 > Product leader and applied data scientist. 7+ years taking enterprise ML and GenAI solutions from discovery to scaled adoption. Cambridge Engineering PhD.
 
-Constraints the user gave explicitly:
+Constraints the user gave:
 
 - **No Azure** — keep platform-agnostic
 - **No AI security research** framing
-- **No location** (London etc.) — portable across roles
+- **No location** (London etc.)
 - Positioning toward **product owner / principal product owner** roles
 
-Author sidebar `bio` is aliased to `description` via YAML anchor `&description`, so changing `description` also updates the sidebar strapline.
+Author sidebar `bio` is aliased to `description` via YAML anchor `&description`, so updating `description` also updates the sidebar strapline.
 
 ### Q13 — analytics
 
@@ -140,11 +125,11 @@ Author sidebar `bio` is aliased to `description` via YAML anchor `&description`,
 
 - **British English** throughout. `organisation`, `colour`, `behaviour`, `centred`. `14 October 2025` date format. Single quotes for typographic consistency where the theme allows.
 - **Em-dash** (`—`) as the title separator, not pipe or hyphen.
-- **No AI / Claude / assistant attribution** anywhere — in commit messages, docs, or code comments. Previous work had `Co-Authored-By: Claude` trailers; they were stripped via `git filter-branch --msg-filter` before the merge.
+- **No AI / assistant attribution** anywhere — in commit messages, docs, or code comments. Previous work had co-author trailers; they were stripped before merge.
 - **No Azure / no AI security / no location** in marketing / SEO copy (per Q11 constraints).
 - **Discrete, reviewable commits** during development (squashed only at merge time).
 - **No analytics / tracking pixels / third-party fonts** added without explicit permission.
-- **British conventions matter** — see the audit and report; e.g. `AquaEnviro` is a typo target (not `AcquEnviro`).
+- `AquaEnviro` (not `AcquEnviro`).
 - **Don't invent metadata** — no fake DOIs, no fake dates. Ask.
 
 ---
@@ -153,32 +138,31 @@ Author sidebar `bio` is aliased to `description` via YAML anchor `&description`,
 
 ```sh
 # From repo root:
-git log -1 origin/master       # should be master HEAD
-git tag -l                     # should list pre-site-hardening + site-hardening-e2e-unmerged
+git log -1 origin/master               # HEAD should be 6102394 or a descendant
+git tag -l                             # should include pre-site-hardening
 
 # Build + serve locally:
-docker compose up
+docker compose up                      # serves on http://localhost:4000
 
-# Smoke tests (from repo root, against localhost:4000):
-curl -sI http://localhost:4000/ | head -1              # 200
-curl -s http://localhost:4000/ | grep -oE '<title>[^<]+</title>' | head -1
-curl -s http://localhost:4000/sitemap.xml | grep -c '<loc>'   # expect ~9
-
-# If the e2e suite is restored from the tag:
+# Run e2e suite locally:
 cd e2e
 docker run --rm -v "$(pwd):/work" -w /work \
   --add-host=host.docker.internal:host-gateway \
   mcr.microsoft.com/playwright:v1.56.1-noble \
   sh -c "npm install --silent && BASE_URL=http://host.docker.internal:4000 npx playwright test"
+
+# Run e2e against production:
+cd e2e && BASE_URL=https://rittickbarua.com npx playwright test
 ```
 
 ---
 
 ## Rollback
 
-- **Undo the site-hardening merge:** `git revert 59c44c2` (creates a new commit reverting all changes).
-- **Pre-work master state:** `git reset --hard pre-site-hardening` (the local tag pins `9e65e6e`).
-- **Recover individual files from before:** `git checkout pre-site-hardening -- <path>`.
+- **Undo PR #2 (follow-up) only:** `git revert 6102394`
+- **Undo PR #1 (core) only:** `git revert 59c44c2`
+- **Undo everything:** `git reset --hard pre-site-hardening` (the local tag pins master's pre-work head `9e65e6e`)
+- **Recover a single file from before:** `git checkout pre-site-hardening -- <path>`
 
 ---
 
@@ -187,9 +171,11 @@ docker run --rm -v "$(pwd):/work" -w /work \
 - **`_includes/seo.html`** — hand-rolled `<title>` + `{% seo title=false %}`. Read the comment at the top before modifying.
 - **`_includes/json-ld-person.html`** — custom Person schema reading from `site.author`, `site.logo`, `site.social.links`. Auto-stays-in-sync with `_config.yml` changes.
 - **`_config.yml`** — heavily commented; structure mirrors the theme sections. Changes require `docker compose restart` (not just live-reload).
-- **`AUDIT.md`** (on master) — pre-work snapshot if you need to understand why something was done.
-- **`REPORT.md`** (on master) — change log with `_config.yml` field-level diff + full manual checklist.
-- **`docs/site-hardening.md`** (on the unmerged tag) — longer-form engineering log, same content as REPORT but narrative.
+- **`AUDIT.md`** — pre-work snapshot if you need to understand why something was done.
+- **`REPORT.md`** — change log with `_config.yml` field-level diff + full manual checklist.
+- **`docs/site-hardening.md`** — longer-form narrative engineering log; same content as REPORT but reads like a post-mortem.
+- **`TEST_REPORT.md`** — e2e results; lists what each test covers and what is deliberately not covered.
+- **`e2e/README.md`** — how to re-run the suite locally or in CI.
 
 ---
 
@@ -199,9 +185,18 @@ docker run --rm -v "$(pwd):/work" -w /work \
 |---|---|
 | Live site | https://rittickbarua.com |
 | GitHub repo | https://github.com/rittickBarua/rittickbarua.github.io |
-| Merged PR | #1 |
-| Merge commit | `59c44c2` |
+| Merged PRs | [#1](https://github.com/rittickBarua/rittickbarua.github.io/pull/1), [#2](https://github.com/rittickBarua/rittickbarua.github.io/pull/2) |
+| Latest master commit | `6102394` (PR #2) |
 | Pre-work anchor | tag `pre-site-hardening` → `9e65e6e` |
-| Unmerged follow-up work | tag `site-hardening-e2e-unmerged` → `f7e87c2` |
 | Local preview | `docker compose up` → http://localhost:4000 |
 | Playwright image | `mcr.microsoft.com/playwright:v1.56.1-noble` |
+
+---
+
+## Next session, start with this
+
+1. Pull latest master: `git pull origin master` (sanity check HEAD is at `6102394` or later).
+2. Start Jekyll locally: `docker compose up`.
+3. Quickly re-run e2e to confirm baseline: see commands above.
+4. If picking up Q11 (description wording): the constraint list is under "Parked decisions" above. Update `_config.yml` `description:`. Re-run e2e, spot-check homepage `<meta name="description">` and sidebar bio.
+5. If picking up Q13 (GA4 + banner): flip `analytics.provider` to `google-analytics-4`, add the `G-XXXXXXXXXX` ID, pick banner vs Consent Mode V2 denied-by-default. The theme include is at `_includes/analytics-providers/google-analytics-4.html`.
