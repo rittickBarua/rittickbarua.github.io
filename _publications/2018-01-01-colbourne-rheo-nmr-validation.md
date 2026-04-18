@@ -3,9 +3,20 @@ title: "Validation of a low field Rheo-NMR instrument and application to shear-i
 collection: publications
 category: manuscripts
 permalink: /publications/colbourne-rheo-nmr-validation/
+description: "Colbourne, Blythe, Barua et al., 2018 — validation of a portable low-field Rheo-NMR instrument benchmarked against high-field Rheo-NMR, applied to particle migration in Couette flow. Journal of Magnetic Resonance."
 excerpt: "A portable low-field Rheo-NMR instrument (10.7 MHz) validated against high-field Rheo-NMR across matched shear rates, applied to shear-induced particle migration in Couette flow."
 date: 2018-01-01
+year: 2018
 venue: "Journal of Magnetic Resonance"
+publication_type: "Journal article"
+authors:
+  - "Adam Colbourne"
+  - "Thomas Blythe"
+  - "Rittick Barua"
+  - "Sean Lovett"
+  - "Jonathan Mitchell"
+  - "Andrew Sederman"
+  - "Lynn F. Gladden"
 paperurl: "https://www.repository.cam.ac.uk/bitstreams/57073ea8-f6f6-4495-81e5-75c509654f74/download"
 doi: "10.1016/j.jmr.2017.11.010"
 citation: "Adam Colbourne, Thomas Blythe, Rittick Barua, Sean Lovett, Jonathan Mitchell, Andrew Sederman, Lynn F. Gladden. (2018). <i>Validation of a low field Rheo-NMR instrument and application to shear-induced migration of suspended non-colloidal particles in Couette flow</i>. Journal of Magnetic Resonance."

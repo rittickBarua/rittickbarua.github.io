@@ -12,11 +12,28 @@
 {%- unless person_image contains "://" -%}
   {%- assign person_image = person_image | prepend: site.url -%}
 {%- endunless -%}
+{%- comment -%}
+  Build the sameAs list. If ORCID is set, append it. Liquid in Jekyll 3.10
+  doesn't expose Array#push as a filter, so we use `split` on an unlikely
+  delimiter to produce a one-element array, then `concat`.
+{%- endcomment -%}
+{%- assign same_as = site.social.links -%}
+{%- if site.author.orcid -%}
+  {%- assign orcid_arr = site.author.orcid | split: "|||" -%}
+  {%- assign same_as = same_as | concat: orcid_arr -%}
+{%- endif -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Person",
   "name": {{ site.author.name | jsonify }},
+  {%- if site.author.orcid %}
+  "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "ORCID",
+    "value": {{ site.author.orcid | jsonify }}
+  },
+  {%- endif %}
   "url": {{ site.url | append: "/" | jsonify }},
   "image": {{ person_image | jsonify }},
   "jobTitle": {{ site.tagline | default: site.author.bio | jsonify }},
@@ -25,6 +42,6 @@
     "@type": "CollegeOrUniversity",
     "name": "University of Cambridge"
   },
-  "sameAs": {{ site.social.links | jsonify }}
+  "sameAs": {{ same_as | jsonify }}
 }
 </script>
