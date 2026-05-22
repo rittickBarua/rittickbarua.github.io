@@ -40,6 +40,29 @@ test.describe('smoke', () => {
     }
   });
 
+  test('Work page loads and lists the three projects', async ({ page }) => {
+    await page.goto('/work/');
+    await expect(page).toHaveTitle(/Work — Rittick Barua, PhD/);
+    const html = await page.content();
+    expect(html).toContain('Chat:R');
+    expect(html).toContain('Cell-spheroid segmentation');
+    expect(html).toContain('London Property Finder');
+  });
+
+  test('individual work detail pages render', async ({ page }) => {
+    for (const slug of ['chat-r', 'cell-spheroid-segmentation', 'london-property']) {
+      const resp = await page.goto(`/work/${slug}/`);
+      expect(resp?.status(), `${slug} status`).toBe(200);
+      await expect(page.locator('h1').first()).toBeVisible();
+    }
+  });
+
+  test('nav: Work link has correct /work/ href', async ({ page }) => {
+    await page.goto('/');
+    const href = await page.getByRole('link', { name: 'Work', exact: true }).first().getAttribute('href');
+    expect(href).toMatch(/\/work\/$/);
+  });
+
   // Nav links are rendered with absolute URLs (site.url + path). Under
   // `jekyll serve` site.url is forced to http://0.0.0.0:4000 which Playwright
   // in its own docker container cannot reach via that host. Assert the href
