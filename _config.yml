@@ -176,6 +176,9 @@ collections:
   publications:
     output: true
     permalink: /:collection/:path/
+  work:
+    output: true
+    permalink: /:collection/:path/
 
 defaults:
   # Site-wide default og:image / twitter:image for jekyll-seo-tag
@@ -204,6 +207,14 @@ defaults:
   - scope:
       path: ""
       type: publications
+    values:
+      layout: single
+      author_profile: true
+      share: true
+      comments: false
+  - scope:
+      path: ""
+      type: work
     values:
       layout: single
       author_profile: true

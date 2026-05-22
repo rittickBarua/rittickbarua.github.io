@@ -1,11 +1,18 @@
 {%- comment -%}
-  schema.org BreadcrumbList JSON-LD.
-  Currently emitted only for publication detail pages:
-    Home > Research > paper title
-  Add further conditional branches below if breadcrumbs become useful on
-  other collections.
+  schema.org BreadcrumbList JSON-LD for collection detail pages:
+    publications -> Home > Research > paper title
+    work         -> Home > Work > project title
 {%- endcomment -%}
+{%- assign crumb_section = "" -%}
+{%- assign crumb_path = "" -%}
 {%- if page.collection == 'publications' -%}
+  {%- assign crumb_section = "Research" -%}
+  {%- assign crumb_path = "/publications/" -%}
+{%- elsif page.collection == 'work' -%}
+  {%- assign crumb_section = "Work" -%}
+  {%- assign crumb_path = "/work/" -%}
+{%- endif -%}
+{%- if crumb_section != "" -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -20,8 +27,8 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Research",
-      "item": {{ site.url | append: "/publications/" | jsonify }}
+      "name": {{ crumb_section | jsonify }},
+      "item": {{ site.url | append: crumb_path | jsonify }}
     },
     {
       "@type": "ListItem",

@@ -12,6 +12,8 @@ const pages = [
   { path: '/cv/', name: 'cv' },
   { path: '/publications/', name: 'publications' },
   { path: '/publications/barua-dsit-cyber-security-risks-to-ai/', name: 'dsit-pub' },
+  { path: '/work/', name: 'work' },
+  { path: '/work/chat-r/', name: 'chat-r' },
 ];
 
 for (const { path, name } of pages) {
@@ -29,7 +31,7 @@ for (const { path, name } of pages) {
       expect(canonicalHref).toMatch(/^https?:\/\//);
     });
 
-    if (path === '/cv/' || path === '/publications/') {
+    if (path === '/cv/' || path === '/publications/' || path === '/work/' || path === '/work/chat-r/') {
       test(`${name}: has a page-specific meta description (not the site default)`, async ({ page }) => {
         await page.goto(path);
         const desc = await page.locator('meta[name="description"]').getAttribute('content');
@@ -169,6 +171,57 @@ test.describe('seo: publication detail pages', () => {
   });
 });
 
+// CreativeWork + BreadcrumbList — only on work detail pages.
+test.describe('seo: work detail pages', () => {
+  const projects = ['chat-r', 'cell-spheroid-segmentation', 'london-property'];
+
+  for (const slug of projects) {
+    test(`${slug}: emits CreativeWork JSON-LD with author and description`, async ({ page }) => {
+      await page.goto(`/work/${slug}/`);
+      const scripts = await page.locator('script[type="application/ld+json"]').all();
+      let found: any = null;
+      for (const s of scripts) {
+        const txt = await s.textContent();
+        try {
+          const parsed = JSON.parse(txt || '');
+          const arr = Array.isArray(parsed) ? parsed : [parsed];
+          for (const obj of arr) {
+            if (obj['@type'] === 'CreativeWork') found = obj;
+          }
+        } catch {
+          throw new Error(`Invalid JSON-LD on /work/${slug}/`);
+        }
+      }
+      expect(found, 'CreativeWork present').not.toBeNull();
+      expect(found.name, 'name').toBeTruthy();
+      expect(found.author?.name, 'author name').toBe('Rittick Barua, PhD');
+      expect(found.description, 'description').toBeTruthy();
+    });
+
+    test(`${slug}: emits BreadcrumbList JSON-LD (Home > Work > title)`, async ({ page }) => {
+      await page.goto(`/work/${slug}/`);
+      const scripts = await page.locator('script[type="application/ld+json"]').all();
+      let crumbs: any = null;
+      for (const s of scripts) {
+        const txt = await s.textContent();
+        try {
+          const parsed = JSON.parse(txt || '');
+          const arr = Array.isArray(parsed) ? parsed : [parsed];
+          for (const obj of arr) {
+            if (obj['@type'] === 'BreadcrumbList') crumbs = obj;
+          }
+        } catch {
+          throw new Error(`Invalid JSON-LD on /work/${slug}/`);
+        }
+      }
+      expect(crumbs, 'BreadcrumbList present').not.toBeNull();
+      expect(crumbs.itemListElement?.length).toBe(3);
+      expect(crumbs.itemListElement[0].name).toBe('Home');
+      expect(crumbs.itemListElement[1].name).toBe('Work');
+    });
+  }
+});
+
 test.describe('seo: sitewide', () => {
   test('sitemap.xml has expected pages and no placeholder / empty archive files', async ({ request }) => {
     const resp = await request.get('/sitemap.xml');
@@ -177,6 +230,10 @@ test.describe('seo: sitewide', () => {
     expect(body).toContain('/publications/barua-dsit-cyber-security-risks-to-ai/');
     expect(body).toContain('/publications/colbourne-rheo-nmr-validation/');
     expect(body).toContain('/publications/barua-steam-explosion-sewage-sludge/');
+    expect(body).toContain('/work/');
+    expect(body).toContain('/work/chat-r/');
+    expect(body).toContain('/work/cell-spheroid-segmentation/');
+    expect(body).toContain('/work/london-property/');
     expect(body).not.toContain('PLACEHOLDER');
     // /categories/ and /tags/ are empty archive pages — excluded from sitemap via sitemap: false.
     expect(body).not.toMatch(/<loc>[^<]*\/categories\/<\/loc>/);

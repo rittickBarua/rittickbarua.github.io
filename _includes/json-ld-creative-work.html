@@ -1,0 +1,30 @@
+{%- comment -%}
+  schema.org CreativeWork JSON-LD for a /work/ project detail page.
+  Reads page front-matter (title, date, description/excerpt) and
+  site.author. Rendered only when page.collection == 'work'.
+{%- endcomment -%}
+{%- assign work_image = site.logo | default: "/images/profile.jpeg" -%}
+{%- unless work_image contains "://" -%}
+  {%- assign work_image = work_image | prepend: site.url -%}
+{%- endunless -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": {{ page.title | jsonify }},
+  "headline": {{ page.title | jsonify }},
+  "url": {{ page.url | prepend: site.url | jsonify }},
+  "mainEntityOfPage": {{ page.url | prepend: site.url | jsonify }},
+  "author": {
+    "@type": "Person",
+    "name": {{ site.author.name | jsonify }},
+    "url": {{ site.url | append: "/" | jsonify }}
+  },
+  "description": {{ page.description | default: page.excerpt | jsonify }},
+  {%- if page.date %}
+  "dateCreated": {{ page.date | date: "%Y-%m-%d" | jsonify }},
+  {%- endif %}
+  "image": {{ work_image | jsonify }},
+  "inLanguage": "en"
+}
+</script>

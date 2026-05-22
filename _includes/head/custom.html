@@ -21,6 +21,9 @@
 {%- if page.collection == 'publications' -%}
 {% include json-ld-scholarly-article.html %}
 {% include json-ld-breadcrumbs.html %}
+{%- elsif page.collection == 'work' -%}
+{% include json-ld-creative-work.html %}
+{% include json-ld-breadcrumbs.html %}
 {%- endif -%}
 
 <!-- end custom head snippets -->

@@ -14,6 +14,8 @@ const pages = [
   { path: '/cv/', name: 'cv' },
   { path: '/publications/', name: 'publications' },
   { path: '/publications/barua-dsit-cyber-security-risks-to-ai/', name: 'dsit-pub' },
+  { path: '/work/', name: 'work' },
+  { path: '/work/chat-r/', name: 'work-chat-r' },
   { path: '/404.html', name: '404' },
 ];
 
