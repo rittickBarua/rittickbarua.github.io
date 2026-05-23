@@ -157,45 +157,51 @@ hr, table, th, td {
 }
 
 /* ==========================================================================
-   Layout overhaul — mishalaskin-style. No sidebar, single centred column,
-   minimal masthead, minimal footer.
+   Layout — small sidebar (square photo + social icons) + centred content.
+   Mishalaskin-adjacent: narrow column, but a small left rail keeps
+   identity visible across every page.
    ========================================================================== */
 
-/* Hide the author sidebar entirely. Author identity now lives in the
-   masthead nav + the body bio + an inline social-link row at the
-   bottom of the homepage. */
-.sidebar,
-.sidebar.sticky,
-.sidebar.sticky.sticky-content,
-aside.sidebar {
-    display: none !important;
-}
-
-/* Hide the "Follow" button + author-profile-inside-sidebar block, just
-   in case the theme ever renders it outside .sidebar. */
-.author__urls-wrapper > .btn,
-.author__urls-wrapper .btn--inverse {
-    display: none !important;
-}
-
-/* Main column — centred narrow column, full responsive padding. */
+/* The container holding sidebar + content */
 #main {
-    max-width: 720px;
+    max-width: 820px;
     margin: 0 auto;
-    padding: 1.25rem 1.25rem 4rem;
-    display: block;
+    padding: 1.5rem 1.25rem 4rem;
+    overflow: hidden;          /* clears the sidebar float */
 }
 
+/* Sidebar — narrow, left-floated on wide screens, stacks on mobile. */
+.sidebar,
+.sidebar.sticky {
+    display: block !important;
+    float: none;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+@media (min-width: 640px) {
+    .sidebar,
+    .sidebar.sticky {
+        float: left;
+        width: 160px;
+        margin-right: 2.5rem;
+        margin-bottom: 0;
+    }
+}
+
+/* Reset the theme's susy-grid width on the main article block so it
+   flows next to (rather than under) the floated sidebar. */
 #main .page,
 #main .archive {
-    width: 100%;
+    float: none;
+    width: auto;
     margin: 0;
     padding: 0;
-    float: none;
-}
-
-#main .archive {
-    display: block;
+    overflow: hidden;        /* establish new block formatting context */
 }
 
 #main .page__inner-wrap,
@@ -205,13 +211,76 @@ aside.sidebar {
     margin-right: 0;
 }
 
-/* The theme's grid sometimes adds responsive widths to .page; nuke. */
 @media (min-width: 60em) {
     #main .page,
     #main .archive {
-        width: 100%;
+        width: auto;
         padding-right: 0;
     }
+}
+
+/* ----- Sidebar contents: strip everything but the avatar + socials --- */
+
+/* Hide name (it's an h1 in body), bio (it's in body), location,
+   employer, pronouns, "Follow" button. */
+.author__name,
+.author__bio,
+.author__pronouns,
+.author__urls li.author__desktop,
+.author__urls-wrapper > .btn,
+.author__urls-wrapper .btn--inverse {
+    display: none !important;
+}
+
+/* Square avatar, 140px, no rounded corners. */
+.author__avatar {
+    width: 140px;
+    margin-bottom: 1rem;
+}
+
+.author__avatar img,
+img.author__avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 0;
+    object-fit: cover;
+    display: block;
+    margin: 0;
+}
+
+/* Social icons list — vertical stack, no bullets, smaller text. */
+.author__urls-wrapper {
+    margin: 0;
+    padding: 0;
+}
+
+.author__urls {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.author__urls li {
+    margin-bottom: 0.45rem;
+    line-height: 1.4;
+}
+
+.author__urls a {
+    color: $skin-text;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+}
+
+.author__urls a:hover {
+    color: $skin-link-hover;
+}
+
+.author__urls i {
+    color: $skin-text-muted;
+    width: 1em;
 }
 
 /* ==========================================================================
@@ -334,7 +403,7 @@ aside.sidebar {
 }
 
 /* ==========================================================================
-   Footer — minimal one-liner.
+   Footer — minimal one-liner. Copyright left, RSS right.
    ========================================================================== */
 
 .page__footer {
@@ -342,10 +411,11 @@ aside.sidebar {
     border-top: 1px solid $skin-border;
     margin-top: 4rem;
     padding: 1.25rem 0 1.5rem;
+    clear: both;             /* sit below the floated sidebar */
 }
 
 .page__footer footer {
-    max-width: 720px;
+    max-width: 820px;
     margin: 0 auto;
     padding: 0 1.25rem;
     font-size: 0.8125rem;
@@ -355,22 +425,28 @@ aside.sidebar {
 .page__footer a {
     color: $skin-text-muted;
 }
+.page__footer a:hover {
+    color: $skin-link-hover;
+}
 
 .page__footer-copyright {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
     font-size: 0.8125rem;
     color: $skin-text-muted;
-    text-align: left;
 }
 
-/* The footer "Follow" icon row (GitHub + RSS) is redundant with
-   inline social links — hide it. */
-.page__footer-follow {
-    display: none !important;
+.page__footer-rss {
+    margin-left: auto;
 }
 
-/* Custom footer sitemap link (added earlier) */
+/* Follow-icons row + sitemap link (legacy) — hidden, replaced by the
+   simplified copyright + RSS row. */
+.page__footer-follow,
 .page__footer a[href="/sitemap/"] {
-    display: none;
+    display: none !important;
 }
 
 /* Breadcrumbs (disabled in config but hide defensively) */
@@ -389,5 +465,49 @@ aside.sidebar {
    Drop this rule if you want them back. */
 .page__share {
     display: none;
+}
+
+/* ==========================================================================
+   Defensive overrides for inline colours baked into legacy content.
+   The original publication entries wrapped titles in <span style="color:
+   navy"> which is invisible on a #121212 background. Force any inline
+   `color: navy` span to use the bright heading colour instead.
+   ========================================================================== */
+
+span[style*="color:navy"],
+span[style*="color: navy"],
+span[style*="color:#000080"] {
+    color: $skin-text-strong !important;
+    font-weight: 600;
+}
+
+/* The skyblue "Paper" buttons used by older publication entries —
+   restyle as quiet inline link buttons so they stop screaming on a
+   dark background. */
+.btn-info,
+button.btn-info,
+[style*="background-color:skyblue"],
+button[style*="background-color:skyblue"] {
+    background-color: transparent !important;
+    color: $skin-link !important;
+    border: 1px solid $skin-border-strong !important;
+    border-radius: 4px;
+    padding: 0.2em 0.7em;
+    font-weight: 500;
+    text-transform: none;
+}
+
+/* ==========================================================================
+   Selected work block on the homepage — tighter list typography.
+   ========================================================================== */
+
+.page__content h2 + ul,
+.page__content h2 + p + ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.page__content ul li {
+    margin-bottom: 0.7rem;
 }
 

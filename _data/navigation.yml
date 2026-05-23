@@ -1,6 +1,8 @@
 # Top navigation. Remove or reorder links to change the header.
 
 main:
+  - title: "About"
+    url: /
   - title: "Work"
     url: /work/
   - title: "Publications"

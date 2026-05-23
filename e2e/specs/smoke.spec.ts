@@ -90,8 +90,10 @@ test.describe('smoke', () => {
     // Verify by fetching /404.html explicitly
     await page.goto('/404.html');
     await expect(page).toHaveTitle(/Page not found/);
-    await expect(page.getByRole('link', { name: /About/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Research and publications/i })).toBeVisible();
+    // The masthead nav also has "About" / Publications links so multiple
+    // matches exist now; assert on the body content links specifically.
+    await expect(page.locator('.page__content').getByRole('link', { name: /About/i }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: /Research and publications/i }).first()).toBeVisible();
   });
 
   test('no console errors on homepage (dev-serve host quirks filtered)', async ({ page }) => {
