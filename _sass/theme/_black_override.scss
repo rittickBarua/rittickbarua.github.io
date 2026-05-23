@@ -1,26 +1,30 @@
 /* ==========================================================================
-   Black skin — pure-black background, light text.
+   Dark skin — Tailwind gray-900 background, light text.
 
-   This file is imported LAST after the air_light (:root) and air_dark
-   (html[data-theme="dark"]) themes, so its values win regardless of the
-   theme-toggle state. The toggle still works but both states render
+   Palette matches mishalaskin.com (and Vercel / Linear / ChatGPT-style
+   dark mode): #111827 (gray-900) base, slightly elevated surfaces in
+   #1f2937 (gray-800), borders in gray-700/600.
+
+   Imported LAST after air_light (:root) and air_dark
+   (html[data-theme="dark"]), so its values win regardless of theme-
+   toggle state. The toggle still works but both states render
    visually identical.
 
    To revert: remove the "theme/black_override" line from
    assets/css/main.scss.
    ========================================================================== */
 
-$black-bg                : #000000;
-$black-bg-elevated       : #0a0a0a;      /* slightly raised surfaces (footer, code) */
-$black-border            : #1f1f1f;      /* subtle borders / dividers */
-$black-border-strong     : #2a2a2a;
+$black-bg                : #111827;      /* Tailwind gray-900 — the "black" */
+$black-bg-elevated       : #1f2937;      /* gray-800 — footer, code, table-head */
+$black-border            : #374151;      /* gray-700 — subtle borders / dividers */
+$black-border-strong     : #4b5563;      /* gray-600 — stronger separators */
 $black-text              : #e8e8e8;      /* body — off-white, easier on eyes than #fff */
-$black-text-muted        : #9aa0a6;      /* secondary text, captions */
+$black-text-muted        : #9ca3af;      /* gray-400 — secondary text, captions */
 $black-link              : #6dd3da;      /* brightened teal of the original site accent */
 $black-link-hover        : #a8e6ea;
 $black-link-visited      : $black-link;  /* don't go purple on dark backgrounds */
-$black-code-bg           : #0d0d0d;
-$black-code-text         : #f0f0f0;
+$black-code-bg           : #1f2937;      /* matches elevated surface */
+$black-code-text         : #f3f4f6;      /* gray-100 */
 
 :root,
 html[data-theme="light"],
