@@ -1,63 +1,157 @@
 /* ==========================================================================
-   Dark skin — Tailwind gray-900 background, light text.
+   Dark skin — exact mishalaskin.com palette, plus a typography pass for
+   simpler / more readable look.
 
-   Palette matches mishalaskin.com (and Vercel / Linear / ChatGPT-style
-   dark mode): #111827 (gray-900) base, slightly elevated surfaces in
-   #1f2937 (gray-800), borders in gray-700/600.
+   Background measured at #121212 (Mac Digital Colour Meter on
+   mishalaskin.com). Body text in a softer grey rather than near-white
+   — counter-intuitive but reads as "elegant" rather than "harsh" on
+   dark backgrounds and matches the reference site.
 
-   Imported LAST after air_light (:root) and air_dark
-   (html[data-theme="dark"]), so its values win regardless of theme-
-   toggle state. The toggle still works but both states render
-   visually identical.
+   Imported LAST after the air_light / air_dark themes so it wins
+   regardless of theme-toggle state. The toggle still works but both
+   states render identical.
 
    To revert: remove the "theme/black_override" line from
    assets/css/main.scss.
    ========================================================================== */
 
-$black-bg                : #111827;      /* Tailwind gray-900 — the "black" */
-$black-bg-elevated       : #1f2937;      /* gray-800 — footer, code, table-head */
-$black-border            : #374151;      /* gray-700 — subtle borders / dividers */
-$black-border-strong     : #4b5563;      /* gray-600 — stronger separators */
-$black-text              : #e8e8e8;      /* body — off-white, easier on eyes than #fff */
-$black-text-muted        : #9ca3af;      /* gray-400 — secondary text, captions */
-$black-link              : #6dd3da;      /* brightened teal of the original site accent */
-$black-link-hover        : #a8e6ea;
-$black-link-visited      : $black-link;  /* don't go purple on dark backgrounds */
-$black-code-bg           : #1f2937;      /* matches elevated surface */
-$black-code-text         : #f3f4f6;      /* gray-100 */
+/* ----- Palette -------------------------------------------------- */
+
+$skin-bg                : #121212;       /* mishalaskin's measured value */
+$skin-bg-elevated       : #1a1a1a;       /* footer, code, table-head */
+$skin-border            : #262626;       /* subtle borders / dividers */
+$skin-border-strong     : #333333;
+$skin-text              : #a3a3a3;       /* body — soft grey, not pure white */
+$skin-text-strong       : #ededed;       /* headings, emphasised text */
+$skin-text-muted        : #737373;       /* captions, sub-text */
+$skin-link              : #fafafa;       /* near-white, with underline */
+$skin-link-hover        : #ffffff;
+$skin-code-bg           : #1a1a1a;
+$skin-code-text         : #ededed;
+
+/* ----- CSS variables — win against :root and both data-theme states ----- */
 
 :root,
 html[data-theme="light"],
 html[data-theme="dark"] {
-    --global-base-color                 : #{$black-bg};
-    --global-bg-color                   : #{$black-bg};
-    --global-footer-bg-color            : #{$black-bg};
-    --global-border-color               : #{$black-border};
-    --global-dark-border-color          : #{$black-border-strong};
-    --global-code-background-color      : #{$black-code-bg};
-    --global-code-text-color            : #{$black-code-text};
-    --global-fig-caption-color          : #{$black-text-muted};
-    --global-link-color                 : #{$black-link};
-    --global-link-color-hover           : #{$black-link-hover};
-    --global-link-color-visited         : #{$black-link-visited};
-    --global-masthead-link-color        : #{$black-text};
-    --global-masthead-link-color-hover  : #{$black-link};
-    --global-text-color                 : #{$black-text};
-    --global-text-color-light           : #{$black-text-muted};
-    --global-thead-color                : #{$black-bg-elevated};
+    --global-base-color                 : #{$skin-bg};
+    --global-bg-color                   : #{$skin-bg};
+    --global-footer-bg-color            : #{$skin-bg};
+    --global-border-color               : #{$skin-border};
+    --global-dark-border-color          : #{$skin-border-strong};
+    --global-code-background-color      : #{$skin-code-bg};
+    --global-code-text-color            : #{$skin-code-text};
+    --global-fig-caption-color          : #{$skin-text-muted};
+    --global-link-color                 : #{$skin-link};
+    --global-link-color-hover           : #{$skin-link-hover};
+    --global-link-color-visited         : #{$skin-link};
+    --global-masthead-link-color        : #{$skin-text-strong};
+    --global-masthead-link-color-hover  : #{$skin-link};
+    --global-text-color                 : #{$skin-text};
+    --global-text-color-light           : #{$skin-text-muted};
+    --global-thead-color                : #{$skin-bg-elevated};
 }
 
-/* Hard background fallback in case any rule references body directly
-   without going through the CSS custom properties above. */
+/* ----- Hard fallbacks for components that set colour inline ----- */
+
 html,
 body {
-    background-color: $black-bg;
-    color: $black-text;
+    background-color: $skin-bg;
+    color: $skin-text;
 }
 
-/* Footer / masthead containers sometimes have their background set
-   directly in component SCSS rather than via custom properties. */
 .masthead,
 .page__footer {
-    background-color: $black-bg !important;
+    background-color: $skin-bg !important;
+    border-color: $skin-border !important;
+}
+
+/* ----- Typography pass — smaller scale, lighter weights, calmer ----- */
+
+/* Drop the base size from 16px to 15px — every em-based heading
+   scales proportionally. */
+html {
+    font-size: 15px;
+}
+
+/* Headings: render bright and DIM the weight from the theme's heavy
+   default to semibold (600). The contrast between bright heading
+   colour and soft body text now does the hierarchy work — not weight. */
+h1, h2, h3, h4, h5, h6,
+.page__title,
+.archive__subtitle,
+.author__name {
+    color: $skin-text-strong;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+}
+
+/* Body paragraphs — more line-height for breathing space, softer colour. */
+p,
+li,
+.page__content p,
+.page__content li {
+    color: $skin-text;
+    line-height: 1.65;
+}
+
+/* Bold inside body copy — promote to the bright colour so it actually
+   reads as emphasis against the muted base. */
+strong, b {
+    color: $skin-text-strong;
+    font-weight: 600;
+}
+
+/* Links: white with subtle underline. Underline thickens on hover. */
+a, a:link, a:visited {
+    color: $skin-link;
+    text-decoration: underline;
+    text-decoration-color: $skin-border-strong;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color 0.15s ease;
+}
+a:hover, a:focus {
+    color: $skin-link-hover;
+    text-decoration-color: $skin-link-hover;
+}
+
+/* Strip underlines from places where they're noise — nav, buttons,
+   sidebar icons. */
+.masthead a,
+.greedy-nav a,
+.author__urls a,
+.btn,
+.btn:hover {
+    text-decoration: none;
+}
+
+/* Author sidebar — quieter typography. Name still bright, supporting
+   text softer. */
+.author__bio,
+.author__pronouns,
+.author__urls li,
+.author__urls a {
+    color: $skin-text;
+    font-weight: 400;
+}
+
+/* Code: dark surface, light text, subtle border. */
+code, pre {
+    background-color: $skin-code-bg;
+    color: $skin-code-text;
+    border: 1px solid $skin-border;
+}
+
+/* Horizontal rules, table borders */
+hr, table, th, td {
+    border-color: $skin-border !important;
+}
+
+/* Form inputs, buttons that the theme styles for light bg */
+.btn--inverse {
+    color: $skin-text-strong;
+    border-color: $skin-border-strong;
+    background-color: transparent;
 }
