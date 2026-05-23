@@ -1,0 +1,59 @@
+/* ==========================================================================
+   Black skin — pure-black background, light text.
+
+   This file is imported LAST after the air_light (:root) and air_dark
+   (html[data-theme="dark"]) themes, so its values win regardless of the
+   theme-toggle state. The toggle still works but both states render
+   visually identical.
+
+   To revert: remove the "theme/black_override" line from
+   assets/css/main.scss.
+   ========================================================================== */
+
+$black-bg                : #000000;
+$black-bg-elevated       : #0a0a0a;      /* slightly raised surfaces (footer, code) */
+$black-border            : #1f1f1f;      /* subtle borders / dividers */
+$black-border-strong     : #2a2a2a;
+$black-text              : #e8e8e8;      /* body — off-white, easier on eyes than #fff */
+$black-text-muted        : #9aa0a6;      /* secondary text, captions */
+$black-link              : #6dd3da;      /* brightened teal of the original site accent */
+$black-link-hover        : #a8e6ea;
+$black-link-visited      : $black-link;  /* don't go purple on dark backgrounds */
+$black-code-bg           : #0d0d0d;
+$black-code-text         : #f0f0f0;
+
+:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
+    --global-base-color                 : #{$black-bg};
+    --global-bg-color                   : #{$black-bg};
+    --global-footer-bg-color            : #{$black-bg};
+    --global-border-color               : #{$black-border};
+    --global-dark-border-color          : #{$black-border-strong};
+    --global-code-background-color      : #{$black-code-bg};
+    --global-code-text-color            : #{$black-code-text};
+    --global-fig-caption-color          : #{$black-text-muted};
+    --global-link-color                 : #{$black-link};
+    --global-link-color-hover           : #{$black-link-hover};
+    --global-link-color-visited         : #{$black-link-visited};
+    --global-masthead-link-color        : #{$black-text};
+    --global-masthead-link-color-hover  : #{$black-link};
+    --global-text-color                 : #{$black-text};
+    --global-text-color-light           : #{$black-text-muted};
+    --global-thead-color                : #{$black-bg-elevated};
+}
+
+/* Hard background fallback in case any rule references body directly
+   without going through the CSS custom properties above. */
+html,
+body {
+    background-color: $black-bg;
+    color: $black-text;
+}
+
+/* Footer / masthead containers sometimes have their background set
+   directly in component SCSS rather than via custom properties. */
+.masthead,
+.page__footer {
+    background-color: $black-bg !important;
+}
