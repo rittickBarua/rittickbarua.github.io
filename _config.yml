@@ -8,7 +8,6 @@ locale                   : "en-GB"
 site_theme               : "air"       # "default" or "air"
 title                    : "Rittick Barua, PhD"
 tagline                  : "AI & Data Science Product Leader"
-title_separator          : "—"
 name                     : &name "Rittick Barua, PhD"
 # Provisional description pending final wording — see Phase 2 REPORT.
 description              : &description "Product leader and applied data scientist. 7+ years taking enterprise ML and GenAI solutions from discovery to scaled adoption. Cambridge Engineering PhD."

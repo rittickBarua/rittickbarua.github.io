@@ -1,5 +1,5 @@
 ---
-title: "Chat:R — an enterprise language-model platform"
+title: "Chat:R - an enterprise language-model platform"
 collection: work
 weight: 1
 permalink: /work/chat-r/

@@ -1,5 +1,5 @@
 ---
-title: "London Property Finder — applied machine learning"
+title: "London Property Finder - applied machine learning"
 collection: work
 weight: 3
 permalink: /work/london-property/
