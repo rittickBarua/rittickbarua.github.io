@@ -61,7 +61,8 @@ test.describe('responsive', () => {
     await page.goto('/');
     await expect(page.locator('.masthead')).toBeVisible();
     // Author sidebar still reachable via scroll on mobile
-    await expect(page.locator('.author__name').first()).toContainText('Rittick Barua, PhD');
+    // Sidebar removed in the mishalaskin-style redesign; check the body h1 instead.
+    await expect(page.locator('h1').first()).toContainText('Rittick Barua, PhD');
   });
 });
 

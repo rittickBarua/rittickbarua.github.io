@@ -5,12 +5,14 @@ import { test, expect } from '@playwright/test';
  */
 
 test.describe('smoke', () => {
-  test('homepage loads with expected title and renders author sidebar', async ({ page }) => {
+  test('homepage loads with expected title and renders name as h1', async ({ page }) => {
     await page.goto('/');
     // Homepage title: "{site.title} - {site.tagline}" with a plain hyphen.
     await expect(page).toHaveTitle('Rittick Barua, PhD - AI & Data Science Product Leader');
-    await expect(page.locator('.author__name').first()).toContainText('Rittick Barua, PhD');
-    await expect(page.locator('.author__avatar img').first()).toBeVisible();
+    // Sidebar removed in the mishalaskin-style redesign — name now lives
+    // as the body h1 instead.
+    await expect(page.locator('h1').first()).toContainText('Rittick Barua, PhD');
+    await expect(page.locator('h1').first()).toBeVisible();
   });
 
   test('CV page loads', async ({ page }) => {

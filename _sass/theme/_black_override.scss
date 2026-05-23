@@ -155,3 +155,239 @@ hr, table, th, td {
     border-color: $skin-border-strong;
     background-color: transparent;
 }
+
+/* ==========================================================================
+   Layout overhaul — mishalaskin-style. No sidebar, single centred column,
+   minimal masthead, minimal footer.
+   ========================================================================== */
+
+/* Hide the author sidebar entirely. Author identity now lives in the
+   masthead nav + the body bio + an inline social-link row at the
+   bottom of the homepage. */
+.sidebar,
+.sidebar.sticky,
+.sidebar.sticky.sticky-content,
+aside.sidebar {
+    display: none !important;
+}
+
+/* Hide the "Follow" button + author-profile-inside-sidebar block, just
+   in case the theme ever renders it outside .sidebar. */
+.author__urls-wrapper > .btn,
+.author__urls-wrapper .btn--inverse {
+    display: none !important;
+}
+
+/* Main column — centred narrow column, full responsive padding. */
+#main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.25rem 1.25rem 4rem;
+    display: block;
+}
+
+#main .page,
+#main .archive {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    float: none;
+}
+
+#main .archive {
+    display: block;
+}
+
+#main .page__inner-wrap,
+#main .page__content {
+    width: 100%;
+    padding: 0;
+    margin-right: 0;
+}
+
+/* The theme's grid sometimes adds responsive widths to .page; nuke. */
+@media (min-width: 60em) {
+    #main .page,
+    #main .archive {
+        width: 100%;
+        padding-right: 0;
+    }
+}
+
+/* ==========================================================================
+   Masthead — minimal nav, top-right aligned, no heavy background.
+   ========================================================================== */
+
+.masthead {
+    background: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    position: relative;
+}
+
+.masthead__inner-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 0.5rem;
+}
+
+.greedy-nav {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+/* Hide the site-title link inside the masthead — the homepage already
+   shows the name as h1. The masthead is just a nav. */
+.masthead__menu-item--lg {
+    display: none !important;
+}
+
+/* Right-align the remaining nav items */
+.greedy-nav .visible-links {
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    margin-left: auto;
+}
+
+.greedy-nav .hidden-links {
+    background: $skin-bg-elevated;
+    border-color: $skin-border;
+}
+
+/* Quieter nav text */
+.masthead a {
+    font-size: 0.875rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: $skin-text-strong;
+}
+.masthead a:hover {
+    color: $skin-link-hover;
+    text-decoration: underline;
+    text-decoration-color: $skin-text-strong;
+    text-underline-offset: 0.25em;
+}
+
+/* Don't underline nav by default — only on hover */
+.masthead a,
+.masthead a:link,
+.masthead a:visited {
+    text-decoration: none;
+}
+
+/* Theme toggle button — keep small + visible */
+#theme-toggle button {
+    color: $skin-text-strong;
+}
+
+/* Hamburger only shows when nav overflows; style for dark */
+.greedy-nav > button {
+    background: transparent;
+    color: $skin-text-strong;
+}
+.greedy-nav .navicon,
+.greedy-nav .navicon:before,
+.greedy-nav .navicon:after {
+    background-color: $skin-text-strong;
+}
+
+/* ==========================================================================
+   Body content — name as page-h1, tighter spacing.
+   ========================================================================== */
+
+#main h1:first-of-type,
+#main .page__content h1:first-of-type {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.015em;
+}
+
+#main h2 {
+    font-size: 1.375rem;
+    margin-top: 2.25rem;
+    margin-bottom: 1rem;
+}
+
+#main h3 {
+    font-size: 1.1rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Drop the theme's "page__title" h1 (the one rendered from page.title) —
+   only relevant on pages WITH a page.title. On homepage it's empty so
+   nothing renders. */
+.page__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.015em;
+}
+
+/* Lede paragraph spacing */
+#main p {
+    margin-bottom: 1.25rem;
+}
+
+/* ==========================================================================
+   Footer — minimal one-liner.
+   ========================================================================== */
+
+.page__footer {
+    background-color: transparent !important;
+    border-top: 1px solid $skin-border;
+    margin-top: 4rem;
+    padding: 1.25rem 0 1.5rem;
+}
+
+.page__footer footer {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    font-size: 0.8125rem;
+    color: $skin-text-muted;
+}
+
+.page__footer a {
+    color: $skin-text-muted;
+}
+
+.page__footer-copyright {
+    font-size: 0.8125rem;
+    color: $skin-text-muted;
+    text-align: left;
+}
+
+/* The footer "Follow" icon row (GitHub + RSS) is redundant with
+   inline social links — hide it. */
+.page__footer-follow {
+    display: none !important;
+}
+
+/* Custom footer sitemap link (added earlier) */
+.page__footer a[href="/sitemap/"] {
+    display: none;
+}
+
+/* Breadcrumbs (disabled in config but hide defensively) */
+.breadcrumbs {
+    display: none !important;
+}
+
+/* Page taxonomy / meta strip we don't need on a personal site */
+.page__meta,
+.page__taxonomy {
+    display: none;
+}
+
+/* Social-share buttons under articles (the theme adds these to
+   publications / work detail pages) — hide for now to keep it clean.
+   Drop this rule if you want them back. */
+.page__share {
+    display: none;
+}
+
