@@ -7,21 +7,23 @@ import { test, expect } from '@playwright/test';
 test.describe('smoke', () => {
   test('homepage loads with expected title and renders author sidebar', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Rittick Barua, PhD — AI & Data Science Product Leader/);
+    // Homepage title: "{site.title} - {site.tagline}" with a plain hyphen.
+    await expect(page).toHaveTitle('Rittick Barua, PhD - AI & Data Science Product Leader');
     await expect(page.locator('.author__name').first()).toContainText('Rittick Barua, PhD');
     await expect(page.locator('.author__avatar img').first()).toBeVisible();
   });
 
   test('CV page loads', async ({ page }) => {
     await page.goto('/cv/');
-    await expect(page).toHaveTitle(/CV — Rittick Barua, PhD/);
+    // Other pages: title is just the page title — site name not appended.
+    await expect(page).toHaveTitle('CV');
     await expect(page.getByRole('heading', { name: 'CV', level: 1 })).toBeVisible();
     await expect(page.getByRole('link', { name: /Download PDF/i })).toHaveAttribute('href', /cv-short\.pdf/);
   });
 
   test('Publications page loads with the three real papers', async ({ page }) => {
     await page.goto('/publications/');
-    await expect(page).toHaveTitle(/Research — Rittick Barua, PhD/);
+    await expect(page).toHaveTitle('Research');
     const html = await page.content();
     expect(html).toContain('Cyber security risks to artificial intelligence');
     expect(html).toContain('Rheo-NMR instrument');
@@ -42,7 +44,7 @@ test.describe('smoke', () => {
 
   test('Work page loads and lists the three projects', async ({ page }) => {
     await page.goto('/work/');
-    await expect(page).toHaveTitle(/Work — Rittick Barua, PhD/);
+    await expect(page).toHaveTitle('Work');
     const html = await page.content();
     expect(html).toContain('Chat:R');
     expect(html).toContain('Cell-spheroid segmentation');

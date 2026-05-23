@@ -1,14 +1,18 @@
 {%- comment -%}
-  Emit <title> manually so the separator is an em-dash. jekyll-seo-tag
-  2.8.0 hard-codes " | " as TITLE_SEPARATOR and ignores site.title_separator.
-  Then delegate everything else (meta description, canonical, OG, Twitter
-  card, generator, verification meta, jsonld) to {% seo title=false %}.
+  <title> strategy:
+    - Homepage (no page.title, or page.title == site.title):
+        "{site.title} - {site.tagline}"  (plain hyphen, by user preference)
+    - Every other page: just "{page.title}".
+        Brand context surfaces via og:site_name and JSON-LD instead of
+        being repeated in the visible browser-tab title.
+  jekyll-seo-tag's own <title> is suppressed via `{% seo title=false %}`
+  below; everything else (meta description, canonical, OG, Twitter card,
+  generator, verification meta, jsonld) still comes from it.
 {%- endcomment -%}
-{%- assign sep = site.title_separator | default: "—" -%}
 {%- if page.title and page.title != site.title -%}
-<title>{{ page.title | markdownify | strip_html | strip_newlines | escape_once }} {{ sep }} {{ site.title | escape_once }}</title>
+<title>{{ page.title | markdownify | strip_html | strip_newlines | escape_once }}</title>
 {%- elsif site.title and site.tagline -%}
-<title>{{ site.title | escape_once }} {{ sep }} {{ site.tagline | escape_once }}</title>
+<title>{{ site.title | escape_once }} - {{ site.tagline | escape_once }}</title>
 {%- elsif site.title -%}
 <title>{{ site.title | escape_once }}</title>
 {%- endif %}
