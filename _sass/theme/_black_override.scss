@@ -158,50 +158,61 @@ hr, table, th, td {
 
 /* ==========================================================================
    Layout — small sidebar (square photo + social icons) + centred content.
-   Mishalaskin-adjacent: narrow column, but a small left rail keeps
-   identity visible across every page.
+   Uses flexbox: deterministic, no float-collapse issues.
    ========================================================================== */
 
-/* The container holding sidebar + content */
+/* The container holding sidebar + article. Flex on desktop;
+   stacked on mobile. */
 #main {
-    max-width: 820px;
+    max-width: 860px;
     margin: 0 auto;
     padding: 1.5rem 1.25rem 4rem;
-    overflow: hidden;          /* clears the sidebar float */
+    display: block;
 }
 
-/* Sidebar — narrow, left-floated on wide screens, stacks on mobile. */
+@media (min-width: 640px) {
+    #main {
+        display: flex;
+        align-items: flex-start;
+        gap: 2.5rem;
+    }
+}
+
+/* Sidebar — narrow column, fixed width on desktop. */
 .sidebar,
 .sidebar.sticky {
     display: block !important;
-    float: none;
-    width: 100%;
-    margin-bottom: 1.5rem;
-    padding: 0;
-    background: transparent;
-    border: none;
-    box-shadow: none;
+    float: none !important;
+    width: 100% !important;
+    margin: 0 0 1.5rem 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    -webkit-transform: none !important;
+    transform: none !important;
 }
 
 @media (min-width: 640px) {
     .sidebar,
     .sidebar.sticky {
-        float: left;
-        width: 160px;
-        margin-right: 2.5rem;
-        margin-bottom: 0;
+        flex: 0 0 160px;
+        width: 160px !important;
+        margin: 0 !important;
+        position: sticky;
+        top: 1.25rem;
     }
 }
 
-/* Reset the theme's susy-grid width on the main article block so it
-   flows next to (rather than under) the floated sidebar. */
+/* Article block fills the rest of the flex container. */
 #main .page,
 #main .archive {
-    float: none;
-    width: auto;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;        /* establish new block formatting context */
+    float: none !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-width: 0;            /* prevent flex overflow */
+    flex: 1 1 auto;
 }
 
 #main .page__inner-wrap,
@@ -211,11 +222,12 @@ hr, table, th, td {
     margin-right: 0;
 }
 
+/* The theme's susy-grid responsive widths — neutralise. */
 @media (min-width: 60em) {
     #main .page,
     #main .archive {
-        width: auto;
-        padding-right: 0;
+        width: auto !important;
+        padding-right: 0 !important;
     }
 }
 
