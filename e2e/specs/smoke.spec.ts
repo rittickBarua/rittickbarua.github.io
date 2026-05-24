@@ -84,17 +84,13 @@ test.describe('smoke', () => {
     expect(href).toMatch(/\/cv\/$/);
   });
 
-  test('404 page renders with link row back to sections', async ({ page }) => {
+  test('404 page renders Vercel-style hero', async ({ page }) => {
     await page.goto('/404.html');
     await expect(page).toHaveTitle(/404/);
-    // Vercel/Next-style hero: "404 | This page could not be found."
+    await expect(page.locator('.not-found-page__code')).toContainText('404');
     await expect(page.locator('.not-found-page__msg')).toContainText('This page could not be found.');
-    // Below the hero, a nav row links back to each main section.
-    const nav = page.locator('.not-found-page__nav');
-    await expect(nav.getByRole('link', { name: 'About' })).toBeVisible();
-    await expect(nav.getByRole('link', { name: 'Work' })).toBeVisible();
-    await expect(nav.getByRole('link', { name: 'Publications' })).toBeVisible();
-    await expect(nav.getByRole('link', { name: 'CV' })).toBeVisible();
+    // No body-level nav row — the masthead at the top already provides
+    // links back to About / Work / Publications / CV.
   });
 
   test('no console errors on homepage (dev-serve host quirks filtered)', async ({ page }) => {
