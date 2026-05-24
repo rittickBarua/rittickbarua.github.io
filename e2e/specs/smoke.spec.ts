@@ -84,16 +84,17 @@ test.describe('smoke', () => {
     expect(href).toMatch(/\/cv\/$/);
   });
 
-  test('404 page renders with links back', async ({ page }) => {
-    const resp = await page.goto('/this-page-does-not-exist-xyz', { waitUntil: 'domcontentloaded' });
-    // jekyll serve returns 404 body; some Jekyll configs return 200 for /404.html direct
-    // Verify by fetching /404.html explicitly
+  test('404 page renders with link row back to sections', async ({ page }) => {
     await page.goto('/404.html');
-    await expect(page).toHaveTitle(/Page not found/);
-    // The masthead nav also has "About" / Publications links so multiple
-    // matches exist now; assert on the body content links specifically.
-    await expect(page.locator('.page__content').getByRole('link', { name: /About/i }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: /Research and publications/i }).first()).toBeVisible();
+    await expect(page).toHaveTitle(/404/);
+    // Vercel/Next-style hero: "404 | This page could not be found."
+    await expect(page.locator('.not-found-page__msg')).toContainText('This page could not be found.');
+    // Below the hero, a nav row links back to each main section.
+    const nav = page.locator('.not-found-page__nav');
+    await expect(nav.getByRole('link', { name: 'About' })).toBeVisible();
+    await expect(nav.getByRole('link', { name: 'Work' })).toBeVisible();
+    await expect(nav.getByRole('link', { name: 'Publications' })).toBeVisible();
+    await expect(nav.getByRole('link', { name: 'CV' })).toBeVisible();
   });
 
   test('no console errors on homepage (dev-serve host quirks filtered)', async ({ page }) => {

@@ -532,3 +532,89 @@ button[style*="background-color:skyblue"] {
     margin-bottom: 0.7rem;
 }
 
+/* ==========================================================================
+   404 page — minimal centred Vercel / Next.js style. Wrapper-class targets
+   via :has() so this page overrides the standard sidebar + flex layout
+   without needing a dedicated Jekyll layout file.
+   ========================================================================== */
+
+#main:has(.not-found-page) {
+    display: block;
+    max-width: none;
+    padding: 0;
+}
+
+#main:has(.not-found-page) .sidebar {
+    display: none !important;
+}
+
+#main:has(.not-found-page) .page,
+#main:has(.not-found-page) .archive {
+    width: 100%;
+    flex: none;
+    margin: 0;
+    padding: 0;
+}
+
+#main:has(.not-found-page) .page__title,
+#main:has(.not-found-page) header {
+    display: none;
+}
+
+.not-found-page {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    padding: 4rem 1rem;
+    text-align: center;
+}
+
+.not-found-page__hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.not-found-page__code {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $skin-text-strong;
+    letter-spacing: 0;
+}
+
+.not-found-page__sep {
+    display: inline-block;
+    width: 1px;
+    height: 2rem;
+    background: $skin-border-strong;
+}
+
+.not-found-page__msg {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $skin-text-strong;
+}
+
+.not-found-page__nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid $skin-border;
+}
+
+.not-found-page__nav a {
+    color: $skin-text;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.not-found-page__nav a:hover {
+    color: $skin-link-hover;
+}
+
