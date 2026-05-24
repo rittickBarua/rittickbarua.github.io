@@ -3,8 +3,8 @@ title: "The effects of steam explosion and hydrolysing time on the digestibility
 collection: publications
 category: conferences
 permalink: /publications/barua-steam-explosion-sewage-sludge/
-description: "Barua et al., 2014 — AquaEnviro conference paper on steam-explosion pretreatment of sewage sludge, showing increased anaerobic-digestion biogas yield."
-excerpt: "Conference paper on multi-stage reactor systems for sludge pretreatment — showing steam explosion and extended hydrolysis materially increase anaerobic-digestion biogas yield."
+description: "Barua et al., 2014. AquaEnviro conference paper on steam-explosion pretreatment of sewage sludge, showing increased anaerobic-digestion biogas yield."
+excerpt: "Conference paper on multi-stage reactor systems for sludge pretreatment, showing that steam explosion and extended hydrolysis materially increase anaerobic-digestion biogas yield."
 date: 2014-01-01
 year: 2014
 venue: "AquaEnviro conference proceedings"

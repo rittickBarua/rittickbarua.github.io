@@ -229,15 +229,28 @@ hr, table, th, td {
 
 /* ----- Sidebar contents: strip everything but the avatar + socials --- */
 
-/* Hide name (it's an h1 in body), bio (it's in body), location,
-   employer, pronouns, "Follow" button. */
+/* Hide name (it's an h1 in body), bio (it's in body), pronouns,
+   "Follow" button. Hide only the LOCATION desktop-item (the one
+   with the fa-location-dot icon); the EMPLOYER desktop-item
+   (fa-building-columns) stays visible at the top of the sidebar.
+   :has() is supported in all evergreen browsers since mid-2023. */
 .author__name,
 .author__bio,
 .author__pronouns,
-.author__urls li.author__desktop,
+.author__urls li.author__desktop:has(.fa-location-dot),
 .author__urls-wrapper > .btn,
 .author__urls-wrapper .btn--inverse {
     display: none !important;
+}
+
+/* Employer line ("University of Cambridge") — small block under the
+   photo, separated from the social icons by a faint underline. */
+.author__urls li.author__desktop {
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid $skin-border;
+    color: $skin-text-strong;
+    font-weight: 500;
 }
 
 /* Square avatar, 140px, no rounded corners. */
@@ -266,12 +279,12 @@ img.author__avatar {
     list-style: none;
     padding: 0;
     margin: 0;
-    font-size: 0.875rem;
+    font-size: 1rem;
 }
 
 .author__urls li {
-    margin-bottom: 0.45rem;
-    line-height: 1.4;
+    margin-bottom: 0.55rem;
+    line-height: 1.45;
 }
 
 .author__urls a {

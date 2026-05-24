@@ -29,7 +29,9 @@ author:
   bio              : *description
   location         : "London"
   employer         : "University of Cambridge"
-  uri              : "https://rittickbarua.com"
+  # author.uri removed — the "Website" sidebar link pointed back to this
+  # site, which was redundant. Person JSON-LD uses site.url, not
+  # author.uri, so no SEO impact.
   email            : "email@rittickbarua.com"
 
   # Academic — add your ORCID once registered (https://orcid.org/register).
