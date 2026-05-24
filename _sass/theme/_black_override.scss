@@ -1,33 +1,29 @@
 /* ==========================================================================
-   Dark skin — exact mishalaskin.com palette, plus a typography pass for
-   simpler / more readable look.
-
-   Background measured at #121212 (Mac Digital Colour Meter on
-   mishalaskin.com). Body text in a softer grey rather than near-white
-   — counter-intuitive but reads as "elegant" rather than "harsh" on
-   dark backgrounds and matches the reference site.
+   Light skin — white background, dark text. Inverted from the earlier
+   mishalaskin-dark palette. All layout / typography / defensive overrides
+   below stay the same; only the colour tokens change.
 
    Imported LAST after the air_light / air_dark themes so it wins
-   regardless of theme-toggle state. The toggle still works but both
-   states render identical.
+   regardless of theme-toggle state. Toggle still works but both states
+   render identical (this skin overrides them both).
 
    To revert: remove the "theme/black_override" line from
    assets/css/main.scss.
    ========================================================================== */
 
-/* ----- Palette -------------------------------------------------- */
+/* ----- Palette — light, neutral, zinc-based -------------------- */
 
-$skin-bg                : #121212;       /* mishalaskin's measured value */
-$skin-bg-elevated       : #1a1a1a;       /* footer, code, table-head */
-$skin-border            : #262626;       /* subtle borders / dividers */
-$skin-border-strong     : #333333;
-$skin-text              : #a3a3a3;       /* body — soft grey, not pure white */
-$skin-text-strong       : #ededed;       /* headings, emphasised text */
-$skin-text-muted        : #737373;       /* captions, sub-text */
-$skin-link              : #fafafa;       /* near-white, with underline */
-$skin-link-hover        : #ffffff;
-$skin-code-bg           : #1a1a1a;
-$skin-code-text         : #ededed;
+$skin-bg                : #ffffff;       /* pure white */
+$skin-bg-elevated       : #fafafa;       /* footer, code, table-head — near-white */
+$skin-border            : #e4e4e7;       /* zinc-200 — very subtle */
+$skin-border-strong     : #d4d4d8;       /* zinc-300 */
+$skin-text              : #3f3f46;       /* zinc-700 — body, soft dark grey */
+$skin-text-strong       : #18181b;       /* zinc-900 — headings, near-black */
+$skin-text-muted        : #71717a;       /* zinc-500 — captions */
+$skin-link              : #18181b;       /* near-black with underline (mishalaskin-style) */
+$skin-link-hover        : #000000;
+$skin-code-bg           : #f4f4f5;       /* zinc-100 */
+$skin-code-text         : #18181b;
 
 /* ----- CSS variables — win against :root and both data-theme states ----- */
 
