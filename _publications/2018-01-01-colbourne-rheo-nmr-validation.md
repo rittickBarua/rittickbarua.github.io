@@ -3,7 +3,7 @@ title: "Validation of a low field Rheo-NMR instrument and application to shear-i
 collection: publications
 category: manuscripts
 permalink: /publications/colbourne-rheo-nmr-validation/
-description: "Colbourne, Blythe, Barua et al., 2018 — validation of a portable low-field Rheo-NMR instrument benchmarked against high-field Rheo-NMR, applied to particle migration in Couette flow. Journal of Magnetic Resonance."
+description: "Colbourne, Blythe, Barua et al., 2018. Validation of a portable low-field Rheo-NMR instrument benchmarked against high-field Rheo-NMR, applied to particle migration in Couette flow. Journal of Magnetic Resonance."
 excerpt: "A portable low-field Rheo-NMR instrument (10.7 MHz) validated against high-field Rheo-NMR across matched shear rates, applied to shear-induced particle migration in Couette flow."
 date: 2018-01-01
 year: 2018

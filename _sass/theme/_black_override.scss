@@ -1,0 +1,618 @@
+/* ==========================================================================
+   Light skin — white background, dark text. Inverted from the earlier
+   mishalaskin-dark palette. All layout / typography / defensive overrides
+   below stay the same; only the colour tokens change.
+
+   Imported LAST after the air_light / air_dark themes so it wins
+   regardless of theme-toggle state. Toggle still works but both states
+   render identical (this skin overrides them both).
+
+   To revert: remove the "theme/black_override" line from
+   assets/css/main.scss.
+   ========================================================================== */
+
+/* ----- Palette — light, neutral, zinc-based -------------------- */
+
+$skin-bg                : #ffffff;       /* pure white */
+$skin-bg-elevated       : #fafafa;       /* footer, code, table-head — near-white */
+$skin-border            : #e4e4e7;       /* zinc-200 — very subtle */
+$skin-border-strong     : #d4d4d8;       /* zinc-300 */
+$skin-text              : #3f3f46;       /* zinc-700 — body, soft dark grey */
+$skin-text-strong       : #18181b;       /* zinc-900 — headings, near-black */
+$skin-text-muted        : #71717a;       /* zinc-500 — captions */
+$skin-link              : #18181b;       /* near-black with underline (mishalaskin-style) */
+$skin-link-hover        : #000000;
+$skin-code-bg           : #f4f4f5;       /* zinc-100 */
+$skin-code-text         : #18181b;
+
+/* ----- CSS variables — win against :root and both data-theme states ----- */
+
+:root,
+html[data-theme="light"],
+html[data-theme="dark"] {
+    --global-base-color                 : #{$skin-bg};
+    --global-bg-color                   : #{$skin-bg};
+    --global-footer-bg-color            : #{$skin-bg};
+    --global-border-color               : #{$skin-border};
+    --global-dark-border-color          : #{$skin-border-strong};
+    --global-code-background-color      : #{$skin-code-bg};
+    --global-code-text-color            : #{$skin-code-text};
+    --global-fig-caption-color          : #{$skin-text-muted};
+    --global-link-color                 : #{$skin-link};
+    --global-link-color-hover           : #{$skin-link-hover};
+    --global-link-color-visited         : #{$skin-link};
+    --global-masthead-link-color        : #{$skin-text-strong};
+    --global-masthead-link-color-hover  : #{$skin-link};
+    --global-text-color                 : #{$skin-text};
+    --global-text-color-light           : #{$skin-text-muted};
+    --global-thead-color                : #{$skin-bg-elevated};
+}
+
+/* ----- Hard fallbacks for components that set colour inline ----- */
+
+html,
+body {
+    background-color: $skin-bg;
+    color: $skin-text;
+}
+
+.masthead,
+.page__footer {
+    background-color: $skin-bg !important;
+    border-color: $skin-border !important;
+}
+
+/* ----- Typography pass — smaller scale, lighter weights, calmer ----- */
+
+/* Drop the base size from 16px to 15px — every em-based heading
+   scales proportionally. */
+html {
+    font-size: 15px;
+}
+
+/* Headings: render bright and DIM the weight from the theme's heavy
+   default to semibold (600). The contrast between bright heading
+   colour and soft body text now does the hierarchy work — not weight. */
+h1, h2, h3, h4, h5, h6,
+.page__title,
+.archive__subtitle,
+.author__name {
+    color: $skin-text-strong;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+}
+
+/* Body paragraphs — more line-height for breathing space, softer colour. */
+p,
+li,
+.page__content p,
+.page__content li {
+    color: $skin-text;
+    line-height: 1.65;
+}
+
+/* Bold inside body copy — promote to the bright colour so it actually
+   reads as emphasis against the muted base. */
+strong, b {
+    color: $skin-text-strong;
+    font-weight: 600;
+}
+
+/* Links: white with subtle underline. Underline thickens on hover. */
+a, a:link, a:visited {
+    color: $skin-link;
+    text-decoration: underline;
+    text-decoration-color: $skin-border-strong;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color 0.15s ease;
+}
+a:hover, a:focus {
+    color: $skin-link-hover;
+    text-decoration-color: $skin-link-hover;
+}
+
+/* Strip underlines from places where they're noise — nav, buttons,
+   sidebar icons. */
+.masthead a,
+.greedy-nav a,
+.author__urls a,
+.btn,
+.btn:hover {
+    text-decoration: none;
+}
+
+/* Author sidebar — quieter typography. Name still bright, supporting
+   text softer. */
+.author__bio,
+.author__pronouns,
+.author__urls li,
+.author__urls a {
+    color: $skin-text;
+    font-weight: 400;
+}
+
+/* Code: dark surface, light text, subtle border. */
+code, pre {
+    background-color: $skin-code-bg;
+    color: $skin-code-text;
+    border: 1px solid $skin-border;
+}
+
+/* Horizontal rules, table borders */
+hr, table, th, td {
+    border-color: $skin-border !important;
+}
+
+/* Form inputs, buttons that the theme styles for light bg */
+.btn--inverse {
+    color: $skin-text-strong;
+    border-color: $skin-border-strong;
+    background-color: transparent;
+}
+
+/* ==========================================================================
+   Layout — small sidebar (square photo + social icons) + centred content.
+   Uses flexbox: deterministic, no float-collapse issues.
+   ========================================================================== */
+
+/* The container holding sidebar + article. Flex on desktop;
+   stacked on mobile. */
+#main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 4rem;
+    display: block;
+}
+
+@media (min-width: 640px) {
+    #main {
+        display: flex;
+        align-items: flex-start;
+        gap: 2.5rem;
+    }
+}
+
+/* Sidebar — narrow column, fixed width on desktop. */
+.sidebar,
+.sidebar.sticky {
+    display: block !important;
+    float: none !important;
+    width: 100% !important;
+    margin: 0 0 1.5rem 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    -webkit-transform: none !important;
+    transform: none !important;
+}
+
+@media (min-width: 640px) {
+    .sidebar,
+    .sidebar.sticky {
+        flex: 0 0 160px;
+        width: 160px !important;
+        margin: 0 !important;
+        position: sticky;
+        top: 1.25rem;
+    }
+}
+
+/* Article block fills the rest of the flex container. */
+#main .page,
+#main .archive {
+    float: none !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-width: 0;            /* prevent flex overflow */
+    flex: 1 1 auto;
+}
+
+#main .page__inner-wrap,
+#main .page__content {
+    width: 100%;
+    padding: 0;
+    margin-right: 0;
+}
+
+/* The theme's susy-grid responsive widths — neutralise. */
+@media (min-width: 60em) {
+    #main .page,
+    #main .archive {
+        width: auto !important;
+        padding-right: 0 !important;
+    }
+}
+
+/* ----- Sidebar contents: strip everything but the avatar + socials --- */
+
+/* Hide name (it's an h1 in body), bio (it's in body), pronouns,
+   "Follow" button. Hide only the LOCATION desktop-item (the one
+   with the fa-location-dot icon); the EMPLOYER desktop-item
+   (fa-building-columns) stays visible at the top of the sidebar.
+   :has() is supported in all evergreen browsers since mid-2023. */
+.author__name,
+.author__bio,
+.author__pronouns,
+.author__urls li.author__desktop:has(.fa-location-dot),
+.author__urls-wrapper > .btn,
+.author__urls-wrapper .btn--inverse {
+    display: none !important;
+}
+
+/* Employer line ("University of Cambridge") — small block under the
+   photo, separated from the social icons by a faint underline. */
+.author__urls li.author__desktop {
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid $skin-border;
+    color: $skin-text-strong;
+    font-weight: 500;
+}
+
+/* Square avatar, 140px, no rounded corners. */
+.author__avatar {
+    width: 140px;
+    margin-bottom: 1rem;
+}
+
+.author__avatar img,
+img.author__avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 0;
+    object-fit: cover;
+    display: block;
+    margin: 0;
+}
+
+/* Social icons list — vertical stack, no bullets, smaller text. */
+.author__urls-wrapper {
+    margin: 0;
+    padding: 0;
+}
+
+.author__urls {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 1rem;
+}
+
+.author__urls li {
+    margin-bottom: 0.55rem;
+    line-height: 1.45;
+}
+
+.author__urls a {
+    color: $skin-text;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+}
+
+.author__urls a:hover {
+    color: $skin-link-hover;
+}
+
+.author__urls i {
+    color: $skin-text-muted;
+    width: 1em;
+}
+
+/* ==========================================================================
+   Masthead — minimal nav, top-right aligned, no heavy background.
+   ========================================================================== */
+
+.masthead {
+    background: transparent !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    position: relative;
+}
+
+.masthead__inner-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem 0.5rem;
+}
+
+.greedy-nav {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+/* Hide the site-title link inside the masthead — the homepage already
+   shows the name as h1. The masthead is just a nav. */
+.masthead__menu-item--lg {
+    display: none !important;
+}
+
+/* Right-align the remaining nav items */
+.greedy-nav .visible-links {
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    margin-left: auto;
+}
+
+.greedy-nav .hidden-links {
+    background: $skin-bg-elevated;
+    border-color: $skin-border;
+}
+
+/* Quieter nav text */
+.masthead a {
+    font-size: 0.875rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: $skin-text-strong;
+}
+.masthead a:hover {
+    color: $skin-link-hover;
+    text-decoration: underline;
+    text-decoration-color: $skin-text-strong;
+    text-underline-offset: 0.25em;
+}
+
+/* Don't underline nav by default — only on hover */
+.masthead a,
+.masthead a:link,
+.masthead a:visited {
+    text-decoration: none;
+}
+
+/* Theme toggle button — keep small + visible */
+#theme-toggle button {
+    color: $skin-text-strong;
+}
+
+/* Hamburger only shows when nav overflows; style for dark */
+.greedy-nav > button {
+    background: transparent;
+    color: $skin-text-strong;
+}
+.greedy-nav .navicon,
+.greedy-nav .navicon:before,
+.greedy-nav .navicon:after {
+    background-color: $skin-text-strong;
+}
+
+/* ==========================================================================
+   Body content — name as page-h1, tighter spacing.
+   ========================================================================== */
+
+#main h1:first-of-type,
+#main .page__content h1:first-of-type {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.015em;
+}
+
+#main h2 {
+    font-size: 1.375rem;
+    margin-top: 2.25rem;
+    margin-bottom: 1rem;
+}
+
+#main h3 {
+    font-size: 1.1rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Drop the theme's "page__title" h1 (the one rendered from page.title) —
+   only relevant on pages WITH a page.title. On homepage it's empty so
+   nothing renders. */
+.page__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.015em;
+}
+
+/* Lede paragraph spacing */
+#main p {
+    margin-bottom: 1.25rem;
+}
+
+/* ==========================================================================
+   Footer — minimal one-liner. Copyright left, RSS right.
+   ========================================================================== */
+
+.page__footer {
+    background-color: transparent !important;
+    border-top: 1px solid $skin-border;
+    margin-top: 4rem;
+    padding: 1.25rem 0 1.5rem;
+    clear: both;             /* sit below the floated sidebar */
+}
+
+.page__footer footer {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    font-size: 0.8125rem;
+    color: $skin-text-muted;
+}
+
+.page__footer a {
+    color: $skin-text-muted;
+}
+.page__footer a:hover {
+    color: $skin-link-hover;
+}
+
+.page__footer-copyright {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    font-size: 0.8125rem;
+    color: $skin-text-muted;
+}
+
+.page__footer-rss {
+    margin-left: auto;
+}
+
+/* Follow-icons row + sitemap link (legacy) — hidden, replaced by the
+   simplified copyright + RSS row. */
+.page__footer-follow,
+.page__footer a[href="/sitemap/"] {
+    display: none !important;
+}
+
+/* Breadcrumbs (disabled in config but hide defensively) */
+.breadcrumbs {
+    display: none !important;
+}
+
+/* Page taxonomy / meta strip we don't need on a personal site */
+.page__meta,
+.page__taxonomy {
+    display: none;
+}
+
+/* Social-share buttons under articles (the theme adds these to
+   publications / work detail pages) — hide for now to keep it clean.
+   Drop this rule if you want them back. */
+.page__share {
+    display: none;
+}
+
+/* ==========================================================================
+   Defensive overrides for inline colours baked into legacy content.
+   The original publication entries wrapped titles in <span style="color:
+   navy"> which is invisible on a #121212 background. Force any inline
+   `color: navy` span to use the bright heading colour instead.
+   ========================================================================== */
+
+span[style*="color:navy"],
+span[style*="color: navy"],
+span[style*="color:#000080"] {
+    color: $skin-text-strong !important;
+    font-weight: 600;
+}
+
+/* The skyblue "Paper" buttons used by older publication entries —
+   restyle as quiet inline link buttons so they stop screaming on a
+   dark background. */
+.btn-info,
+button.btn-info,
+[style*="background-color:skyblue"],
+button[style*="background-color:skyblue"] {
+    background-color: transparent !important;
+    color: $skin-link !important;
+    border: 1px solid $skin-border-strong !important;
+    border-radius: 4px;
+    padding: 0.2em 0.7em;
+    font-weight: 500;
+    text-transform: none;
+}
+
+/* ==========================================================================
+   Selected work block on the homepage — tighter list typography.
+   ========================================================================== */
+
+.page__content h2 + ul,
+.page__content h2 + p + ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.page__content ul li {
+    margin-bottom: 0.7rem;
+}
+
+/* ==========================================================================
+   404 page — minimal centred Vercel / Next.js style. Wrapper-class targets
+   via :has() so this page overrides the standard sidebar + flex layout
+   without needing a dedicated Jekyll layout file.
+   ========================================================================== */
+
+#main:has(.not-found-page) {
+    display: block;
+    max-width: none;
+    padding: 0;
+}
+
+#main:has(.not-found-page) .sidebar {
+    display: none !important;
+}
+
+#main:has(.not-found-page) .page,
+#main:has(.not-found-page) .archive {
+    width: 100%;
+    flex: none;
+    margin: 0;
+    padding: 0;
+}
+
+#main:has(.not-found-page) .page__title,
+#main:has(.not-found-page) header {
+    display: none;
+}
+
+.not-found-page {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    padding: 4rem 1rem;
+    text-align: center;
+}
+
+.not-found-page__hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.not-found-page__code {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $skin-text-strong;
+    letter-spacing: 0;
+}
+
+.not-found-page__sep {
+    display: inline-block;
+    width: 1px;
+    height: 2rem;
+    background: $skin-border-strong;
+}
+
+.not-found-page__msg {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $skin-text-strong;
+}
+
+.not-found-page__nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2.5rem;
+}
+
+.not-found-page__nav a {
+    color: $skin-text;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.not-found-page__nav a:hover {
+    color: $skin-link-hover;
+}
+

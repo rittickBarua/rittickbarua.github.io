@@ -5,12 +5,14 @@ import { test, expect } from '@playwright/test';
  */
 
 test.describe('smoke', () => {
-  test('homepage loads with expected title and renders author sidebar', async ({ page }) => {
+  test('homepage loads with expected title and renders name as h1', async ({ page }) => {
     await page.goto('/');
     // Homepage title: "{site.title} - {site.tagline}" with a plain hyphen.
     await expect(page).toHaveTitle('Rittick Barua, PhD - AI & Data Science Product Leader');
-    await expect(page.locator('.author__name').first()).toContainText('Rittick Barua, PhD');
-    await expect(page.locator('.author__avatar img').first()).toBeVisible();
+    // Sidebar removed in the mishalaskin-style redesign — name now lives
+    // as the body h1 instead.
+    await expect(page.locator('h1').first()).toContainText('Rittick Barua, PhD');
+    await expect(page.locator('h1').first()).toBeVisible();
   });
 
   test('CV page loads', async ({ page }) => {
@@ -82,14 +84,13 @@ test.describe('smoke', () => {
     expect(href).toMatch(/\/cv\/$/);
   });
 
-  test('404 page renders with links back', async ({ page }) => {
-    const resp = await page.goto('/this-page-does-not-exist-xyz', { waitUntil: 'domcontentloaded' });
-    // jekyll serve returns 404 body; some Jekyll configs return 200 for /404.html direct
-    // Verify by fetching /404.html explicitly
+  test('404 page renders Vercel-style hero', async ({ page }) => {
     await page.goto('/404.html');
-    await expect(page).toHaveTitle(/Page not found/);
-    await expect(page.getByRole('link', { name: /About/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Research and publications/i })).toBeVisible();
+    await expect(page).toHaveTitle(/404/);
+    await expect(page.locator('.not-found-page__code')).toContainText('404');
+    await expect(page.locator('.not-found-page__msg')).toContainText('This page could not be found.');
+    // No body-level nav row — the masthead at the top already provides
+    // links back to About / Work / Publications / CV.
   });
 
   test('no console errors on homepage (dev-serve host quirks filtered)', async ({ page }) => {

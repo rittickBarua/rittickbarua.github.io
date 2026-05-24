@@ -97,12 +97,10 @@ for (const { path, name } of pages) {
       expect(href, 'profile image preload href').toMatch(/profile\.jpeg$/);
     });
 
-    test(`${name}: author avatar has explicit width/height`, async ({ page }) => {
-      await page.goto(path);
-      const img = page.locator('.author__avatar img').first();
-      await expect(img).toHaveAttribute('width', /\d+/);
-      await expect(img).toHaveAttribute('height', /\d+/);
-    });
+    // Sidebar avatar is hidden in the mishalaskin-style redesign — the
+    // image is still present in the DOM via the include but display:none,
+    // so width/height attributes are no longer required for CLS. Skipping
+    // this assertion across all pages.
   });
 }
 

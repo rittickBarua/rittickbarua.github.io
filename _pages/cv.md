@@ -1,7 +1,7 @@
 ---
 layout: archive
 title: "CV"
-description: "CV of Rittick Barua, PhD — product leader and applied data scientist. 7+ years delivering enterprise ML and GenAI solutions, Cambridge Engineering PhD. Download as PDF."
+description: "CV of Rittick Barua, PhD. Product owner and applied data scientist, 7+ years on enterprise ML and GenAI systems, Cambridge Engineering PhD. Download as PDF."
 permalink: /cv/
 author_profile: true
 redirect_from:
@@ -17,28 +17,28 @@ redirect_from:
 
 <!-- Highly experienced Consultant and applied Data Scientist with 7 years of experience in delivering enterprise-grade AI/ML solutions on Azure driving £8M+ projected savings through £10M+ project portfolio across finance, healthcare and public sectors. PhD trained Engineer from University of Cambridge with a proven track record in leading cross-disciplinary teams, managing full product lifecycles, and driving digital transformation through data-driven strategies, automation, and stakeholder engagement. -->
 
-Product owner and applied data scientist with 7+ years of experience delivering enterprise ML/GenAI solutions. Track record of partnering with academia to translate research into deployable products. Shaped product strategy, roadmap, and adoption framework to embed cutting-edge LLM tools into enterprise BAU workflows. Entrepreneurial founder with a solutions-driven mindset and proficiency in taking ideas from 0-to-1 through rigorous experimentation and stakeholder alignment, creating measurable impact.
+Product owner and applied data scientist with 7+ years of experience delivering enterprise ML/GenAI solutions. Track record of partnering with academia to translate research into deployable products. Shaped product strategy, roadmap and adoption framework to embed cutting-edge LLM tools into enterprise BAU workflows. Entrepreneurial founder with a solutions-driven mindset and proficiency in taking ideas from 0-to-1 through rigorous experimentation and stakeholder alignment, creating measurable impact.
 
 ## Professional Experience
 
-- **Head of Product & Delivery**, *Bloch.ai* — London, UK - **Jan 2025 – Present**  
+- **Head of Product & Delivery**, *Bloch.ai*, London, UK - **Jan 2025 – Present**  
   -  Led executive training on AI adoption and strategy, guiding senior leadership in AI vision setting, capability assessment and business value driven prioritisation resulting in discovery of 10+ high-impact use cases with £5M+ projected annual savings
   
-  - Eliminated 70\% of repetitive tasks and accelerated bid turnaround by mapping full bid development journey, identifying friction points and automating LLM driven first draft generation by retrieving structured content from past proposals, bios, and capability statements
+  - Eliminated 70\% of repetitive tasks and accelerated bid turnaround by mapping full bid development journey, identifying friction points and automating LLM driven first draft generation by retrieving structured content from past proposals, bios and capability statements
 
   - Built sentiment analysis engine to evaluate 100K+ internal communications  near real-time leveraging LLM and classic ML on Azure 
 
   - Built a RAG-based solution to track and auto-summarise EU regulatory updates and notify relevant experts, eliminating manual checks
 
 
-- **Head of Applied Science / Lead Consultant**, *Grant Thornton* — London, UK - **Jan 2022 – Nov 2024**  
+- **Head of Applied Science / Lead Consultant**, *Grant Thornton*, London, UK - **Jan 2022 – Nov 2024**  
   <!-- _Strategy & Thought Leadership_   -->
   - Led GenAI adoption programme: defined the enterprise roadmap, identified/prioritised 25 use cases across 5 divisions, set intake, governance and success KPIs, designed ideation to product pipeline and launched 8 solutions (R&D/reporting/ops) saving £3M+
   - Designed and ran controlled pilots to automate 90% of audit report generation with LLMs, freeing 5 FTE annually, securing C-suite sponsorship and embedding the solution into BAU workflows with 100% full compliance
 
   - Built an adaptive residual-value model for EV fleets (XGBoost): engineered self-improving lifecycle cost predictions using periodic repair/degradation data, optimising sell/hold decisions for £65M asset portfolios
 
-  - Drove org-wide enablement and adoption: partnered with marketing to run a company-wide campaign, built a champions network across divisions and delivered demos to **2000+** staff, and mentored **7** junior data scientists
+  - Drove org-wide enablement and adoption: partnered with marketing to run a company-wide campaign, built a champions network across divisions and delivered demos to **2000+** staff and mentored **7** junior data scientists
 
   <!-- _Applied AI Delivery_   -->
   -  Authored a white paper for UK Government on cybersecurity vulnerabilities in AI systems, incorporating insights from 10+ cross-sector experts to identify 12 critical threat vectors across the AI lifecycle, delivering actionable recommendations to secure AI systems
@@ -49,33 +49,33 @@ Product owner and applied data scientist with 7+ years of experience delivering 
 
   - Scaled a data science team from 1 to 7, embedded Agile practices, mentored talent and cultivated an inclusive high-performing culture 
 
-- **Co-Founder and CEO**, *Caritas Research Limited (Non-profit)* — London, UK - **Feb 2021 – Mar 2024**  
+- **Co-Founder and CEO**, *Caritas Research Limited (Non-profit)*, London, UK - **Feb 2021 – Mar 2024**  
   - Co-founded strategy and research consultancy in the UK with branches in India and Bangladesh to enable NGOs, Social Enterprise and Not-for-profit organisations to evaluate the impact of social interventions programmes and redirect effort to maximise output
 
   - Partnered with Immersive Space (360° mobile planetarium) delivering an evidence-based impact evaluation, KPI design, data dashboards for student enthusiasm tracking and developed a funding strategy to enable subsidised visits to underfunded rural schools
 
-- **Consultant**, *Appian Corporation* — London, UK - **Feb 2020 – Jan 2022**  
+- **Consultant**, *Appian Corporation*, London, UK - **Feb 2020 – Jan 2022**  
   - Identified business gaps; proposed and led development of an app to optimise allocation of reserve consultants to internal projects, utilising **£1.1M/annum** of human resources for internal development
   - Managed a team of developers; delivered software from inception to final product using Agile, automating processes and integrations for **6,000+** concurrent users across the EU
 
-- **Research Engineer**, *Thames Water Utilities, Ltd.* — Reading, UK - **Jan 2012 – Dec 2013** 
+- **Research Engineer**, *Thames Water Utilities, Ltd.*, Reading, UK - **Jan 2012 – Dec 2013** 
   <!-- - Won £120K in funding; led a 4 - person team from experimental design through to presenting findings at an international conference -->
   - Engineered multi-stage reactor systems that increased anaerobic-digestion efficiency of sludge treatment process and increased biogas production by 33–52\%; slashed grid-energy dependency and reduced plant OPEX through self-sustaining biogas utilisation
 
 ## Appointments
-- **Visiting Researcher**, *UCL Hospital – Department of Surgical Biotechnology* — London, UK - **Mar 2025 – Present**
+- **Visiting Researcher**, *UCL Hospital – Department of Surgical Biotechnology*, London, UK - **Mar 2025 – Present**
 
   - Adapting CNN and traditional image processing and classification techniques to automate and de-bias the cancer-cell analysis process
 
-- **Visiting Research Fellow**, *Manchester Metropolitan University* — Manchester, UK - **Apr 2024 – Present**
+- **Visiting Research Fellow**, *Manchester Metropolitan University*, Manchester, UK - **Apr 2024 – Present**
 
 
 ## Education
-- **PhD in Chemical Engineering and Biotechnology**, *University of Cambridge* — Cambridge, UK - **Oct 2014 – Sep 2018**  
+- **PhD in Chemical Engineering and Biotechnology**, *University of Cambridge*, Cambridge, UK - **Oct 2014 – Sep 2018**  
   - Fully funded scholarship, authored 1 peer-reviewed paper and awarded Best Poster prize at conference
   - Proposed a novel flow model to describe the behaviour of complex fluid to improve oil well integrity and drilling operations
 
-- **BSc in Chemical Engineering (1st Class Hons.)**, *University College London* — London, UK - **Oct 2007 – Jun 2011**
+- **BSc in Chemical Engineering (1st Class Hons.)**, *University College London*, London, UK - **Oct 2007 – Jun 2011**
 
 
 ## Skills

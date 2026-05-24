@@ -30,22 +30,38 @@
       {% if author.employer %}
         <li class="author__desktop"><i class="fas fa-fw fa-building-columns icon-pad-right" aria-hidden="true"></i>{{ author.employer }}</li>
       {% endif %}
-      {% if author.uri %}
-        <li><a href="{{ author.uri }}"><i class="fas fa-fw fa-link icon-pad-right" aria-hidden="true"></i>{{ site.data.ui-text[site.locale].website_label | default: "Website" }}</a></li>
+      {%- comment -%}
+        Website link (author.uri) intentionally removed — it pointed back to
+        this site and was redundant. The four populated social profiles
+        (LinkedIn, GitHub, Google Scholar, ResearchGate) are hoisted up
+        here in the user's preferred display order. Email follows.
+        The rest of the long social-template list below is left intact
+        for portability but renders nothing because the fields are blank.
+      {%- endcomment -%}
+      {% if author.linkedin %}
+        <li><a target="_blank" rel="noopener noreferrer me" href="https://www.linkedin.com/in/{{ author.linkedin }}"><i class="fab fa-fw fa-linkedin icon-pad-right" aria-hidden="true"></i>LinkedIn</a></li>
+      {% endif %}
+      {% if author.github %}
+        <li><a target="_blank" rel="noopener noreferrer me" href="https://github.com/{{ author.github }}"><i class="fab fa-fw fa-github icon-pad-right" aria-hidden="true"></i>GitHub</a></li>
+      {% endif %}
+      {% if author.googlescholar %}
+        <li><a target="_blank" rel="noopener noreferrer me" href="{{ author.googlescholar }}"><i class="ai ai-google-scholar ai-fw icon-pad-right"></i>Google Scholar</a></li>
+      {% endif %}
+      {% if author.researchgate %}
+        <li><a target="_blank" rel="noopener noreferrer me" href="{{ author.researchgate }}"><i class="fab fa-fw fa-researchgate icon-pad-right" aria-hidden="true"></i>ResearchGate</a></li>
       {% endif %}
       {% if author.email %}
         <li><a href="mailto:{{ author.email }}"><i class="fas fa-fw fa-envelope icon-pad-right" aria-hidden="true"></i>{{ site.data.ui-text[site.locale].email_label | default: "Email" }}</a></li>
       {% endif %}
 
-      <!-- Font Awesome and Academicons icons / Academic websites -->
+      <!-- Font Awesome and Academicons icons / Academic websites (long
+           fallback list; only renders when the corresponding author.*
+           field is set in _config.yml) -->
       {% if author.academia %}
         <li><a href="{{ author.academia }}"><i class="ai ai-academia ai-fw icon-pad-right" aria-hidden="true"></i>Academia</a></li>
       {% endif %}
       {% if author.arxiv %}
         <li><a href="{{ author.arxiv }}"><i class="ai ai-arxiv ai-fw icon-pad-right"></i>arXiv</a></li>
-      {% endif %}      
-      {% if author.googlescholar %}
-        <li><a target="_blank" rel="noopener noreferrer me" href="{{ author.googlescholar }}"><i class="ai ai-google-scholar ai-fw icon-pad-right"></i>Google Scholar</a></li>
       {% endif %}
       {% if author.semantic %}
         <li><a href="{{ author.semantic }}"><i class="ai ai-semantic-scholar ai-fw icon-pad-right"></i>Semantic Scholar</a></li>
@@ -59,9 +75,7 @@
       {% if author.pubmed %}
         <li><a href="{{ author.pubmed }}"><i class="ai ai-pubmed ai-fw icon-pad-right"></i>PubMed</a></li>
       {% endif %}                        
-      {% if author.researchgate %}
-        <li><a target="_blank" rel="noopener noreferrer me" href="{{ author.researchgate }}"><i class="fab fa-fw fa-researchgate icon-pad-right" aria-hidden="true"></i>ResearchGate</a></li>
-      {% endif %}
+      {%- comment -%}ResearchGate hoisted up — see top of social block.{%- endcomment -%}
       {% if author.scopus %}
         <li><a href="{{ author.scopus }}"><i class="ai ai-scopus ai-fw icon-pad-right"></i>Scopus</a></li>
       {% endif %}
@@ -79,9 +93,7 @@
       {% if author.dribbble %}
         <li><a target="_blank" rel="noopener noreferrer me" href="https://dribbble.com/{{ author.dribbble }}"><i class="fab fa-fw fa-dribbble icon-pad-right" aria-hidden="true"></i>Dribbble</a></li>
       {% endif %}      
-      {% if author.github %}
-        <li><a target="_blank" rel="noopener noreferrer me" href="https://github.com/{{ author.github }}"><i class="fab fa-fw fa-github icon-pad-right" aria-hidden="true"></i>GitHub</a></li>
-      {% endif %}
+      {%- comment -%}GitHub hoisted up — see top of social block.{%- endcomment -%}
       {% if author.kaggle %}
         <li><a target="_blank" rel="noopener noreferrer me" href="https://kaggle.com/{{ author.kaggle }}"><i class="fab fa-fw fa-kaggle icon-pad-right" aria-hidden="true"></i>Kaggle</a></li>
       {% endif %}      
@@ -120,9 +132,7 @@
       {% if author.lastfm %}
         <li><a target="_blank" rel="noopener noreferrer me" href="https://last.fm/user/{{ author.lastfm }}"><i class="fab fa-fw fa-lastfm icon-pad-right" aria-hidden="true"></i>Last.fm</a></li>
       {% endif %}      
-      {% if author.linkedin %}
-        <li><a target="_blank" rel="noopener noreferrer me" href="https://www.linkedin.com/in/{{ author.linkedin }}"><i class="fab fa-fw fa-linkedin icon-pad-right" aria-hidden="true"></i>LinkedIn</a></li>
-      {% endif %}      
+      {%- comment -%}LinkedIn hoisted up — see top of social block.{%- endcomment -%}
       {% if author.mastodon %}
         <li><a href="{{ author.mastodon }}"><i class="fab fa-fw fa-mastodon icon-pad-right" aria-hidden="true"></i>Mastodon</a></li>
       {% endif %}

@@ -6,28 +6,12 @@ redirect_from:
   - /about.html
 ---
 
-Product owner and applied data scientist with 7+ years of experience delivering enterprise ML/GenAI solutions. Track record of partnering with academia to translate research into deployable products. Shaped product strategy, roadmap, and adoption framework to embed cutting-edge LLM tools into enterprise BAU workflows. Entrepreneurial founder with a solutions-driven mindset and proficiency in taking ideas from 0-to-1 through rigorous experimentation and stakeholder alignment, creating measurable impact.
+# Rittick Barua, PhD
 
-<!-- Highly experienced Consultant and applied Data Scientist with 7 years of experience in delivering enterprise-grade AI/ML solutions on Azure driving £8M+ projected savings through £10M+ project Nacross finance, healthcare and public sectors. PhD trained Engineer from University of Cambridge with a proven track record in leading cross-disciplinary teams, managing full product lifecycles, and driving digital transformation through data-driven strategies, automation, and stakeholder engagement. -->
+An engineer by training and a product owner by practice, I have spent the last seven years building enterprise machine-learning and language-model systems, owning the lifecycle of each one from problem framing and pilot design into BAU integration, governance and onward adoption, with engagements in financial services, healthcare and the public sector. I currently work on enterprise language-model platforms and on computer-vision pipelines for clinical microscopy, and previously founded a research-strategy consultancy and led an applied-science team within management consulting. My PhD is in Engineering from the University of Cambridge.
 
-My research focuses on applied machine learning that is reliable at scale. On the scientific side, I develop ML pipelines for high-throughput microscopy to quantify drug-induced cellular changes and accelerate cancer research. On the enterprise side, I design and deploy GenAI systems on cloud platforms with an emphasis on safety, robustness, and cost-aware MLOps. A core thread is AI cybersecurity—mapping threat vectors across data, model, and deployment layers—and translating them into governance patterns, evaluation harnesses, and guardrails. Broadly, I’m interested in human-centred, interpretable AI that delivers measurable value in healthcare, finance, and the public sector. 
+## Selected work
 
-
-Publications
-------
-
-1. Rittick Barua, Kevin McCay, Mohammed Al-Khalidi, Yonghong Peng, Jamie Crossman-Smith<br />
-<span style="color:navy">Cyber security risks to artificial intelligence (Whitepaper)</span>      
-*Department of Science, Innovation and Technology - 2024*      
-[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://assets.publishing.service.gov.uk/media/664333b1ae748c43d3793a40/Cyber_security_risks_to_artificial_intelligence.pdf){:target="_blank" rel="noopener noreferrer"}
-
-
-1. Adam Colbourne, Thomas Blythe, Rittick Barua, Sean Lovett, Jonathan Mitchell, Andrew Sederman, Lynn F Gladden<br />
-<span style="color:navy">Validation of a low field Rheo-NMR instrument and application to shear-induced migration of suspended non-colloidal particles in Couette flow</span>      
-*Journal of Magnetic Resonance - 2018*      
-[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://www.repository.cam.ac.uk/bitstreams/57073ea8-f6f6-4495-81e5-75c509654f74/download){:target="_blank" rel="noopener noreferrer"}
-
-1. Barua, R., Lee, K., Mills, N., Ouki, S., Thorpe, R.<br />
-<span style="color:navy">The effects of steam explosion and hydrolysing time on the digestibility of sewage sludge in anaerobic digestion</span>      
-*AquaEnviro conference proceedings — 2014*      
-[<button type="button" class="btn btn-info" style="background-color:skyblue">Paper</button>](https://conferences.aquaenviro.co.uk/proceedings/the-effects-of-steam-explosion-and-hydrolysing-time-on-the-digestibility-of-sewage-sludge-in-anaerobic-digestion){:target="_blank" rel="noopener noreferrer"}
+- [**Chat:R**](/work/chat-r/), an enterprise language-model platform serving roughly 1,000 staff at a public-affairs consultancy, with custom Projects, agent-linking and SharePoint MCP gateway features, deployed across three Azure environments.
+- [**Cell-spheroid segmentation**](/work/cell-spheroid-segmentation/), a U-Net microscopy pipeline for a surgical-biotechnology research group; validation IoU 0.968, Dice 0.983.
+- [**Cyber security risks to artificial intelligence**](/publications/barua-dsit-cyber-security-risks-to-ai/), a co-authored whitepaper for the UK Department of Science, Innovation and Technology mapping threat vectors across the AI lifecycle (2024).
