@@ -14,6 +14,4 @@ An engineer by training and a product owner by practice, I have spent the last s
 
 - [**Chat:R**](/work/chat-r/), an enterprise language-model platform serving roughly 1,000 staff at a public-affairs consultancy, with custom Projects, agent-linking and SharePoint MCP gateway features, deployed across three Azure environments.
 - [**Cell-spheroid segmentation**](/work/cell-spheroid-segmentation/), a U-Net microscopy pipeline for a surgical-biotechnology research group; validation IoU 0.968, Dice 0.983.
-- Rittick Barua, Kevin McCay, Mohammed Al-Khalidi, Yonghong Peng, Jamie Crossman-Smith<br>
-  [**Cyber security risks to artificial intelligence (Whitepaper)**](/publications/barua-dsit-cyber-security-risks-to-ai/)<br>
-  *Department of Science, Innovation and Technology, 2024*
+- [**Cyber security risks to artificial intelligence**](/publications/barua-dsit-cyber-security-risks-to-ai/), a co-authored whitepaper for the UK Department of Science, Innovation and Technology mapping threat vectors across the AI lifecycle (2024).
