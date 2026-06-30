@@ -1,0 +1,328 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Estimate my property's price - HPP v3</title>
+<style>
+body { font-family: -apple-system, "Segoe UI", sans-serif; max-width: 900px;
+       margin: 0 auto; padding: 24px; color: #1f2937; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+.subtitle { color: #6b7280; margin: 0 0 24px; font-size: 14px; }
+.card { background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px;
+        padding: 20px; margin-bottom: 16px; }
+.formGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+label { display: flex; flex-direction: column; font-size: 13px; font-weight: 600;
+        color: #374151; }
+input, select { font-size: 14px; padding: 8px 10px; border: 1px solid #d1d5db;
+                border-radius: 4px; margin-top: 4px; font-family: inherit; }
+input:focus, select:focus { outline: 2px solid #2563eb; outline-offset: -1px; }
+.note { font-size: 11px; color: #6b7280; font-weight: 400; margin-top: 2px; }
+button { background: #2563eb; color: #fff; border: 0; padding: 10px 24px;
+         border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: 600;
+         margin-top: 8px; }
+button:hover { filter: brightness(0.9); }
+button:disabled { background: #9ca3af; cursor: wait; }
+.results { display: none; }
+.results.visible { display: block; }
+.price { font-size: 32px; font-weight: 700; color: #1f2937; }
+.priceSubtitle { color: #6b7280; font-size: 13px; margin-top: -4px; }
+.predGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px; margin: 14px 0; }
+.predTile { background: #fff; border: 1px solid #e5e7eb; border-radius: 6px;
+            padding: 12px; }
+.predTile .label { font-size: 11px; color: #6b7280; text-transform: uppercase;
+                   letter-spacing: 0.04em; font-weight: 700; }
+.predTile .value { font-size: 22px; font-weight: 700; margin-top: 4px; }
+.predTile .small { font-size: 12px; color: #6b7280; }
+.predTile.primary { background: #eef2ff; border-color: #c7d2fe; }
+.predTile.primary .label { color: #4338ca; }
+.predTile.primary .value { color: #312e81; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+th { background: #f3f4f6; text-align: left; padding: 6px 8px; }
+td { padding: 5px 8px; border-bottom: 1px solid #e5e7eb; }
+tr:nth-child(even) td { background: #fafafa; }
+.error { color: #b91c1c; background: #fee2e2; padding: 10px 12px;
+         border-radius: 6px; border: 1px solid #fecaca; }
+.api-warning { background: #fef3c7; border: 1px solid #fcd34d; padding: 12px 14px;
+               border-radius: 6px; color: #78350f; font-size: 13px; margin-bottom: 14px; }
+.api-warning.ok { background: #ecfdf5; border-color: #6ee7b7; color: #065f46; }
+.linkBack { font-size: 12px; color: #6b7280; margin-top: 24px; text-align: center; }
+.linkBack a { color: #2563eb; text-decoration: none; }
+.linkBack a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <h1>Estimate my property's price</h1>
+  <p class="subtitle">Runs your property through the v3_clean model
+    (trained only on Land Registry sold transactions — no asking-price leakage).
+    Returns the model's predicted sold price (v3_clean)
+    and the median of nearby comparable sales.</p>
+
+  <div id="apiStatus" class="api-warning">Checking local valuation API...</div>
+
+  <form id="form" class="card">
+    <div class="formGrid">
+      <label>Postcode
+        <input id="postcode" type="text" placeholder="e.g. M40 5SA" required>
+        <span class="note">Outward part is enough (e.g. "M40", "SW1A"); we map it to one of our 21 cities.</span>
+      </label>
+      <label>Property type
+        <select id="property_type" required>
+          <option value="Flats/Maisonettes">Flat / Maisonette</option>
+          <option value="Terraced" selected>Terraced</option>
+          <option value="Semi-detached">Semi-detached</option>
+          <option value="Detached">Detached</option>
+        </select>
+      </label>
+      <label>Bedrooms
+        <input id="bedrooms" type="number" min="1" max="10" step="1" value="3">
+      </label>
+      <label>Floor area (m&sup2;)
+        <input id="floor_area_sqm" type="number" min="20" max="2000" step="1" placeholder="optional">
+        <span class="note">Optional but improves accuracy.</span>
+      </label>
+      <label>Tenure
+        <select id="tenure">
+          <option value="">(unknown)</option>
+          <option value="Freehold">Freehold</option>
+          <option value="Leasehold">Leasehold</option>
+        </select>
+      </label>
+      <label>Year built
+        <input id="year_built" type="number" min="1700" max="2030" step="1" placeholder="optional">
+      </label>
+      <label>EPC rating
+        <select id="epc_rating">
+          <option value="">(unknown)</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+          <option value="E">E</option>
+          <option value="F">F</option>
+          <option value="G">G</option>
+        </select>
+      </label>
+      <label>New build?
+        <select id="is_new_build">
+          <option value="">(unknown)</option>
+          <option value="false">No</option>
+          <option value="true">Yes</option>
+        </select>
+      </label>
+    </div>
+    <button type="submit" id="submitBtn">Estimate price</button>
+  </form>
+
+  <div id="results" class="results">
+    <div class="card" id="primaryResult"></div>
+    <div class="card">
+      <h3 style="margin:0 0 6px;font-size:15px">Comparable sold transactions</h3>
+      <p class="subtitle" style="margin:0 0 8px">k-NN over the city's training PPD slice. Distance is geodesic from your postcode centroid.</p>
+      <div id="comparables"></div>
+    </div>
+    <div class="card" id="metaResult"></div>
+  </div>
+
+  <p class="linkBack">
+    <a id="backLink" href="top3_listings.html">Back to Top-3 Rightmove vs Model</a>
+    &nbsp;|&nbsp;
+    <a href="yield_finder_england.html">National yield finder</a>
+  </p>
+  <script>
+    // K.2 sync renames top3_listings.html -> report.html on nokshi.tech.
+    if (window.location.hostname.endsWith("nokshi.tech")) {
+      document.getElementById("backLink").href = "report.html";
+    }
+  </script>
+
+<script>
+// Where does the Flask valuation API live?
+//   - Local dev (file://, localhost, IDE preview): the local Flask dev server.
+//   - The live site: a Raspberry Pi at home, exposed via Tailscale Funnel at a
+//     stable https://<pi-host>.<tailnet>.ts.net URL.
+// SET THIS to your Pi's Funnel URL (run `tailscale funnel status` on the Pi to
+// find it), no trailing slash, then commit + redeploy this page.
+const API_BASE_PROD = "https://CHANGE-ME.ts.net";
+const API_BASE = (() => {
+  const host = window.location.hostname || "";
+  // Local dev -> the local Flask dev server (absolute URL so fetch never hits
+  // "failed to parse /api/...").
+  if (host === "" || host === "localhost" || host === "127.0.0.1") return "http://localhost:5217";
+  // The live Cloudflare Pages site -> the Pi via Tailscale Funnel.
+  return API_BASE_PROD;
+})();
+
+// True on the deployed site (anything that isn't local dev) — picks the offline
+// message shown when the home backend is unreachable.
+const PUBLIC_HOST = !["", "localhost", "127.0.0.1"].includes(window.location.hostname);
+
+async function checkApi() {
+  const el = document.getElementById("apiStatus");
+  try {
+    const r = await fetch(API_BASE + "/api/health", {cache: "no-store"});
+    if (!r.ok) throw new Error("status " + r.status);
+    const j = await r.json();
+    el.className = "api-warning ok";
+    el.innerHTML = `Valuation API reachable. ${j.cities_loaded.length} cities pre-loaded; ${j.outwards_known} postcode-outward codes mapped; ${j.centroids_known} UK postcode centroids on file.`;
+  } catch(e) {
+    el.className = "api-warning";
+    if (PUBLIC_HOST) {
+      el.innerHTML = `<strong>Valuation backend is offline.</strong>
+        This form posts to a home-hosted Flask backend (a Raspberry Pi reached via
+        Tailscale Funnel) which isn't guaranteed 24/7 — it may be asleep.
+        Try again later, or browse <a href="report.html">the pre-computed top-3 listings page</a>
+        which works offline.`;
+    } else {
+      el.innerHTML = `<strong>Valuation API is not running.</strong> Start it locally:<br>
+        <code>cd house_price_pred &amp;&amp; python valuation_api\\app.py</code> (or double-click <code>valuation_api\\run.bat</code> on Windows). Then refresh this page.`;
+    }
+  }
+}
+
+document.getElementById("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("submitBtn");
+  btn.disabled = true; btn.textContent = "Working...";
+
+  // First-hit-per-city is slow (~10s on the home server) because the API
+  // lazy-loads the city's training PPD + model bundle into RAM. After that
+  // first request, subsequent ones for the same city are ~500ms.
+  // Show a "still working" message after 4s so the page doesn't feel dead.
+  const slowTimer = setTimeout(() => {
+    btn.textContent = "Loading city data (first request)…";
+  }, 4000);
+
+  const body = {
+    postcode: document.getElementById("postcode").value.trim().toUpperCase(),
+    property_type: document.getElementById("property_type").value,
+    bedrooms: parseInt(document.getElementById("bedrooms").value, 10) || null,
+    floor_area_sqm: parseFloat(document.getElementById("floor_area_sqm").value) || null,
+    tenure: document.getElementById("tenure").value || null,
+    year_built: parseInt(document.getElementById("year_built").value, 10) || null,
+    epc_rating: document.getElementById("epc_rating").value || null,
+    is_new_build: document.getElementById("is_new_build").value === "true" ? true :
+                   document.getElementById("is_new_build").value === "false" ? false : null,
+  };
+
+  try {
+    const resp = await fetch(API_BASE + "/api/valuate", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(body),
+    });
+    const result = await resp.json();
+    if (!resp.ok) throw new Error(result.error || "API error " + resp.status);
+    renderResult(result);
+  } catch(e) {
+    document.getElementById("results").className = "results visible";
+    document.getElementById("primaryResult").innerHTML =
+      `<div class="error">Error: ${e.message}</div>`;
+    document.getElementById("comparables").innerHTML = "";
+    document.getElementById("metaResult").innerHTML = "";
+  } finally {
+    clearTimeout(slowTimer);
+    btn.disabled = false; btn.textContent = "Estimate price";
+  }
+});
+
+function fmt(n) {
+  if (n == null || isNaN(n)) return "—";
+  return "£" + Math.round(n).toLocaleString();
+}
+
+function renderResult(r) {
+  document.getElementById("results").className = "results visible";
+
+  const p = r.predictions;
+  const primary = p.pure_ppd_estimate ?? p.comp_median;
+  const primaryLabel = (p.pure_ppd_estimate != null)
+    ? "Pure PPD estimate (sold-fair-value)"
+    : "Comparable sold median";
+
+  const cm = r.comp_meta || {};
+  const fu = cm.filters_used || {};
+  const compNote = cm.search_radius_km != null
+    ? `${p.n_comparables} sale${p.n_comparables===1?'':'s'} within ${cm.search_radius_km} km, last ${cm.search_window_years} years` +
+      (fu.bed_tolerance != null ? `, ±${fu.bed_tolerance} bed` : '') +
+      (fu.size_tolerance_pct != null ? `, ±${fu.size_tolerance_pct}% size` : '') +
+      (fu.hpi_adjusted ? ', HPI-adjusted to today' : '')
+    : '';
+  const warningHtml = cm.warning ? `<div style="background:#fef3c7;border:1px solid #fcd34d;padding:8px 12px;border-radius:4px;font-size:12px;color:#78350f;margin-top:8px">⚠ ${cm.warning}</div>` : '';
+
+  document.getElementById("primaryResult").innerHTML = `
+    <div class="price">${fmt(primary)}</div>
+    <div class="priceSubtitle">${primaryLabel} — ${r.city} (postcode outward ${r.postcode_outward})</div>
+    <div class="predGrid">
+      <div class="predTile primary">
+        <div class="label">Pure PPD estimate</div>
+        <div class="value">${fmt(p.pure_ppd_estimate)}</div>
+        <div class="small">v3 clean sold-price model (no asking leakage)</div>
+      </div>
+      <div class="predTile">
+        <div class="label">Asking-calibrated</div>
+        <div class="value">${fmt(p.asking_calibrated_estimate)}</div>
+        <div class="small">Not used in v3 — the clean model has no asking calibration</div>
+      </div>
+      <div class="predTile">
+        <div class="label">Comp median</div>
+        <div class="value">${fmt(p.comp_median)}</div>
+        <div class="small">${compNote}</div>
+      </div>
+      <div class="predTile">
+        <div class="label">Sold-price range</div>
+        <div class="value">${fmt(p.comp_q25)} — ${fmt(p.comp_q75)}</div>
+        <div class="small">Q25-Q75 of HPI-adjusted nearby sold</div>
+      </div>
+    </div>
+    ${warningHtml}
+  `;
+
+  // Comparables table
+  const c = r.comparables || [];
+  let tbl = "";
+  if (c.length) {
+    tbl = `<table><thead><tr>
+      <th>Date</th><th>Postcode</th><th>Type</th><th>Beds</th><th>m²</th><th>Dist km</th>
+      <th class="right">Sold £</th><th class="right">Sold £ today (HPI)</th>
+    </tr></thead><tbody>`;
+    c.forEach(x => {
+      tbl += `<tr>
+        <td>${x.date ?? "—"}</td>
+        <td>${x.postcode ?? "—"}</td>
+        <td>${x.property_type ?? "—"}</td>
+        <td>${x.beds_inferred ?? "—"}</td>
+        <td>${x.epc_total_floor_area != null ? x.epc_total_floor_area.toFixed(0) : "—"}</td>
+        <td>${x.distance_km != null ? x.distance_km.toFixed(2) : "—"}</td>
+        <td style="text-align:right">${fmt(x.price_sold_nominal)}</td>
+        <td style="text-align:right;font-weight:600">${fmt(x.price_today_hpi)}</td>
+      </tr>`;
+    });
+    tbl += "</tbody></table>";
+    tbl += `<p style="color:#6b7280;font-size:11px;margin-top:8px">Beds inferred from EPC habitable rooms (rooms − 2). HPI-today column uses the city's ONS Land Registry HPI to bring each historical price to today's index level.</p>`;
+  } else {
+    tbl = `<p style="color:#6b7280">No comparable sales within 1 km / last 5 years found for this property type. Lean on the model estimate instead.</p>`;
+  }
+  document.getElementById("comparables").innerHTML = tbl;
+
+  // Meta info
+  let alt = "";
+  if (r.city_candidates && r.city_candidates.length > 1) {
+    alt = `Postcode ${r.postcode_outward} also has listings in: ${r.city_candidates.slice(1).join(", ")}. We used <strong>${r.city}</strong> based on listing count.`;
+  }
+  document.getElementById("metaResult").innerHTML = `
+    <h3 style="margin:0 0 6px;font-size:14px;color:#374151">Methodology</h3>
+    <ul style="margin:0;padding-left:18px;font-size:13px;color:#4b5563;line-height:1.6">
+      <li><strong>Pure PPD estimate</strong>: your inputs fed through ${r.city}'s
+        <code>p_v3_clean_london</code> model (v3_clean XGBoost, 29 features, trained
+        on Land Registry sold transactions — no asking-price leakage). Missing features are filled via
+        k=50 nearest training rows of the same property type.</li>
+      <li><strong>Asking-calibrated estimate</strong>: not used by v3_clean. V1 added an asking-vs-pred lift learned from Rightmove asking prices; v3_clean is a clean sold-price model with no asking-price leakage, so this field is always blank.</li>
+      <li><strong>Comp median</strong>: k=20 nearest sold transactions of the
+        same property type to your postcode centroid (last 24 months where
+        available). The "sold-price range" tile shows Q25-Q75 of those.</li>
+      <li>${alt}</li>
+    </ul>
+  `;
+}
+
+checkApi();
+</script>
+</body></html>

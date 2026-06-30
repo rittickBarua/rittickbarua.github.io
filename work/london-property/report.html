@@ -1,0 +1,686 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Top-3 Ensemble - Rightmove vs Model</title>
+<style>
+body{font-family:-apple-system,Segoe UI,sans-serif;padding:18px;margin:0}
+h1{margin:0 0 6px;font-size:20px}
+.note{color:#666;font-size:13px;margin:0 0 14px}
+.filterRow{display:flex;gap:14px;flex-wrap:wrap;background:#f5f7fa;padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:13px;align-items:flex-start}
+.filterRow label{display:flex;flex-direction:column;font-weight:600;color:#333}
+.filterRow input,.filterRow select{font-size:13px;padding:4px 6px;margin-top:2px;border:1px solid #ccc;border-radius:4px;font-weight:400}
+.filterRow .row2{display:flex;gap:4px}
+.filterRow .row2 input{width:80px}
+.rowLabel{font-size:11px;color:#666;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin:0 0 -2px 4px}
+#count{font-weight:600;color:#1a73e8}
+table{border-collapse:collapse;font-size:13px;width:100%}
+th{background:#eef0f3;text-align:left;padding:6px 8px;cursor:pointer;user-select:none;position:sticky;top:0}
+th:hover{background:#dde1e6}
+td{padding:4px 8px;border-bottom:1px solid #eee}
+tr:hover{background:#fafafa}
+.over{color:#b91c1c}
+.under{color:#15803d}
+a{color:#1a73e8;text-decoration:none}
+a:hover{text-decoration:underline}
+.right{text-align:right}
+.btn{cursor:pointer;background:#1a73e8;color:#fff;border:0;padding:5px 12px;border-radius:4px;font-size:12px}
+.btn:hover{filter:brightness(0.9)}
+.cbgroup{display:flex;flex-direction:row;flex-wrap:wrap;gap:6px 12px;margin-top:2px;padding:6px 8px;border:1px solid #ccc;border-radius:4px;background:#fff;align-items:center}
+.cb{display:inline-flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;font-size:12px;white-space:nowrap}
+.cb input{margin:0}
+.expandBtn{cursor:pointer;user-select:none;color:#1a73e8;font-weight:700;display:inline-block;width:14px;text-align:center}
+.expandBtn:hover{color:#0b55c2}
+tr.compRow{display:none}
+tr.compRow.open{display:table-row}
+tr.compRow > td{background:#fafafa;padding:8px 16px;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb}
+.predFallback{font-style:italic;color:#6b7280}
+table.compTbl{font-size:12px;border-collapse:collapse;width:100%}
+table.compTbl th{text-align:left;color:#444;font-weight:700;padding:3px 8px;background:#f0f0f3}
+table.compTbl td{padding:2px 8px;border-bottom:1px solid #eee}
+table.compTbl tr:hover td{background:#f7f7f7}
+
+.high{color:#15803d;font-weight:700}
+.low{color:#b91c1c}
+.modeBtn{cursor:pointer;background:#e5e7eb;color:#374151;border:0;padding:6px 14px;border-radius:4px;font-size:13px;font-weight:600;letter-spacing:.02em}
+.modeBtn:hover{background:#d1d5db}
+.modeBtn.active{background:#1a73e8;color:#fff}
+#caveat{background:#fef3c7;border:1px solid #fcd34d;padding:10px 14px;border-radius:6px;margin:10px 0 6px;font-size:13px;color:#78350f}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+</head><body>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+  <h1 style="margin:0">Top-3 Ensemble - Rightmove vs Model</h1><span id="buildStamp" style="font-size:11px;color:#9ca3af;margin-left:12px;font-weight:normal">v3_clean + BTL build 2026-06-13</span>
+  <div style="display:flex;gap:8px;align-items:center"><div style="display:flex;gap:8px"><button type="button" class="modeBtn" data-mode="retail" onclick="setMode('retail')" title="Retail-buyer defaults: filter to common property types and bedroom counts, exclude auction-flagged listings.">Retail</button><button type="button" class="modeBtn" data-mode="auction" onclick="setMode('auction')" title="Auction-hunter defaults: all property types/beds, auction-flagged only.">Auction</button></div><button class="btn" id="viewToggle" style="background:#374151;font-size:14px;padding:8px 18px" title="Toggle between list and map view (filters apply to both).">Switch to MAP view</button></div>
+</div>
+<div id="caveat" style="display:none">
+<b>Auction mode:</b> the displayed sale prices are Rightmove asking prices,
+but auction sales typically <b>clear 10-20% below open-market value</b>.
+The <i>Model</i> column shows the RETAIL valuation; for auction-flagged
+listings expect the actual hammer price to land roughly 10-20% under.
+Yields below assume the asking price clears -- adjust mentally for the
+auction discount before deciding.
+</div>
+<p class="note">Model = v3_clean (clean sold-price) + rent/BTL underwriting. <b>82,414</b> listings. <b>pct_diff</b> = (asking - model) / model x 100 [+ over, - under]. <b>Agree std</b> = std across 3 models / ensemble x 100 (lower = the 3 agree). <b>Q10/Q90</b> = 80% prediction interval from quantile XGBoost. <b>Conf</b> = 0-100 confidence score (100 = tight Q10-Q90 band; based on per-listing interval width). <b>In</b> = checkmark if asking price is inside the [Q10, Q90] band.</p>
+<div class="rowLabel">Property attributes</div>
+<div class="filterRow">
+ <label title="Filter to one or more property types. None ticked = all types.">Property type
+   <div class="cbgroup" id="ptype">
+     <label class="cb"><input type="checkbox" value="Flat">Flat</label>
+     <label class="cb"><input type="checkbox" value="Terraced" checked>Terraced</label>
+     <label class="cb"><input type="checkbox" value="Semi-detached" checked>Semi-det</label>
+     <label class="cb"><input type="checkbox" value="Detached" checked>Detached</label>
+   </div></label>
+ <label title="Number of bedrooms (from Rightmove listing). None ticked = all.">Bedrooms (any of)
+   <div class="cbgroup" id="beds">
+     <label class="cb"><input type="checkbox" value="1">1</label>
+     <label class="cb"><input type="checkbox" value="2" checked>2</label>
+     <label class="cb"><input type="checkbox" value="3" checked>3</label>
+     <label class="cb"><input type="checkbox" value="4">4</label>
+     <label class="cb"><input type="checkbox" value="5">5</label>
+     <label class="cb"><input type="checkbox" value="6">6+</label>
+   </div></label>
+ <label title="Rightmove asking price, entered in THOUSANDS. e.g. type 410 to mean £410,000. Leave blank for no limit.">Asking price (£000)
+   <div class="row2"><input id="pmin" type="number" placeholder="min"><input id="pmax" type="number" placeholder="max" value="450"></div></label>
+ <label title="Distance from nearest train/Tube/DLR/tram station, in km (ONS NaPTAN rail-node data). Default max=0.5 keeps only listings within 500m of a station.">Station distance (km)
+   <div class="row2"><input id="smin" type="number" placeholder="min" step="0.1"><input id="smax" type="number" placeholder="max" step="0.1" value="0.5"></div></label>
+ <label title="Auction-eligible listings (Rightmove auction flag OR description contains 'auction'). Note: the model is calibrated for retail sales; auction prices typically clear 10-20% below the model's central estimate.">Auction
+   <select id="auc"><option value="all">all</option><option value="only">auction-flagged only</option><option value="exclude" selected>exclude auction</option></select></label>
+ <label title="Filter by Rightmove 'first visible' date. Default min = today − 14 days, so only listings from the last fortnight appear. Set min to your last-review date to suppress listings you've already seen.">Date added
+   <div class="row2"><input id="dadmin" type="date" style="width:135px" value=""><input id="dadmax" type="date" style="width:135px"></div></label>
+ <label title="Free-text search on address (case-insensitive substring match). Try 'E13', 'Humberstone', 'Romford', etc.">Address search
+   <input id="q" type="text" placeholder="e.g. E13 or Humberstone" style="width:200px"></label>
+ <label title="Filter listings by city. This is a MULTI-SELECT — tick a city to ADD it to the visible set; untick to remove. To view only one city, untick all the others. Empty selection = show all loaded cities (same as all-checked, parity with Type/Bedrooms filters). Default: Greater London ticked. Cities without per-city data files yet are still selectable but currently show no rows.">Cities<div id="cities" style="display:inline-block;width:210px"><details class="cityDropdown" style="position:relative"><summary style="cursor:pointer;background:#fff;border:1px solid #d1d5db;padding:6px 10px;border-radius:4px;list-style:none;display:flex;justify-content:space-between;align-items:center"><span id="citySummaryText">London</span><span style="font-size:10px;color:#6b7280">&#9662;</span></summary><div style="position:absolute;left:0;top:100%;margin-top:4px;background:#fff;border:1px solid #d1d5db;border-radius:4px;padding:8px 10px;z-index:50;width:240px;max-height:320px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.10)"><div style="display:flex;gap:6px;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid #e5e7eb"><button type="button" id="citySelectAll" style="flex:1;padding:4px 8px;font-size:11px;background:#2563eb;color:#fff;border:0;border-radius:3px;cursor:pointer">Select all</button><button type="button" id="cityClearAll" style="flex:1;padding:4px 8px;font-size:11px;background:#e5e7eb;color:#1f2937;border:0;border-radius:3px;cursor:pointer">Clear</button></div><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="london" checked> Greater London</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="manchester"> Greater Manchester</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="birmingham"> West Midlands (Birmingham–Wolverhampton)</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="leeds"> West Yorkshire (Leeds–Bradford)</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="liverpool"> Liverpool (Merseyside)</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="bristol"> Bristol</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="tyneside"> Tyneside (Newcastle)</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="nottingham"> Nottingham</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="sheffield"> Sheffield (South Yorkshire)</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="leicester"> Leicester</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="brighton"> Brighton & Hove</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="bcp"> Bournemouth, Christchurch and Poole</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="coventry"> Coventry</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="stoke"> Stoke-on-Trent (Potteries)</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="reading"> Reading–Wokingham</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="hull"> Kingston upon Hull</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="plymouth"> Plymouth</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="derby"> Derby</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="southampton"> Southampton</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="portsmouth"> Portsmouth</label><label style="display:block;padding:2px 0;font-weight:normal"><input type="checkbox" class="cityCB" value="solent"> Solent (Southampton + Portsmouth)</label></div></details></div></label>
+ 
+ 
+</div>
+
+<div class="rowLabel">Model outputs</div>
+<div class="filterRow">
+ <label title="(asking − ensemble model) / ensemble × 100. Positive = asking is above model (overpriced). Negative = asking is below model (underpriced / potential bargain).">pct_diff (%)
+   <div class="row2"><input id="dmin" type="number" placeholder="min" value="-90"><input id="dmax" type="number" placeholder="max" value="0"></div></label>
+ <label title="(asking − median of 15 nearest sold comparables, HPI-adjusted to today) / comp median × 100. Positive = asking above local sold history. Negative = asking below it.">pct_vs_comp (%)
+   <div class="row2"><input id="vmin" type="number" placeholder="min"><input id="vmax" type="number" placeholder="max"></div></label>
+ <label title="Standard deviation across the 3 individual models, as % of ensemble. Low (0-2%) = the 3 models AGREE. High (>5%) = they disagree, take the verdict cautiously.">Model agreement std (%)
+   <div class="row2"><input id="amin" type="number" placeholder="min"><input id="amax" type="number" placeholder="max" value="3"></div></label>
+ <label title="0-100 score derived from the Q90-Q10 prediction interval width. 100 = tight band, model is confident. 0 = very wide band, model is uncertain (rare property/sparse postcode).">Confidence (0-100)
+   <div class="row2"><input id="cmin" type="number" placeholder="min"><input id="cmax" type="number" placeholder="max"></div></label>
+ <label style="font-weight:800" title="Best individual model: Quantile q=0.5 stack (gap MAE £38,832, MdAPE 6.78%). pct_diff against ONLY this model. If you trust one number, trust this one.">p7_6 pct &#9733;
+   <div class="row2"><input id="m1min" type="number" placeholder="min"><input id="m1max" type="number" placeholder="max"></div></label>
+ <label title="Stack with Rightmove description NLP embeddings (gap MAE £39,080). Sees text signal the others miss. pct_diff against ONLY this model.">p7_4 pct
+   <div class="row2"><input id="m2min" type="number" placeholder="min"><input id="m2max" type="number" placeholder="max"></div></label>
+ <label title="Stack with per-property-type Optuna hyperparameters (gap MAE £39,126). pct_diff against ONLY this model.">p7_3 pct
+   <div class="row2"><input id="m3min" type="number" placeholder="min"><input id="m3max" type="number" placeholder="max"></div></label>
+ <label title="Yes = asking falls inside the model's 80% prediction interval [Q10, Q90] -- model is OK with this asking. No = asking is outside, stronger signal of mispricing.">Asking inside Q10-Q90?
+   <select id="iv"><option value="all">all</option><option value="in" selected>yes</option><option value="out">no (outside)</option></select></label>
+ <label title="Show only over-priced (asking > model), only under-priced (asking < model), or both.">Direction
+   <select id="dir"><option value="all">all</option><option value="over">over (asking &gt; model)</option><option value="under" selected>under (asking &lt; model)</option></select></label>
+ <label title="Clear all filters and return to default sort (pct_diff descending).">&nbsp;<button class="btn" id="reset">Reset</button></label>
+ <label title="Download the currently filtered + sorted view as CSV (for Excel / Sheets / pandas).">&nbsp;<button class="btn" id="exportCsv" style="background:#15803d">Export CSV</button></label>
+ <label title="Download the currently filtered + sorted view as XLSX (Excel native).">&nbsp;<button class="btn" id="exportXlsx" style="background:#7c2d12">Export XLSX</button></label>
+</div>
+<p class="note">Showing <span id="count">0</span> listings.
+ <span style="margin-left:14px"><b>Click</b> a header to sort; <b>Shift+Click</b> to add secondary sort. Empty multi-select = no filter.</span></p>
+<p class="note" id="sortInfo" style="font-style:italic"></p>
+<div id="mapWrap" style="display:none">
+  <div id="map" style="height:75vh;border:1px solid #ccc;border-radius:8px"></div>
+  <div id="mapLegend" style="margin-top:6px;font-size:12px;color:#444">
+    Colour scale is relative to the current filter -- it stretches across whatever pct_diff range your filtered listings span.
+  </div>
+</div>
+<div id="tableWrap"><table id="t"><thead><tr>
+<th title="Click chevron to expand sold-nearby comparables for this listing." style="width:24px"></th>
+<th data-k="address" title="Property address from the Rightmove listing. Click to open the listing in a new tab.">Address</th>
+<th data-k="property_type" title="Property type as classified by Rightmove (Flat / Terraced / Semi-detached / Detached).">Type</th>
+<th data-k="bedroom" class="right" title="Number of bedrooms from the Rightmove listing.">Beds</th>
+<th data-k="price" class="right" title="Rightmove asking price in pounds.">Asking</th>
+<th data-k="ensemble_price" class="right" title="Mean of the 3 best models' predictions for this property. The headline 'what we think it's worth' figure (RETAIL valuation).">Model</th>
+<th data-k="pure_ppd_estimate" class="right" title="V1.1 — pure sold-price estimate from p7_3_per_type_routed scored via C.3's vocabulary-normalised pipeline. The 'what would this property SELL for' baseline. Different from Model column for non-London cities (Phase G.0 work, 2026-05-11).">Pure PPD</th>
+<th data-k="asking_calibrated_estimate" class="right" title="V1.1 — asking-calibrated estimate from C.4's 8-base meta-stack (mirrors London's p7_6_combined_stack). Adds Sprint 4 NLP residual + Phase 5 description residual on top of pure-PPD baseline to capture asking-vs-sold spread signal.">Asking-cal</th>
+<th data-k="comp_median_today" class="right" title="Median of the 15 nearest sold-comparable prices, HPI-adjusted to today. Model-free reference point. Click chevron to see the underlying sales.">Comp med</th>
+<th data-k="station_dist_km" class="right" title="Distance from nearest train/Tube/DLR/tram station in km (ONS NaPTAN rail-node lookup, postcode centroid). Hover the cell to see the station name.">Stn km</th>
+<th data-k="ppsqm" class="right" title="Asking price per square metre (asking / Rightmove property_size_sqm). Useful for cross-area comparison; blank when sqm not provided in the listing.">£/m&sup2;</th>
+<th data-k="pct_vs_comp" class="right" title="(asking − comp median today) / comp median × 100. Positive = above sold history, negative = below it.">vs comp</th>
+<th data-k="pct_diff" class="right" title="(asking − ensemble) / ensemble × 100. Positive = asking above model (overpriced). Negative = asking below model (underpriced / potential bargain).">pct_diff</th>
+<th data-k="pct_diff_vs_pure_ppd" class="right" title="V1.1 — (asking − pure_ppd_estimate) / pure_ppd_estimate × 100. Gap vs the C.3-fixed pure sold-price prediction. Negative = asking below SOLD-fair-value (strong bargain in absolute terms).">vs PPD %</th>
+<th data-k="pct_diff_vs_asking_cal" class="right" title="V1.1 — (asking − asking_calibrated_estimate) / asking_calibrated_estimate × 100. Gap vs the asking-calibrated meta-stack. Negative = asking below MARKET-TYPICAL for similar listings (bargain relative to comparable asking prices).">vs Cal %</th>
+<th data-k="confidence" class="right" title="0-100 confidence score derived from Q90-Q10 width. 100 = tight band, model very confident. 0 = wide band, model uncertain (sparse postcode/rare property).">Conf</th>
+<th data-k="q10" class="right" title="10th-percentile price from the quantile XGBoost. The model's conservative 'low-end plausible' price; only 10% chance the true value is below this.">Q10</th>
+<th data-k="q90" class="right" title="90th-percentile price from the quantile XGBoost. The model's 'high-end plausible' price; only 10% chance the true value is above this.">Q90</th>
+
+<th data-k="pred_rent_median" class="right" title="Predicted monthly mean rent (£) for this listing's LA + bedroom count, from rent model M2 (quantile XGB q=0.5). MAE ~£192 on unseen LAs.">Pred rent</th>
+<th data-k="pred_rent_q25" class="right" title="25th-percentile rent (£) from PRMS-anchored model M5. Conservative downside scenario for stress-tests.">Q25 rent</th>
+<th data-k="pred_rent_q75" class="right" title="75th-percentile rent (£) from PRMS-anchored model M5.">Q75 rent</th>
+<th data-k="gross_yield_pct" class="right" title="Gross yield = annual rent / purchase price x 100. Retail listings: divisor = Rightmove asking. Auction-flagged: divisor = (Rightmove GUIDE x 1.00) + 2% buyer's premium + £1,500 fixed fees -- i.e. ASSUMES hammer = guide. Real hammer prices aren't in any free dataset (would need scraped auction-house results, see REPORT_4 v2 roadmap). London retail median ~5%.">Gross yield %</th>
+<th data-k="net_yield_pct" class="right" title="Net OPERATING yield = (rent - operating costs) / purchase price. Costs: mgmt 10%, voids 5%, maintenance 1% of price, insurance 0.15%, + £2,750/yr if flat. Excludes mortgage interest. Auction-flagged listings use the auction-adjusted purchase price as the divisor (see Gross yield tooltip).">Net yield %</th>
+<th data-k="mortgage_interest_monthly_gbp" class="right" title="Monthly interest-only cost. Both retail and auction-flagged listings assume 75% LTV at 5.5% p.a. (typical 2026 BTL 5-year fix). Auction loan is on the auction-adjusted purchase price, not the guide.">Mtg int £/mo</th>
+<th data-k="net_cashflow_monthly_gbp" class="right" title="Net monthly cash flow AFTER operating costs AND mortgage interest. The actual £ that lands in the bank each month.">Cashflow £/mo</th>
+<th data-k="cash_on_cash_pct" class="right" title="Annual cashflow / cash invested x 100. Cash invested = 25% deposit + 7% SDLT/fees + bedroom-scaled renovation (£20k 1-bed / £25k 2-bed / £30k 3-bed / £40k 4-bed). For auction listings the deposit/fees are on the effective purchase price (guide + 2% buyer's premium + £1,500 fees). >=8% is a strong leveraged-return deal.">Cash-on-cash %</th>
+<th data-k="total_return_20yr_real_gbp" class="right" title="Total cash returned to YOU after 20 years, in TODAY's £ (inflation-adjusted). Includes: tax-free director's-loan repayment of your initial cash invested + remaining company surplus extracted via Members' Voluntary Liquidation (MVL @ 20% CGT). Numbers above the 'Cash invested' figure mean you made money; below means you lost. Assumes Ltd company structure (interest-only mortgage, 5.5% fixed; rent 2.5%/yr growth, property 3%/yr, inflation 2.5%, corp tax 25%).">20yr back £</th>
+<th data-k="vs_etf_20yr_real_gbp" class="right" title="How much MORE (+) or LESS (-) you get back vs investing the same cash in a broad-market ETF for 20 years. Benchmark: 6% real CAGR (midpoint of FTSE All-Share ~5% and S&P 500 ~7%, ISA-wrapped so tax-free). Positive = property beat the ETF; negative = ETF won.">vs ETF £</th>
+<th data-k="date_added" title="Date this listing first became visible on Rightmove (firstVisibleDate, ISO YYYY-MM-DD).">Added</th>
+</tr></thead><tbody id="b"></tbody></table></div>
+<script>
+let DATA=[];
+const HIDE_COLS=["pure_ppd_estimate", "asking_calibrated_estimate", "pct_diff_vs_pure_ppd", "pct_diff_vs_asking_cal", "comp_median_today", "pct_vs_comp"];
+function hideRedundantCols(){
+  const ths=[...document.querySelectorAll('thead th')];
+  const idx=HIDE_COLS.map(k=>ths.findIndex(t=>t.dataset.k===k)+1).filter(n=>n>0);
+  if(!idx.length)return;
+  const sel=idx.map(n=>`thead th:nth-child(${n}),tbody td:nth-child(${n})`).join(',');
+  let s=document.getElementById('hideCols');
+  if(!s){s=document.createElement('style');s.id='hideCols';document.head.appendChild(s);}
+  s.textContent=sel+'{display:none!important}';
+}
+function applyDefaults(){
+  document.querySelectorAll('#ptype input').forEach(i=>i.checked=true);
+  document.querySelectorAll('#beds input').forEach(i=>i.checked=['2','3'].includes(i.value));
+  const S=(id,v)=>{const e=document.getElementById(id); if(e) e.value=v;};
+  S('pmin',''); S('pmax','450'); S('smin',''); S('smax','0.8'); S('auc','all');
+  const mn=DATA.reduce((m,r)=>(r.pct_diff!=null&&r.pct_diff<m)?r.pct_diff:m,Infinity);
+  S('dmin', isFinite(mn)?String(Math.floor(mn)):''); S('dmax','');
+  S('amin',''); S('amax',''); S('iv','all'); S('dir','under');
+  S('dadmin',''); S('dadmax','');
+}
+function hideUselessFilters(){
+  ['m1min','m2min','m3min'].forEach(id=>{
+    const e=document.getElementById(id);
+    if(e){const lbl=e.closest('label'); if(lbl) lbl.style.display='none';}
+  });
+}
+async function boot(){
+  try{
+    const resp=await fetch('data_london.json.gz');
+    let txt;
+    if(typeof DecompressionStream!=='undefined'){
+      txt=await new Response(resp.body.pipeThrough(new DecompressionStream('gzip'))).text();
+    } else { txt=await (await fetch('data_london.json')).text(); }
+    DATA=JSON.parse(txt);
+    if(typeof initMultiCity==='function') initMultiCity();
+    if(typeof setMode==='function') setMode('retail');
+    applyDefaults();
+    if(typeof render==='function') render();
+    hideRedundantCols();
+    hideUselessFilters();
+  }catch(e){ document.body.insertAdjacentHTML('afterbegin','<div style="padding:12px;background:#fee;color:#900">Failed to load listing data: '+e+'</div>'); }
+}
+
+const $=id=>document.getElementById(id);
+// Multi-sort: array of {k, asc}.  Click toggles single-sort, Shift+Click adds.
+let sorts=[{k:"pct_diff",asc:true},{k:"confidence",asc:false}];
+function fmt(n,d=0){return n==null||isNaN(n)?"":Number(n).toLocaleString("en-GB",{maximumFractionDigits:d,minimumFractionDigits:d})}
+function pickCB(id){return [...$(id).querySelectorAll("input:checked")].map(i=>i.value)}
+function num(id){const v=$(id).value;return v===""?null:+v}
+function pass(r){
+ const cities=pickCB("cities");if(cities.length&&!cities.includes(r.city))return false;
+ const pt=pickCB("ptype");if(pt.length&&!pt.includes(r.property_type))return false;
+ const bd=pickCB("beds");if(bd.length){const b=parseInt(r.bedroom);if(!bd.includes(String(b))&&!(bd.includes("6")&&b>=6))return false;}
+ // Asking price inputs are in £000 (so user types 410 to mean 410,000).
+ const pmin=num("pmin"),pmax=num("pmax");if(pmin!=null&&r.price<pmin*1000)return false;if(pmax!=null&&r.price>pmax*1000)return false;
+ const smin=num("smin"),smax=num("smax");
+ if((smin!=null||smax!=null)&&r.station_dist_km!=null){
+   if(smin!=null&&r.station_dist_km<smin)return false;
+   if(smax!=null&&r.station_dist_km>smax)return false;}
+ // From here, every model-output filter "gracefully degrades": if the
+ // listing is missing the relevant field (e.g. rollout cities have no
+ // pct_p7_6_combined_stack), the filter is skipped for that row and the
+ // listing is still shown. This lets users keep their London-set filters
+ // active while browsing other cities without those cities disappearing.
+ const dmin=num("dmin"),dmax=num("dmax");if(r.pct_diff!=null){if(dmin!=null&&r.pct_diff<dmin)return false;if(dmax!=null&&r.pct_diff>dmax)return false;}
+ const vmin=num("vmin"),vmax=num("vmax");
+ if((vmin!=null||vmax!=null)&&r.pct_vs_comp!=null){
+   if(vmin!=null&&r.pct_vs_comp<vmin)return false;
+   if(vmax!=null&&r.pct_vs_comp>vmax)return false;}
+ const amin=num("amin"),amax=num("amax");if(r.model_std_pct!=null){if(amin!=null&&r.model_std_pct<amin)return false;if(amax!=null&&r.model_std_pct>amax)return false;}
+ const cmin=num("cmin"),cmax=num("cmax");if(r.confidence!=null){if(cmin!=null&&r.confidence<cmin)return false;if(cmax!=null&&r.confidence>cmax)return false;}
+ const iv=$("iv").value;if(iv!==""&&r.in_interval!=null){if(iv==="in"&&!r.in_interval)return false;if(iv==="out"&&r.in_interval)return false;}
+ const m1mn=num("m1min"),m1mx=num("m1max");if(r.pct_p7_6_combined_stack!=null){if(m1mn!=null&&r.pct_p7_6_combined_stack<m1mn)return false;if(m1mx!=null&&r.pct_p7_6_combined_stack>m1mx)return false;}
+ const m2mn=num("m2min"),m2mx=num("m2max");if(r.pct_p7_4_stack_with_nlp!=null){if(m2mn!=null&&r.pct_p7_4_stack_with_nlp<m2mn)return false;if(m2mx!=null&&r.pct_p7_4_stack_with_nlp>m2mx)return false;}
+ const m3mn=num("m3min"),m3mx=num("m3max");if(r.pct_p7_3_stack!=null){if(m3mn!=null&&r.pct_p7_3_stack<m3mn)return false;if(m3mx!=null&&r.pct_p7_3_stack>m3mx)return false;}
+ const dir=$("dir").value;if(dir!==""&&r.pct_diff!=null){if(dir==="over"&&r.pct_diff<=0)return false;if(dir==="under"&&r.pct_diff>=0)return false;}
+ const q=$("q").value.trim().toLowerCase();if(q&&!(r.address||"").toLowerCase().includes(q))return false;
+ const dadmin=$("dadmin").value, dadmax=$("dadmax").value;
+ if(dadmin||dadmax){
+   const da=r.date_added||"";
+   if(!da)return false;
+   if(dadmin&&da<dadmin)return false;
+   if(dadmax&&da>dadmax)return false;
+ }
+ const auc=$("auc").value;
+ if(auc==="only"&&!r.auction_flag)return false;
+ if(auc==="exclude"&&r.auction_flag)return false;
+ return true;
+}
+function renderCompTable(r){
+  const raw=r.comparables||[];
+  if(!raw.length)return"<i>no comparables</i>";
+  // Display newest sales first.  rank/distance still preserved as the # column.
+  const list=raw.slice().sort((a,b)=>(b.sale_date||"").localeCompare(a.sale_date||""));
+  const head=`<tr><th>#</th><th>Sale date</th><th class="right">Sold &pound;</th><th class="right">Sold &pound; today</th><th class="right">Dist (km)</th><th class="right">Sqm</th><th class="right">Rooms</th><th>Outward</th><th class="right">&pound;/m&sup2; today</th></tr>`;
+  const body=list.map(c=>{
+    const ppm=(c.sold_price_today!=null&&c.sqm)?Math.round(c.sold_price_today/c.sqm):null;
+    return `<tr><td>${c.rank}</td><td>${c.sale_date||""}</td>`
+         +`<td class="right">${c.sold_price!=null?"&pound;"+fmt(c.sold_price):""}</td>`
+         +`<td class="right">${c.sold_price_today!=null?"&pound;"+fmt(c.sold_price_today):""}</td>`
+         +`<td class="right">${fmt(c.dist_km,3)}</td>`
+         +`<td class="right">${c.sqm!=null?fmt(c.sqm,0):""}</td>`
+         +`<td class="right">${c.rooms!=null?c.rooms:""}</td>`
+         +`<td>${c.postcode_outward||""}</td>`
+         +`<td class="right">${ppm!=null?"&pound;"+fmt(ppm):""}</td></tr>`;
+  }).join("");
+  return `<div style="font-weight:700;margin-bottom:4px">Sold nearby (top ${list.length}, same property type, kNN by distance &mdash; HPI-deflated to today's London index)</div><table class="compTbl"><thead>${head}</thead><tbody>${body}</tbody></table>`;
+}
+function render(){
+ if(typeof viewMode!=="undefined"&&viewMode==="map"){renderMap();return;}
+ let rows=DATA.filter(pass);
+ rows.sort((a,b)=>{
+   for(const s of sorts){
+     const x=a[s.k],y=b[s.k];
+     if(x==null&&y==null)continue;
+     if(x==null)return 1;if(y==null)return -1;
+     if(x>y)return s.asc?1:-1;
+     if(x<y)return s.asc?-1:1;
+   }
+   return 0;
+ });
+ $("count").textContent=rows.length.toLocaleString();
+ $("sortInfo").textContent="Sort: "+sorts.map((s,i)=>(i?" then ":"")+s.k+" "+(s.asc?"asc":"desc")).join("");
+ const html=rows.slice(0,2000).map(r=>{
+   const cls=r.pct_diff>0?"over":"under";
+   const vcls=r.pct_vs_comp==null?"":(r.pct_vs_comp>0?"over":"under");
+   const addr=r.address||"";
+   const auctionBadge=r.auction_flag?` <span title="Auction-eligible listing. The model price below is RETAIL valuation; auction sale price typically clears 10-20% below this. See auction estimate column." style="background:#7c2d12;color:#fff;font-size:10px;padding:1px 5px;border-radius:3px;font-weight:700;letter-spacing:.05em">AUC</span>`:"";
+   const addrCell=(r.listing_url?`<a href="${r.listing_url}" target="_blank">${addr}</a>`:addr)+auctionBadge;
+   const expandCell=r.comp_count?`<span class="expandBtn" data-id="${r.id}" title="Show ${r.comp_count} sold-nearby comparables">&#9656;</span>`:"";
+   const compMed=r.comp_median_today==null?"":"£"+fmt(r.comp_median_today);
+   // Prefer Rightmove-supplied property_size_sqm; fall back to EPC-imputed
+   // inferred_floor_area_sqm when Rightmove doesn't carry the field. The
+   // imputed value is the median EPC total_floor_area of nearby same-type
+   // properties (J.3, ~94% cohort coverage).
+   const effSqm = r.property_size_sqm ?? r.inferred_floor_area_sqm ?? null;
+   const ppsqm=(r.price && effSqm)?Math.round(r.price/effSqm):null;
+   const sqmIsInferred = r.property_size_sqm==null && r.inferred_floor_area_sqm!=null;
+   r.ppsqm=ppsqm;  // expose for sorting
+   const vsCompCell=r.pct_vs_comp==null?"":`<span class="${vcls}">${r.pct_vs_comp>0?"+":""}${fmt(r.pct_vs_comp,1)}%</span>`;
+   const compRow=r.comp_count?`<tr class="compRow" id="comp-${r.id}"><td colspan=22>${renderCompTable(r)}</td></tr>`:"";
+   return `<tr><td>${expandCell}</td><td>${addrCell}</td><td>${r.property_type||""}</td>
+   <td class="right">${r.bedroom??""}</td>
+   <td class="right">£${fmt(r.price)}</td>
+   <td class="right">£${fmt(r.ensemble_price)}</td>
+   <td class="right ${r.pred_source==='fallback'?'predFallback':''}" title="${r.pred_source==='fallback'?'Fallback to ensemble_price - meta-stack failed for this row':''}">${r.pure_ppd_estimate!=null?"£"+fmt(r.pure_ppd_estimate):""}</td>
+   <td class="right ${r.pred_source==='fallback'?'predFallback':''}" title="${r.pred_source==='fallback'?'Calibrated from ensemble_price - meta-stack failed':''}">${r.asking_calibrated_estimate!=null?"£"+fmt(r.asking_calibrated_estimate):""}</td>
+   <td class="right" title="Median of 15 nearest sold (HPI today)">${compMed}</td>
+   <td class="right" title="${r.nearest_station?'Nearest: '+r.nearest_station:''}">${r.station_dist_km==null?"":fmt(r.station_dist_km,2)}</td>
+   <td class="right ${sqmIsInferred?'predFallback':''}" title="${effSqm?fmt(effSqm,0)+' m² '+(sqmIsInferred?'(EPC-imputed, source: '+r.floor_area_source+')':'(from Rightmove listing)'):'no sqm in listing or EPC'}">${ppsqm!=null?"£"+fmt(ppsqm):""}</td>
+   <td class="right">${vsCompCell}</td>
+   <td class="right ${cls}">${r.pct_diff>0?"+":""}${fmt(r.pct_diff,1)}%</td>
+   <td class="right ${r.pct_diff_vs_pure_ppd<-5?'high':r.pct_diff_vs_pure_ppd>10?'low':''}">${r.pct_diff_vs_pure_ppd!=null?(r.pct_diff_vs_pure_ppd>0?"+":"")+fmt(r.pct_diff_vs_pure_ppd,1)+"%":""}</td>
+   <td class="right ${r.pct_diff_vs_asking_cal<-5?'high':r.pct_diff_vs_asking_cal>10?'low':''}">${r.pct_diff_vs_asking_cal!=null?(r.pct_diff_vs_asking_cal>0?"+":"")+fmt(r.pct_diff_vs_asking_cal,1)+"%":""}</td>
+   <td class="right">${fmt(r.confidence,0)}</td>
+   <td class="right">£${fmt(r.q10)}</td>
+   <td class="right">£${fmt(r.q90)}</td>
+   <td class="right">£${fmt(r.pred_rent_median)}</td>
+   <td class="right">£${fmt(r.pred_rent_q25)}</td>
+   <td class="right">£${fmt(r.pred_rent_q75)}</td>
+   <td class="right">${r.gross_yield_pct==null?"":r.gross_yield_pct.toFixed(2)+"%"}</td>
+   <td class="right ${r.net_yield_pct>=5?'high':r.net_yield_pct<3?'low':''}">${r.net_yield_pct==null?"":r.net_yield_pct.toFixed(2)+"%"}</td>
+   <td class="right">£${fmt(r.mortgage_interest_monthly_gbp)}</td>
+   <td class="right ${r.net_cashflow_monthly_gbp>=200?'high':r.net_cashflow_monthly_gbp<0?'low':''}">${r.net_cashflow_monthly_gbp==null?"":(r.net_cashflow_monthly_gbp>=0?"+":"")+"£"+fmt(r.net_cashflow_monthly_gbp)}</td>
+   <td class="right ${r.cash_on_cash_pct>=8?'high':r.cash_on_cash_pct<0?'low':''}">${r.cash_on_cash_pct==null?"":(r.cash_on_cash_pct>=0?"+":"")+r.cash_on_cash_pct.toFixed(2)+"%"}</td>
+   <td class="right ${r.total_return_20yr_real_gbp>=400000?'high':r.total_return_20yr_real_gbp<r.cash_invested_gbp?'low':''}">${r.total_return_20yr_real_gbp==null?"":"£"+fmt(r.total_return_20yr_real_gbp)}</td>
+   <td class="right ${r.vs_etf_20yr_real_gbp>=0?'high':'low'}">${r.vs_etf_20yr_real_gbp==null?"":(r.vs_etf_20yr_real_gbp>=0?"+":"-")+"£"+fmt(Math.abs(r.vs_etf_20yr_real_gbp))}</td>
+   <td>${r.date_added||""}</td>
+   </tr>${compRow}`}).join("");
+ $("b").innerHTML=html+(rows.length>2000?`<tr><td colspan=25 style="text-align:center;color:#888">(showing first 2,000 of ${rows.length.toLocaleString()} - tighten filters to see the rest)</td></tr>`:"");
+ // Wire chevrons.
+ document.querySelectorAll(".expandBtn").forEach(b=>b.onclick=()=>{
+   const id=b.dataset.id; const tr=document.getElementById("comp-"+id);
+   if(!tr)return;
+   const open=tr.classList.toggle("open");
+   b.innerHTML=open?"&#9662;":"&#9656;";
+ });
+}
+document.querySelectorAll("th[data-k]").forEach(th=>th.onclick=ev=>{
+  const k=th.dataset.k;
+  const idx=sorts.findIndex(s=>s.k===k);
+  if(ev.shiftKey){
+    if(idx>=0){sorts[idx].asc=!sorts[idx].asc}
+    else{sorts.push({k,asc:false})}
+  }else{
+    if(sorts.length===1&&sorts[0].k===k){sorts[0].asc=!sorts[0].asc}
+    else{sorts=[{k,asc:false}]}
+  }
+  render();
+});
+["pmin","pmax","smin","smax","dmin","dmax","vmin","vmax","amin","amax","cmin","cmax","m1min","m1max","m2min","m2max","m3min","m3max","iv","dir","q","dadmin","dadmax","auc"].forEach(id=>$(id).oninput=$(id).onchange=render);
+// Checkbox groups: any change anywhere inside the group triggers a re-render.
+["ptype","beds"].forEach(id=>$(id).addEventListener("change",render));
+$("reset").onclick=()=>{
+  ["ptype","beds"].forEach(id=>$(id).querySelectorAll("input").forEach(i=>i.checked=false));
+  ["pmin","pmax","smin","smax","dmin","dmax","vmin","vmax","amin","amax","cmin","cmax","m1min","m1max","m2min","m2max","m3min","m3max","q","dadmin","dadmax"].forEach(id=>$(id).value="");
+  $("iv").value="all";$("dir").value="all";$("auc").value="all";
+  sorts=[{k:"pct_diff",asc:true},{k:"confidence",asc:false}];
+  render();
+};
+
+// ----- Export currently filtered + sorted view -----
+function currentRows(){
+  let rows=DATA.filter(pass);
+  rows.sort((a,b)=>{
+    for(const s of sorts){
+      const x=a[s.k],y=b[s.k];
+      if(x==null&&y==null)continue;
+      if(x==null)return 1;if(y==null)return -1;
+      if(x>y)return s.asc?1:-1;
+      if(x<y)return s.asc?-1:1;
+    }
+    return 0;
+  });
+  return rows;
+}
+function buildExportRows(){
+  return currentRows().map(r=>({
+    address:r.address, type:r.property_type, beds:r.bedroom,
+    asking:r.price, model_ensemble:r.ensemble_price,
+    comp_median_today:r.comp_median_today, comp_median_orig:r.comp_median_orig,
+    station_dist_km:r.station_dist_km, nearest_station:r.nearest_station,
+    sqm:r.property_size_sqm,
+    asking_per_sqm:(r.price&&r.property_size_sqm)?Math.round(r.price/r.property_size_sqm):null,
+    pct_vs_comp:r.pct_vs_comp, pct_diff:r.pct_diff,
+    confidence:r.confidence, q10:r.q10, q90:r.q90,
+        pred_rent_monthly:r.pred_rent_median,
+    pred_rent_q25:r.pred_rent_q25,
+    pred_rent_q75:r.pred_rent_q75,
+    gross_yield_pct:r.gross_yield_pct,
+    net_yield_pct:r.net_yield_pct,
+    mortgage_interest_monthly_gbp:r.mortgage_interest_monthly_gbp,
+    net_cashflow_monthly_gbp:r.net_cashflow_monthly_gbp,
+    cash_on_cash_pct:r.cash_on_cash_pct,
+    annual_operating_costs_gbp:r.annual_costs_gbp,
+    renovation_gbp:r.renovation_gbp,
+    cash_invested_gbp:r.cash_invested_gbp,
+    profit_20yr_real_gbp:r.profit_20yr_real_gbp,
+    profit_20yr_nominal_gbp:r.profit_20yr_nominal_gbp,
+    real_cagr_20yr_pct:r.real_cagr_20yr_pct,
+    sale_price_20yr_nominal_gbp:r.sale_price_20yr_nominal_gbp,
+    director_profit_20yr_real_gbp:r.director_profit_20yr_real_gbp,
+    director_cagr_20yr_pct:r.director_cagr_20yr_pct,
+    total_return_20yr_real_gbp:r.total_return_20yr_real_gbp,
+    vs_etf_20yr_real_gbp:r.vs_etf_20yr_real_gbp,
+    yield_basis:r.yield_basis,
+    date_added:r.date_added,
+    comp_count:r.comp_count, nearest_comp_km:r.nearest_comp_km,
+    listing_url:r.listing_url
+  }));
+}
+function csvEscape(v){if(v==null)return"";const s=String(v);return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
+$("exportCsv").onclick=()=>{
+  const rows=buildExportRows();
+  if(!rows.length){alert("No rows to export.");return;}
+  const cols=Object.keys(rows[0]);
+  const csv=[cols.join(",")].concat(rows.map(r=>cols.map(c=>csvEscape(r[c])).join(","))).join("\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="rightmove_filtered_"+new Date().toISOString().slice(0,10)+".csv";
+  a.click();URL.revokeObjectURL(a.href);
+};
+$("exportXlsx").onclick=()=>{
+  const rows=buildExportRows();
+  if(!rows.length){alert("No rows to export.");return;}
+  const ws=XLSX.utils.json_to_sheet(rows);
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,"listings");
+  XLSX.writeFile(wb,"rightmove_filtered_"+new Date().toISOString().slice(0,10)+".xlsx");
+};
+// ----- Map view (Leaflet + clustering) -----
+let map=null, clusterLayer=null, viewMode="list";
+// Colour scale is RELATIVE to the currently filtered rows.  Greens map
+// across [negMin .. 0] and reds map across [0 .. posMax], so a tightly
+// clustered set still spans the full visual range.
+function colorForPct(p,negMin,posMax){
+  if(p==null||isNaN(p))return"#9ca3af";
+  if(p<0){
+    const t=negMin<0?Math.min(1,p/negMin):0;
+    return`rgb(${Math.round(229+(21-229)*t)},${Math.round(231+(128-231)*t)},${Math.round(235+(61-235)*t)})`;
+  }
+  if(p>0){
+    const t=posMax>0?Math.min(1,p/posMax):0;
+    return`rgb(${Math.round(229+(185-229)*t)},${Math.round(231+(28-231)*t)},${Math.round(235+(28-235)*t)})`;
+  }
+  return"#e5e7eb";
+}
+function ensureMap(){
+  if(map)return;
+  map=L.map("map").setView([51.5074,-0.1278],10);
+  // Voyager basemap: pale palette but shows parks (green), water (blue),
+  // and tube/rail station symbols + names.
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",{maxZoom:19,subdomains:"abcd",attribution:"&copy; OpenStreetMap, &copy; CARTO"}).addTo(map);
+  clusterLayer=L.markerClusterGroup({chunkedLoading:true,disableClusteringAtZoom:14,maxClusterRadius:40});
+  map.addLayer(clusterLayer);
+}
+function renderMap(){
+  ensureMap();
+  clusterLayer.clearLayers();
+  const rows=currentRows().filter(r=>r.latitude!=null&&r.longitude!=null);
+  // Compute relative colour-scale endpoints from the filtered set itself.
+  const pcts=rows.map(r=>r.pct_diff).filter(v=>v!=null&&!isNaN(v));
+  const negMin=Math.min(0,...pcts.filter(v=>v<0));
+  const posMax=Math.max(0,...pcts.filter(v=>v>0));
+  // Update legend dynamically.
+  const lg=$("mapLegend");
+  if(lg){
+    lg.innerHTML=`Colour scale (relative to current filter): `
+      +`<b style="color:rgb(21,128,61)">${fmt(negMin,1)}%</b> (deepest under) `
+      +`&rarr; <b style="color:#9ca3af">0%</b> &rarr; `
+      +`<b style="color:rgb(185,28,28)">+${fmt(posMax,1)}%</b> (deepest over). `
+      +`Click a dot for details &amp; the Rightmove link. Markers cluster when zoomed out.`;
+  }
+  const markers=rows.map(r=>{
+    const c=colorForPct(r.pct_diff,negMin,posMax);
+    const m=L.circleMarker([r.latitude,r.longitude],{radius:6,color:"#222",weight:1,fillColor:c,fillOpacity:0.9});
+    const url=r.listing_url?`<a href="${r.listing_url}" target="_blank">view on Rightmove</a>`:"";
+    const compsLink=r.comp_count?`<a href="#" class="popupCompsLink" data-id="${r.id}">View sold nearby (${r.comp_count})</a>`:"";
+    m.bindPopup(`<b>${r.address||""}</b><br>${r.property_type||""} &middot; ${r.bedroom??"?"}-bed<br>Asking <b>£${fmt(r.price)}</b><br>Model <b>£${fmt(r.ensemble_price)}</b>${r.comp_median_today!=null?" &middot; Comp med <b>£"+fmt(r.comp_median_today)+"</b>":""}<br>pct_diff <b style="color:${c}">${r.pct_diff>0?"+":""}${fmt(r.pct_diff,1)}%</b><br>Stn: ${fmt(r.station_dist_km,2)} km${r.nearest_station?" ("+r.nearest_station+")":""}<br>${url}${compsLink?" &middot; "+compsLink:""}`);
+    return m;
+  });
+  clusterLayer.addLayers(markers);
+  $("count").textContent=rows.length.toLocaleString();
+  if(rows.length){
+    const bounds=L.latLngBounds(rows.map(r=>[r.latitude,r.longitude]));
+    map.fitBounds(bounds,{padding:[20,20]});
+  }
+}
+// Map popup -> "View sold nearby" link: switch to list, scroll, expand.
+document.addEventListener("click",ev=>{
+  const a=ev.target.closest(".popupCompsLink");
+  if(!a)return;
+  ev.preventDefault();
+  const id=a.dataset.id;
+  if(viewMode==="map"){viewMode="list";$("tableWrap").style.display="";$("mapWrap").style.display="none";$("viewToggle").textContent="Switch to MAP view";render();}
+  setTimeout(()=>{
+    const tr=document.getElementById("comp-"+id);
+    if(!tr)return;
+    tr.classList.add("open");
+    const btn=document.querySelector(`.expandBtn[data-id="${id}"]`);
+    if(btn)btn.innerHTML="&#9662;";
+    tr.scrollIntoView({behavior:"smooth",block:"center"});
+  },80);
+});
+$("viewToggle").onclick=()=>{
+  viewMode=viewMode==="list"?"map":"list";
+  $("tableWrap").style.display=viewMode==="list"?"":"none";
+  $("mapWrap").style.display=viewMode==="map"?"":"none";
+  $("viewToggle").textContent="Switch to "+(viewMode==="list"?"MAP":"LIST")+" view";
+  render();
+  if(viewMode==="map"&&map){setTimeout(()=>map.invalidateSize(),100);}
+};
+
+
+// --- Phase A.7 multi-city lazy-loader ----------------------------------
+// London is embedded inline in DATA so the page works under file://.
+// Other cities are fetched on demand and appended to DATA. Once loaded
+// they stay cached in memory; unticking only hides them via the filter.
+const CITY_DATA_SOURCES = {"london": "data_london.json", "manchester": "data_manchester.json", "birmingham": "data_birmingham.json", "leeds": "data_leeds.json", "liverpool": "data_liverpool.json", "bristol": "data_bristol.json", "tyneside": "data_tyneside.json", "nottingham": "data_nottingham.json", "sheffield": "data_sheffield.json", "leicester": "data_leicester.json", "brighton": "data_brighton.json", "bcp": "data_bcp.json", "coventry": "data_coventry.json", "stoke": "data_stoke.json", "reading": "data_reading.json", "hull": "data_hull.json", "plymouth": "data_plymouth.json", "derby": "data_derby.json", "southampton": "data_southampton.json", "portsmouth": "data_portsmouth.json", "solent": "data_solent.json"};
+const LOADED_CITIES = new Set(["london"]);
+
+async function loadCity(name){
+  if (LOADED_CITIES.has(name)) return;
+  const src = CITY_DATA_SOURCES[name];
+  if (!src) { console.warn("Unknown city:", name); LOADED_CITIES.add(name); return; }
+  let cityData = null;
+  // Prefer script-tag loading — works under file:// AND http://. The
+  // companion data_<city>.js sets window.HPP_CITY_DATA[name] when loaded.
+  if (window.HPP_CITY_DATA && window.HPP_CITY_DATA[name]) {
+    cityData = window.HPP_CITY_DATA[name];
+  } else {
+    const jsSrc = src.replace(/\.json$/, ".js");
+    try {
+      await new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        s.src = jsSrc;
+        s.onload = resolve;
+        s.onerror = () => reject(new Error("script load failed: " + jsSrc));
+        document.head.appendChild(s);
+      });
+      cityData = window.HPP_CITY_DATA && window.HPP_CITY_DATA[name];
+    } catch (eScript) {
+      // Script-tag failed (rare). Fall back to fetch — works under http://.
+      try {
+        const resp = await fetch(src);
+        if (!resp.ok) {
+          console.warn("No data file for", name, "(yet) -- HTTP", resp.status);
+          LOADED_CITIES.add(name);
+          return;
+        }
+        cityData = await resp.json();
+      } catch (eFetch) {
+        console.warn("Could not load city data for", name,
+                     "via script (" + eScript.message + ") or fetch (" + eFetch.message + ")");
+        LOADED_CITIES.add(name);
+        return;
+      }
+    }
+  }
+  if (!cityData) {
+    console.warn("Loaded city", name, "but data was empty");
+    LOADED_CITIES.add(name);
+    return;
+  }
+  cityData.forEach(d => { if (!d.city) d.city = name; });
+  DATA.push.apply(DATA, cityData);
+  LOADED_CITIES.add(name);
+}
+
+function _cityDisplayName(value){
+  // Pulls the human label from the checkbox's parent <label> text.
+  const cb = document.querySelector(".cityCB[value='" + value + "']");
+  return cb && cb.parentElement ? cb.parentElement.textContent.trim() : value;
+}
+
+function updateCitySummary(){
+  const checked = Array.from(document.querySelectorAll(".cityCB:checked")).map(i => i.value);
+  const summary = document.getElementById("citySummaryText");
+  if (!summary) return;
+  if (checked.length === 0) {
+    summary.textContent = "all";
+  } else if (checked.length === 1) {
+    summary.textContent = _cityDisplayName(checked[0]);
+  } else if (checked.length <= 3) {
+    // List the names so the user sees exactly which cities are selected.
+    summary.textContent = checked.map(_cityDisplayName).join(" + ");
+  } else {
+    // Too many to list comfortably -- show the first + count of the rest.
+    const first = _cityDisplayName(checked[0]);
+    summary.textContent = first + " + " + (checked.length - 1) + " more";
+  }
+}
+
+async function onCityCheckboxChange(e){
+  const city = e.target.value;
+  if (e.target.checked) {
+    await loadCity(city);  // data stays cached even if user unticks later
+  }
+  updateCitySummary();
+  if (typeof render === "function") render();
+}
+
+function initMultiCity(){
+  // Tag every inline (London) listing with city='london' if not already set.
+  if (typeof DATA !== "undefined" && Array.isArray(DATA)) {
+    let tagged = 0;
+    DATA.forEach(d => { if (!d.city) { d.city = "london"; tagged++; } });
+    console.log("[multi-city] tagged", tagged, "listings as city='london'");
+  }
+  // Event delegation: listen at document level so even if individual cityCB
+  // elements are missed by querySelectorAll (timing edge cases) the change
+  // handler still fires reliably.
+  document.addEventListener("change", function(e){
+    if (e.target && e.target.classList && e.target.classList.contains("cityCB")) {
+      onCityCheckboxChange(e);
+    }
+  });
+  // Outside-click closes the city dropdown (the <details> element doesn't
+  // self-close natively).
+  document.addEventListener("click", function(e){
+    document.querySelectorAll("details.cityDropdown[open]").forEach(d => {
+      if (!d.contains(e.target)) d.removeAttribute("open");
+    });
+  });
+  // "Select all" / "Clear" inside the cities dropdown. Selecting all loads
+  // every city's data in sequence (no-ops for cities already cached) then
+  // refreshes the summary + main render.
+  const _selAll = document.getElementById("citySelectAll");
+  if (_selAll) _selAll.addEventListener("click", async function(e){
+    e.preventDefault(); e.stopPropagation();
+    const boxes = Array.from(document.querySelectorAll(".cityCB"));
+    const toLoad = [];
+    boxes.forEach(b => { if (!b.checked) { b.checked = true; toLoad.push(b.value); } });
+    // Load each city's data (idempotent — loadCity guards against re-load)
+    for (const v of toLoad) { try { await loadCity(v); } catch(err){ console.warn(err); } }
+    updateCitySummary();
+    if (typeof render === "function") render();
+  });
+  const _clrAll = document.getElementById("cityClearAll");
+  if (_clrAll) _clrAll.addEventListener("click", function(e){
+    e.preventDefault(); e.stopPropagation();
+    Array.from(document.querySelectorAll(".cityCB")).forEach(b => { b.checked = false; });
+    updateCitySummary();
+    if (typeof render === "function") render();
+  });
+  updateCitySummary();
+  console.log("[multi-city] initMultiCity ready. Cities loaded:", Array.from(LOADED_CITIES));
+}
+
+
+const MODES = {
+  retail: {
+    ptype: ["Terraced", "Semi-detached", "Detached"],
+    beds:  ["2", "3"],
+    iv:    "in",
+    auc:   "exclude",
+    caveat: false
+  },
+  auction: {
+    ptype: [],
+    beds:  [],
+    iv:    "all",
+    auc:   "only",
+    caveat: true
+  }
+};
+function setMode(mode){
+  const p = MODES[mode]; if(!p) return;
+  document.querySelectorAll("#ptype input").forEach(i => i.checked = p.ptype.includes(i.value));
+  document.querySelectorAll("#beds  input").forEach(i => i.checked = p.beds .includes(i.value));
+  const iv  = document.getElementById("iv");  if(iv)  iv.value  = p.iv;
+  const auc = document.getElementById("auc"); if(auc) auc.value = p.auc;
+  const cv  = document.getElementById("caveat"); if(cv) cv.style.display = p.caveat ? "block" : "none";
+  document.querySelectorAll(".modeBtn").forEach(b =>
+    b.classList.toggle("active", b.dataset.mode === mode));
+  if (typeof render === "function") render();
+}
+window.addEventListener("DOMContentLoaded", boot);
+
+</script></body></html>
