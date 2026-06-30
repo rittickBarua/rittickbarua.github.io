@@ -140,7 +140,7 @@ tr:nth-child(even) td { background: #fafafa; }
 //     stable https://<pi-host>.<tailnet>.ts.net URL.
 // SET THIS to your Pi's Funnel URL (run `tailscale funnel status` on the Pi to
 // find it), no trailing slash, then commit + redeploy this page.
-const API_BASE_PROD = "https://CHANGE-ME.ts.net";
+const API_BASE_PROD = "https://rittick-desktop.tail336b74.ts.net";
 const API_BASE = (() => {
   const host = window.location.hostname || "";
   // Local dev -> the local Flask dev server (absolute URL so fetch never hits
