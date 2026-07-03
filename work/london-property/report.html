@@ -489,7 +489,9 @@ function renderMap(){
   $("count").textContent=rows.length.toLocaleString();
   if(rows.length){
     const bounds=L.latLngBounds(rows.map(r=>[r.latitude,r.longitude]));
-    map.fitBounds(bounds,{padding:[20,20]});
+    // Defer: the container may have JUST become visible (size 0), which makes
+    // fitBounds a no-op parked on the initial London view. invalidateSize first.
+    setTimeout(()=>{map.invalidateSize();map.fitBounds(bounds,{padding:[20,20],animate:false});},150);
   }
 }
 // Map popup -> "View sold nearby" link: switch to list, scroll, expand.
