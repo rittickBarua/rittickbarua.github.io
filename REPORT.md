@@ -1,4 +1,4 @@
-# Site-hardening report — rittickbarua.com
+# Site-hardening report: rittickbarua.com
 
 Branch: `site-hardening`, 18 commits ahead of `master`. Rollback anchor: `git reset --hard pre-site-hardening` on `master` restores the pre-work state.
 
@@ -76,10 +76,10 @@ Branch: `site-hardening`, 18 commits ahead of `master`. Rollback anchor: `git re
 ### Upstream dev tooling
 | Path | Reason |
 |---|---|
-| `markdown_generator/` (10 files, incl. demo TSVs + Jupyter notebooks) | Bulk-generator for `_publications/*.md` and `_talks/*.md` — no longer used |
+| `markdown_generator/` (10 files, incl. demo TSVs + Jupyter notebooks) | Bulk-generator for `_publications/*.md` and `_talks/*.md`; no longer used |
 | `talkmap.py`, `talkmap.ipynb`, `talkmap_out.ipynb` | Geocoded talks onto a map |
 | `talkmap/` (7 files, incl. leaflet.markercluster bundle) | Pre-rendered talk map |
-| `package.json` | Upstream theme npm metadata — not used at build time |
+| `package.json` | Upstream theme npm metadata; not used at build time |
 | `.github/workflows/scrape_talks.yml` | CI regenerating `talkmap.ipynb` on `_talks/` changes |
 
 ---
@@ -91,7 +91,7 @@ Branch: `site-hardening`, 18 commits ahead of `master`. Rollback anchor: `git re
 | `_publications/2024-01-01-barua-dsit-cyber-security-risks-to-ai.md` | Real publication: DSIT whitepaper, 2024 |
 | `_publications/2018-01-01-colbourne-rheo-nmr-validation.md` | Real publication: Rheo-NMR, J. Magn. Reson., 2018, DOI `10.1016/j.jmr.2017.11.010` |
 | `_publications/2014-01-01-barua-steam-explosion-sewage-sludge.md` | Real publication: sewage-sludge AD, AquaEnviro, 2014 |
-| `_includes/json-ld-person.html` | schema.org Person JSON-LD (name, url, image, jobTitle, alumniOf, sameAs) — emitted in every page head via `_includes/head/custom.html` |
+| `_includes/json-ld-person.html` | schema.org Person JSON-LD (name, url, image, jobTitle, alumniOf, sameAs); emitted in every page head via `_includes/head/custom.html` |
 | `robots.txt` | Allow all crawlers; advertise `/sitemap.xml` |
 | `humans.txt` | Owner + stack credit |
 | `google-site-verification-PLACEHOLDER.html` | Instructions for GSC HTML-file verification; **NOT a real token** |
@@ -112,7 +112,7 @@ Branch: `site-hardening`, 18 commits ahead of `master`. Rollback anchor: `git re
 | Path | Change |
 |---|---|
 | `Gemfile` | Added `jekyll-seo-tag` to the `:jekyll_plugins` group |
-| `_config.yml` | Major rewrite — see §6 for field-level diff |
+| `_config.yml` | Major rewrite: see §6 for field-level diff |
 | `_data/navigation.yml` | Pruned six commented scaffold entries; only Publications + CV remain |
 | `_pages/about.md` | Removed 22-line commented fork-tutorial block; removed `title:` (homepage title now driven by site.title + tagline); corrected "AcquEnviro" typo; added target/rel to Paper links; Oxford comma + hyphen fixes |
 | `_pages/cv.md` | CV PDF link now root-relative; British English (`auto-summarise`, `optimising`); Oxford comma + hyphen fixes; removed 53-line commented GitHub-University template block |
@@ -136,13 +136,13 @@ Branch: `site-hardening`, 18 commits ahead of `master`. Rollback anchor: `git re
 | `locale` | `"en-US"` | `"en-GB"` | British English; already aliased in `_data/ui-text.yml` |
 | `title` | `"Home"` | `"Rittick Barua, PhD"` | Short form, used in tabs and masthead |
 | `tagline` | (absent) | `"AI & Data Science Product Leader"` | Drives homepage `<title>` via jekyll-seo-tag |
-| `title_separator` | `"-"` | `"—"` | Em-dash |
-| `description` | `"consultant, data scientist"` | 145-char placeholder | **Q11 parked — final wording pending your review** |
+| `title_separator` | `"-"` | an em dash | Em-dash |
+| `description` | `"consultant, data scientist"` | 145-char placeholder | **Q11 parked; final wording pending your review** |
 | `logo` | (absent) | `"/images/profile.jpeg"` | Used by jekyll-seo-tag (Organization schema) |
 | `author.avatar` | `"https://rittickbarua.github.io/files/profile.jpeg"` | `"profile.jpeg"` | Theme convention; file now at `images/profile.jpeg` |
 | `author.bio` | `"consultant, data scientist"` | same as `description` | **Pending Q11 revisit** |
 | `author.location` | `"London"` | `"London"` | Unchanged |
-| `author.employer` | `"University of Cambridge"` | `"University of Cambridge"` | Unchanged — **see checklist item 11** |
+| `author.employer` | `"University of Cambridge"` | `"University of Cambridge"` | Unchanged; **see checklist item 11** |
 | `author.email` | `"email@rittickbarua.com"` | `"email@rittickbarua.com"` | Unchanged (Q10) |
 | `author.*` placeholders | ~30 commented blank lines | removed | Kept: `googlescholar`, `researchgate`, `github`, `linkedin` |
 | `future` | `true` | `false` | No more surprises from future-dated posts |
@@ -158,7 +158,7 @@ Branch: `site-hardening`, 18 commits ahead of `master`. Rollback anchor: `git re
 | `staticman:` block | demo config | removed | |
 | `alexa_site_verification` | blank | removed | Alexa is defunct |
 | `yandex_site_verification` | blank | removed | Unused |
-| `analytics.provider` | `"false"` (string) | `false` (bool) | **Q13 parked — GA4 + cookie banner pending** |
+| `analytics.provider` | `"false"` (string) | `false` (bool) | **Q13 parked; GA4 + cookie banner pending** |
 | `publication_category` | books/manuscripts/conferences | + `whitepapers` | For the DSIT paper |
 | `collections.teaching/portfolio/talks` | present | removed | Collections no longer exist |
 | `defaults` (teaching/portfolio/talks scopes) | present | removed | |
@@ -169,7 +169,7 @@ Branch: `site-hardening`, 18 commits ahead of `master`. Rollback anchor: `git re
 
 ## 7. html-proofer output
 
-**Status: not yet run** — Docker Desktop on the local machine shut down during Phase 1 work. Once you run `open -a Docker`, I will:
+**Status: not yet run**: Docker Desktop on the local machine shut down during Phase 1 work. Once you run `open -a Docker`, I will:
 
 1. `docker compose build` (already built once; should be a no-op)
 2. `docker run … jekyll build --trace`
@@ -187,34 +187,34 @@ If you'd rather I skip htmlproofer and push straight to a PR (with the caveat th
 Things only you can action:
 
 1. **Start Docker Desktop** (`open -a Docker`) so I can finalise html-proofer verification.
-2. **Finalise site description (Q11)** — current placeholder: *"Product leader and applied data scientist. 7+ years taking enterprise ML and GenAI solutions from discovery to scaled adoption. Cambridge Engineering PhD."* Constraints you gave: no Azure, no AI security, no location, product-leader positioning.
-3. **Decide on GA4 + cookie banner (Q13)** — provide the `G-XXXXXXXXXX` measurement ID and choose banner (UK GDPR-compliant) vs Consent Mode V2 "denied by default".
+2. **Finalise site description (Q11)**: current placeholder: *"Product leader and applied data scientist. 7+ years taking enterprise ML and GenAI solutions from discovery to scaled adoption. Cambridge Engineering PhD."* Constraints you gave: no Azure, no AI security, no location, product-leader positioning.
+3. **Decide on GA4 + cookie banner (Q13)**; provide the `G-XXXXXXXXXX` measurement ID and choose banner (UK GDPR-compliant) vs Consent Mode V2 "denied by default".
 4. **Google Search Console verification:**
    - Visit [search.google.com/search-console](https://search.google.com/search-console) and add property `https://rittickbarua.com`.
-   - Use either: (a) the HTML-file method — download the `google<token>.html` file GSC gives you, commit it to repo root, push, verify, then delete `google-site-verification-PLACEHOLDER.html`; or (b) paste the token into `_config.yml`'s `google_site_verification:` (simpler).
+   - Use either: (a) the HTML-file method; download the `google<token>.html` file GSC gives you, commit it to repo root, push, verify, then delete `google-site-verification-PLACEHOLDER.html`; or (b) paste the token into `_config.yml`'s `google_site_verification:` (simpler).
 5. **Bing Webmaster Tools verification:** same process at [bing.com/webmasters](https://www.bing.com/webmasters), either `BingSiteAuth.xml` file or `bing_site_verification:` in config.
 6. **Submit sitemap** to both GSC and Bing: the URL is `https://rittickbarua.com/sitemap.xml`.
 7. **Request indexing** in GSC URL Inspection: `/`, `/publications/`, `/cv/`, and each of the three `/publications/<slug>/` detail pages.
 8. **GitHub Pages settings** → Settings → Pages:
    - Custom domain: `rittickbarua.com` (confirm the DNS `A`/`ALIAS`/`CNAME` records point at GH Pages; there's already a CNAME file in the repo).
    - **Enforce HTTPS:** confirm it's ticked. If greyed out because the TLS cert is still provisioning, wait a few hours and retry.
-   - Source: branch = `master`, folder = `/ (root)` — or whatever your current deploy workflow is.
-9. **Review `author.employer` field** — currently `"University of Cambridge"`, which is your alma mater. Your CV lists *Bloch.ai* as the current employer (Jan 2025 – Present). The sidebar icon (fa-building-columns) could read as either "affiliation" or "current employer" — your call. I left the value unchanged to avoid changing self-presentation without explicit sign-off.
+   - Source: branch = `master`, folder = `/ (root)`; or whatever your current deploy workflow is.
+9. **Review `author.employer` field**, currently `"University of Cambridge"`, which is your alma mater. Your CV lists *Bloch.ai* as the current employer (Jan 2025 to Present). The sidebar icon (fa-building-columns) could read as either "affiliation" or "current employer", your call. I left the value unchanged to avoid changing self-presentation without explicit sign-off.
 10. **Optional: rationalise the publications duplication.** `_pages/publications.md` and `_pages/about.md` both hard-code the same three papers. The new `_publications/*.md` files render individual detail pages at `/publications/<slug>/`, but the summary list on `/publications/` is still the hand-maintained markdown. Reasonable to keep; worth knowing.
-11. **Favicons** — already present in `images/` (`favicon.ico`, `favicon.svg`, `favicon-32x32.png`, `favicon-192x192.png`, `favicon-512x512.png`, `apple-touch-icon-180x180.png`, `manifest.json`) and wired up via `_includes/head/custom.html`. No action needed unless you want fresh source art.
+11. **Favicons**: already present in `images/` (`favicon.ico`, `favicon.svg`, `favicon-32x32.png`, `favicon-192x192.png`, `favicon-512x512.png`, `apple-touch-icon-180x180.png`, `manifest.json`) and wired up via `_includes/head/custom.html`. No action needed unless you want fresh source art.
 
 ---
 
 ## 9. Parked items (revisit when ready)
 
-- **Q11 — site description wording.** Constraints captured: no Azure, no AI security, no location, target product-leader / principal product-owner roles.
-- **Q13 — GA4 + cookie-consent strategy.** No analytics wired up in this pass.
+- **Q11: site description wording.** Constraints captured: no Azure, no AI security, no location, target product-leader / principal product-owner roles.
+- **Q13: GA4 + cookie-consent strategy.** No analytics wired up in this pass.
 
 ---
 
 ## 10. How to roll back
 
-- Full revert of the branch: nothing to do — `master` is untouched.
+- Full revert of the branch: nothing to do; `master` is untouched.
 - Nuclear "put everything back exactly as it was": `git reset --hard pre-site-hardening` on `master` (there's a local tag pointing at `9e65e6e`).
 - Individual commit revert: `git revert <sha>` from the table in §1. Commits are independent and small (biggest is the `_config.yml` populate at +247/-360).
 - Recover a specific deleted file: `git checkout pre-site-hardening -- path/to/file` from `master`.

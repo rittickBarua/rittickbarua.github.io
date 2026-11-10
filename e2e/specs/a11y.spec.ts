@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 /**
- * Accessibility — axe-core scan on key pages.
+ * Accessibility: axe-core scan on key pages.
  *
  * Excluded rules (justified):
  *   - color-contrast: theme uses author-chosen colours; treat as design

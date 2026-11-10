@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * Static assets — favicons, profile image, CV PDF, feed, sitemap, placeholders.
+ * Static assets: favicons, profile image, CV PDF, feed, sitemap, placeholders.
  */
 
 test.describe('assets', () => {

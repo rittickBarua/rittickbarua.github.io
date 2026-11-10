@@ -6,7 +6,7 @@ Built with [Jekyll](https://jekyllrb.com/) using the [AcademicPages](https://git
 
 ## Local build
 
-With Docker (recommended — no system Ruby needed):
+With Docker (recommended: no system Ruby needed):
 
 ```sh
 docker compose up
@@ -16,12 +16,12 @@ The site then serves on <http://localhost:4000> with live reload.
 
 ## Structure
 
-- `_pages/` — standalone pages (About, CV, Publications, 404, Sitemap)
-- `_publications/` — collection of academic publications
-- `_config.yml` — site-wide settings (title, author, SEO)
-- `_includes/`, `_layouts/`, `_sass/`, `assets/` — theme internals and overrides
-- `files/` — downloadable assets (CV PDF, profile photo)
-- `images/` — site images and favicons
+- `_pages/`: standalone pages (About, CV, Publications, 404, Sitemap)
+- `_publications/`: collection of academic publications
+- `_config.yml`: site-wide settings (title, author, SEO)
+- `_includes/`, `_layouts/`, `_sass/`, `assets/`: theme internals and overrides
+- `files/`: downloadable assets (CV PDF, profile photo)
+- `images/`: site images and favicons
 
 ## Licence
 
