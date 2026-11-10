@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * Interactive behaviour — theme toggle, nav links, link attributes.
+ * Interactive behaviour: theme toggle, nav links, link attributes.
  */
 
 test.describe('theme toggle', () => {

@@ -7,10 +7,9 @@
 locale                   : "en-GB"
 site_theme               : "air"       # "default" or "air"
 title                    : "Rittick Barua, PhD"
-tagline                  : "AI & Data Science Product Leader"
+tagline                  : "AI Product Owner & Product Engineer"
 name                     : &name "Rittick Barua, PhD"
-# Provisional description pending final wording — see Phase 2 REPORT.
-description              : &description "Product leader and applied data scientist. 7+ years taking enterprise ML and GenAI solutions from discovery to scaled adoption. Cambridge Engineering PhD."
+description              : &description "AI product owner, product engineer and software developer building AI systems, specialising in NLP, language models and computer vision. Cambridge PhD."
 # Previously pointed at rittickbarua.github.io; switched to the custom domain
 # so canonical URLs match the CNAME and absolute asset paths resolve correctly.
 url                      : "https://rittickbarua.com"
@@ -29,12 +28,12 @@ author:
   bio              : *description
   location         : "London"
   employer         : "University of Cambridge"
-  # author.uri removed — the "Website" sidebar link pointed back to this
+  # author.uri removed: the "Website" sidebar link pointed back to this
   # site, which was redundant. Person JSON-LD uses site.url, not
   # author.uri, so no SEO impact.
   email            : "email@rittickbarua.com"
 
-  # Academic — add your ORCID once registered (https://orcid.org/register).
+  # Academic: add your ORCID once registered (https://orcid.org/register).
   # Format: the full URL, e.g. "https://orcid.org/0000-0000-0000-0000".
   # Picked up automatically by the sidebar and by the Person JSON-LD.
   orcid            :
@@ -71,7 +70,7 @@ atom_feed:
   path                   :
 
 # -----------------------------------------------------------------------------
-# SEO verification (placeholders — replace with real tokens from each
+# SEO verification (placeholders: replace with real tokens from each
 # webmaster console before first deploy).
 # -----------------------------------------------------------------------------
 google_site_verification :
@@ -94,7 +93,7 @@ social:
     - "https://www.linkedin.com/in/rittickbarua"
 
 # -----------------------------------------------------------------------------
-# Analytics — intentionally off. To enable Google Analytics 4 later, set
+# Analytics: intentionally off. To enable Google Analytics 4 later, set
 # provider: "google-analytics-4" and populate google.tracking_id, and
 # confirm a cookie-consent strategy (UK GDPR/PECR).
 # -----------------------------------------------------------------------------

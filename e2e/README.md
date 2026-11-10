@@ -60,4 +60,4 @@ The suite is CI-ready. A GitHub Actions workflow like the one below will run it 
 ## Notes
 
 - `color-contrast` axe rule is disabled (theme colour choices are design decisions outside this suite's scope).
-- External self-references to `https://rittickbarua.com/...` during a production-URL build are not exercised locally — production-reachability lives in Search Console.
+- External self-references to `https://rittickbarua.com/...` during a production-URL build are not exercised locally; production-reachability lives in Search Console.

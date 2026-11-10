@@ -1,15 +1,15 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * Smoke — key pages load, render, and navigation is intact.
+ * Smoke: key pages load, render, and navigation is intact.
  */
 
 test.describe('smoke', () => {
   test('homepage loads with expected title and renders name as h1', async ({ page }) => {
     await page.goto('/');
     // Homepage title: "{site.title} - {site.tagline}" with a plain hyphen.
-    await expect(page).toHaveTitle('Rittick Barua, PhD - AI & Data Science Product Leader');
-    // Sidebar removed in the mishalaskin-style redesign — name now lives
+    await expect(page).toHaveTitle('Rittick Barua, PhD - AI Product Owner & Product Engineer');
+    // Sidebar removed in the mishalaskin-style redesign; name now lives
     // as the body h1 instead.
     await expect(page.locator('h1').first()).toContainText('Rittick Barua, PhD');
     await expect(page.locator('h1').first()).toBeVisible();
@@ -17,7 +17,7 @@ test.describe('smoke', () => {
 
   test('CV page loads', async ({ page }) => {
     await page.goto('/cv/');
-    // Other pages: title is just the page title — site name not appended.
+    // Other pages: title is just the page title; site name not appended.
     await expect(page).toHaveTitle('CV');
     await expect(page.getByRole('heading', { name: 'CV', level: 1 })).toBeVisible();
     await expect(page.getByRole('link', { name: /Download PDF/i })).toHaveAttribute('href', /cv-short\.pdf/);
@@ -89,7 +89,7 @@ test.describe('smoke', () => {
     await expect(page).toHaveTitle(/404/);
     await expect(page.locator('.not-found-page__code')).toContainText('404');
     await expect(page.locator('.not-found-page__msg')).toContainText('This page could not be found.');
-    // No body-level nav row — the masthead at the top already provides
+    // No body-level nav row: the masthead at the top already provides
     // links back to About / Work / Publications / CV.
   });
 

@@ -7,6 +7,10 @@ date: 2025-01-01
 tagline: "Enterprise LLM platform · React, Node.js, MongoDB · Azure · 2025-present"
 description: "Chat:R, an enterprise language-model platform serving roughly 1,000 staff at a public-affairs consultancy, with custom Projects, agent-linking and SharePoint MCP gateway features across three Azure environments."
 excerpt: "An enterprise language-model platform serving roughly 1,000 staff at a European public-affairs consultancy, with custom Projects, agent-linking and SharePoint MCP gateway features, deployed across three Azure environments."
+labels:
+  - "NLP and language models"
+  - "Retrieval (RAG)"
+  - "Agentic workflows"
 ---
 
 **Role:** Product and delivery lead. **Client:** Rud Pedersen Group. **Timeline:** 2025 to present.

@@ -1,4 +1,4 @@
-# Session handoff — rittickbarua.com site hardening
+# Session handoff: rittickbarua.com site hardening
 
 Paste this into a fresh session so work picks up without re-deriving context.
 
@@ -49,11 +49,11 @@ Combined, every code-doable SEO item from the analysis is on master.
 
 - `jekyll-seo-tag` in the Gemfile + `_config.yml` plugins/whitelist
 - `_includes/seo.html` emits `<title>` manually with em-dash separator (jekyll-seo-tag 2.8.0 hard-codes ` | ` in a constant; bypassed by emitting our own then `{% seo title=false %}`)
-- Homepage `<title>`: `Rittick Barua, PhD — AI & Data Science Product Leader`
-- Other pages: `{page.title} — {site.title}`
+- Homepage `<title>`: `Rittick Barua, PhD - AI & Data Science Product Leader`
+- Other pages: `{page.title} - {site.title}`
 - Site-wide `defaults` scope sets `image: "/images/profile.jpeg"` so every page emits an `og:image` / `twitter:image` (jekyll-seo-tag reads `page.image`, not `site.og_image`)
-- Per-page `description:` on `/cv/` and `/publications/` — targets page-specific search terms instead of inheriting the site default
-- `_config.yml` populated: `title`, `tagline`, `title_separator`, `description` (placeholder — see parked Q11), `og_image`, `logo`, `social.links` (Scholar / ResearchGate / GitHub / LinkedIn), `locale: en-GB`, `timezone: Europe/London`, `future: false`
+- Per-page `description:` on `/cv/` and `/publications/`: targets page-specific search terms instead of inheriting the site default
+- `_config.yml` populated: `title`, `tagline`, `title_separator`, `description` (placeholder; see parked Q11), `og_image`, `logo`, `social.links` (Scholar / ResearchGate / GitHub / LinkedIn), `locale: en-GB`, `timezone: Europe/London`, `future: false`
 - `<html lang="en-GB">`
 
 ### Structured data (four JSON-LD blocks on publication detail pages)
@@ -65,9 +65,9 @@ Combined, every code-doable SEO item from the analysis is on master.
 
 ### Core Web Vitals
 
-- Avatar `<img>` has explicit `width="500" height="500"` + `decoding="async"` — reduces CLS.
-- `<link rel="preload" as="image" fetchpriority="high">` for profile image — improves LCP (sidebar avatar is above the fold on every page).
-- `/categories/` and `/tags/` archive pages have `sitemap: false` — empty until blogging starts; no more diluting crawl budget.
+- Avatar `<img>` has explicit `width="500" height="500"` + `decoding="async"`; reduces CLS.
+- `<link rel="preload" as="image" fetchpriority="high">` for profile image; improves LCP (sidebar avatar is above the fold on every page).
+- `/categories/` and `/tags/` archive pages have `sitemap: false`; empty until blogging starts; no more diluting crawl budget.
 - All CDN scripts removed; only `main.min.js` loads (theme-internal).
 
 ### A11y and perf
@@ -92,12 +92,12 @@ Combined, every code-doable SEO item from the analysis is on master.
 
 ### Test infrastructure on master
 
-- `e2e/` — Playwright 1.56.1 + `@axe-core/playwright` 4.10.1; specs: `smoke`, `seo`, `a11y`, `assets`, `interactive`; BASE_URL-parameterised; `chromium-desktop` + `chromium-mobile` projects. Last run: **93 pass / 2 skipped (documented) / 0 fail**.
+- `e2e/`: Playwright 1.56.1 + `@axe-core/playwright` 4.10.1; specs: `smoke`, `seo`, `a11y`, `assets`, `interactive`; BASE_URL-parameterised; `chromium-desktop` + `chromium-mobile` projects. Last run: **93 pass / 2 skipped (documented) / 0 fail**.
 - `seo.spec.ts` covers: per-page title / meta description / canonical / OG / Twitter / Person JSON-LD / lang / preload / avatar dimensions; publication-specific ScholarlyArticle (authors, publisher, DOI) + BreadcrumbList; sitemap structure; robots.txt; humans.txt.
-- `TEST_REPORT.md` — verification results, coverage gaps, skip justifications.
-- `docs/site-hardening.md` — longer-form engineering log.
-- `AUDIT.md` — Phase 0 snapshot of the pre-work state.
-- `REPORT.md` — change log with `_config.yml` field-level diff.
+- `TEST_REPORT.md`: verification results, coverage gaps, skip justifications.
+- `docs/site-hardening.md`: longer-form engineering log.
+- `AUDIT.md`: Phase 0 snapshot of the pre-work state.
+- `REPORT.md`: change log with `_config.yml` field-level diff.
 
 All committed to master but listed in `_config.yml` `exclude:` so none ship to `_site/`.
 
@@ -105,7 +105,7 @@ All committed to master but listed in `_config.yml` `exclude:` so none ship to `
 
 ## Parked decisions (the user explicitly deferred these)
 
-### Q11 — site description wording
+### Q11: site description wording
 
 Current `_config.yml` `description:` is a 145-char placeholder:
 
@@ -113,14 +113,14 @@ Current `_config.yml` `description:` is a 145-char placeholder:
 
 Constraints the user gave:
 
-- **No Azure** — keep platform-agnostic
+- **No Azure**: keep platform-agnostic
 - **No AI security research** framing
 - **No location** (London etc.)
 - Positioning toward **product owner / principal product owner** roles
 
 Author sidebar `bio` is aliased to `description` via YAML anchor `&description`, so updating `description` also updates the sidebar strapline.
 
-### Q13 — analytics
+### Q13: analytics
 
 - User picked **Option 2: Google Analytics 4** when asked. Deferred wiring.
 - Needs: (a) the `G-XXXXXXXXXX` measurement ID, (b) a decision on cookie-banner vs Consent Mode V2 "denied by default" (UK GDPR / PECR applies).
@@ -128,18 +128,18 @@ Author sidebar `bio` is aliased to `description` via YAML anchor `&description`,
 
 ---
 
-## Manual TODOs — only the user can do these
+## Manual TODOs: only the user can do these
 
 ### Search-console indexing (do this first)
 
-1. **GitHub Pages settings** — Settings → Pages. Confirm custom domain = `rittickbarua.com`, HTTPS enforced, source = `master` / `/ (root)`.
-2. **Google Search Console** — add property `https://rittickbarua.com`, verify (either paste token into `_config.yml`'s `google_site_verification:` field, or use the HTML-file method with the real token replacing `google-site-verification-PLACEHOLDER.html`), submit sitemap, request indexing of `/`, `/publications/`, `/cv/`, and the three `/publications/<slug>/` detail pages.
-3. **Bing Webmaster Tools** — same pattern; field is `bing_site_verification:`.
-4. **Google Rich Results Test** — test one publication URL at [search.google.com/test/rich-results](https://search.google.com/test/rich-results). Expect ScholarlyArticle + BreadcrumbList + Person to validate.
+1. **GitHub Pages settings**: Settings → Pages. Confirm custom domain = `rittickbarua.com`, HTTPS enforced, source = `master` / `/ (root)`.
+2. **Google Search Console**: add property `https://rittickbarua.com`, verify (either paste token into `_config.yml`'s `google_site_verification:` field, or use the HTML-file method with the real token replacing `google-site-verification-PLACEHOLDER.html`), submit sitemap, request indexing of `/`, `/publications/`, `/cv/`, and the three `/publications/<slug>/` detail pages.
+3. **Bing Webmaster Tools**: same pattern; field is `bing_site_verification:`.
+4. **Google Rich Results Test**: test one publication URL at [search.google.com/test/rich-results](https://search.google.com/test/rich-results). Expect ScholarlyArticle + BreadcrumbList + Person to validate.
 
 ### Identity & backlinks (real SEO juice)
 
-5. **Register an ORCID** at [orcid.org/register](https://orcid.org/register) (3 min). Once you have the ID, set `author.orcid: "https://orcid.org/XXXX-XXXX-XXXX-XXXX"` in `_config.yml` — the sidebar and Person JSON-LD pick it up automatically.
+5. **Register an ORCID** at [orcid.org/register](https://orcid.org/register) (3 min). Once you have the ID, set `author.orcid: "https://orcid.org/XXXX-XXXX-XXXX-XXXX"` in `_config.yml`; the sidebar and Person JSON-LD pick it up automatically.
 6. **Add rittickbarua.com to your profiles:**
     - LinkedIn (Edit intro → Website).
     - GitHub (Profile → Edit profile → Website URL).
@@ -150,33 +150,33 @@ Author sidebar `bio` is aliased to `description` via YAML anchor `&description`,
 
 ### Content (next few months)
 
-8. **Expand publication pages.** Each `_publications/*.md` has a 1-paragraph excerpt; a 300–500 word plain-English summary ("what we found / why it matters") gives Google meaningful crawlable text and helps you rank for topic keywords, not just paper titles.
+8. **Expand publication pages.** Each `_publications/*.md` has a 1-paragraph excerpt; a 300 to 500 word plain-English summary ("what we found / why it matters") gives Google meaningful crawlable text and helps you rank for topic keywords, not just paper titles.
 9. **Start blogging.** One real essay/month on applied AI, GenAI productisation, or AI-adoption case studies. Target phrases someone actually Googles: `AI product owner UK`, `GenAI adoption consultant`, `enterprise LLM product lead`. `_posts/` is already enabled; just drop a dated markdown file.
-10. **Consider a `/consulting/` or `/services/` landing page** if you're monetising advisory time — that's where SEO converts.
+10. **Consider a `/consulting/` or `/services/` landing page** if you're monetising advisory time; that's where SEO converts.
 
 ### Config decisions still open
 
-11. **`author.employer` review** — currently `"University of Cambridge"` (alma mater). Your CV shows Bloch.ai as current (Jan 2025 – Present). The sidebar icon reads as either "affiliation" or "current employer" depending on visitor intuition.
-12. **Favicons** — already present in `images/` (`favicon.ico`, `.svg`, `32x32`, `192x192`, `512x512`, `apple-touch-icon-180x180.png`, `manifest.json`). No action unless you want fresh art.
+11. **`author.employer` review**: currently `"University of Cambridge"` (alma mater). Your CV shows Bloch.ai as current (Jan 2025 to Present). The sidebar icon reads as either "affiliation" or "current employer" depending on visitor intuition.
+12. **Favicons**: already present in `images/` (`favicon.ico`, `.svg`, `32x32`, `192x192`, `512x512`, `apple-touch-icon-180x180.png`, `manifest.json`). No action unless you want fresh art.
 
 ### Longer-term / when you have an hour
 
-13. **Cloudflare in front of GitHub Pages** — free tier gives you Brotli compression, HTTP/3, better TLS, edge caching, and the ability to set security headers GH Pages alone can't (HSTS, CSP, X-Content-Type-Options). DNS change + 30 min.
-14. **WebP / AVIF for images** — not urgent (profile.jpeg is ~100 KB) but a nice bandwidth cut. Use `cwebp` / `avifenc` in a pre-commit or GitHub Action; wrap avatar in `<picture>`.
-15. **PageSpeed Insights** ([pagespeed.web.dev](https://pagespeed.web.dev)) monthly — act on anything in the red (usually LCP, CLS).
+13. **Cloudflare in front of GitHub Pages**: free tier gives you Brotli compression, HTTP/3, better TLS, edge caching, and the ability to set security headers GH Pages alone can't (HSTS, CSP, X-Content-Type-Options). DNS change + 30 min.
+14. **WebP / AVIF for images**: not urgent (profile.jpeg is ~100 KB) but a nice bandwidth cut. Use `cwebp` / `avifenc` in a pre-commit or GitHub Action; wrap avatar in `<picture>`.
+15. **PageSpeed Insights** ([pagespeed.web.dev](https://pagespeed.web.dev)) monthly: act on anything in the red (usually LCP, CLS).
 
 ---
 
 ## Conventions and user preferences (respect these)
 
 - **British English** throughout. `organisation`, `colour`, `behaviour`, `centred`. `14 October 2025` date format. Single quotes for typographic consistency where the theme allows.
-- **Em-dash** (`—`) as the title separator, not pipe or hyphen.
-- **No AI / assistant attribution** anywhere — in commit messages, docs, or code comments. Previous work had co-author trailers; they were stripped before merge.
+- **Plain hyphen** (`-`) as the title separator. No em dashes or en dashes anywhere on the site.
+- **No AI / assistant attribution** anywhere; in commit messages, docs, or code comments. Previous work had co-author trailers; they were stripped before merge.
 - **No Azure / no AI security / no location** in marketing / SEO copy (per Q11 constraints).
 - **Discrete, reviewable commits** during development (squashed only at merge time).
 - **No analytics / tracking pixels / third-party fonts** added without explicit permission.
 - `AquaEnviro` (not `AcquEnviro`).
-- **Don't invent metadata** — no fake DOIs, no fake dates. Ask.
+- **Don't invent metadata**: no fake DOIs, no fake dates. Ask.
 
 ---
 
@@ -215,16 +215,16 @@ cd e2e && BASE_URL=https://rittickbarua.com npx playwright test
 
 ## Key files to understand
 
-- **`_includes/seo.html`** — hand-rolled `<title>` + `{% seo title=false %}`. Read the comment at the top before modifying.
-- **`_includes/json-ld-person.html`** — custom Person schema. Reads from `site.author`, `site.logo`, `site.social.links`, `site.author.orcid`. Auto-stays-in-sync with `_config.yml` changes.
-- **`_includes/json-ld-scholarly-article.html`** — ScholarlyArticle schema per publication. Reads from page front-matter (`authors:`, `venue:`, `doi:`, `paperurl:`).
-- **`_includes/json-ld-breadcrumbs.html`** — BreadcrumbList (Home → Research → paper title) on publication detail pages.
-- **`_config.yml`** — heavily commented; structure mirrors the theme sections. Changes require `docker compose restart` (not just live-reload).
-- **`AUDIT.md`** — pre-work snapshot if you need to understand why something was done.
-- **`REPORT.md`** — change log with `_config.yml` field-level diff + full manual checklist.
-- **`docs/site-hardening.md`** — longer-form narrative engineering log.
-- **`TEST_REPORT.md`** — e2e results; lists what each test covers and what is deliberately not covered.
-- **`e2e/README.md`** — how to re-run the suite locally or in CI.
+- **`_includes/seo.html`**: hand-rolled `<title>` + `{% seo title=false %}`. Read the comment at the top before modifying.
+- **`_includes/json-ld-person.html`**: custom Person schema. Reads from `site.author`, `site.logo`, `site.social.links`, `site.author.orcid`. Auto-stays-in-sync with `_config.yml` changes.
+- **`_includes/json-ld-scholarly-article.html`**: ScholarlyArticle schema per publication. Reads from page front-matter (`authors:`, `venue:`, `doi:`, `paperurl:`).
+- **`_includes/json-ld-breadcrumbs.html`**: BreadcrumbList (Home → Research → paper title) on publication detail pages.
+- **`_config.yml`**: heavily commented; structure mirrors the theme sections. Changes require `docker compose restart` (not just live-reload).
+- **`AUDIT.md`**: pre-work snapshot if you need to understand why something was done.
+- **`REPORT.md`**: change log with `_config.yml` field-level diff + full manual checklist.
+- **`docs/site-hardening.md`**: longer-form narrative engineering log.
+- **`TEST_REPORT.md`**: e2e results; lists what each test covers and what is deliberately not covered.
+- **`e2e/README.md`**: how to re-run the suite locally or in CI.
 
 ---
 

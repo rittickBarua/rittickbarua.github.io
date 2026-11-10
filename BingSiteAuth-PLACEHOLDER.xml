@@ -1,5 +1,5 @@
 <!--
-  PLACEHOLDER FILE — Bing does NOT use this to verify ownership.
+  PLACEHOLDER FILE: Bing does NOT use this to verify ownership.
 
   To verify https://rittickbarua.com in Bing Webmaster Tools via the
   XML-file method:
@@ -15,14 +15,14 @@
     7. Click "Verify" in Bing Webmaster Tools
     8. Delete this placeholder
 
-  ALTERNATIVE — the meta-tag method:
+  ALTERNATIVE: the meta-tag method:
     Paste the token Bing provides into _config.yml:
 
         bing_site_verification: "<token value here>"
 
     jekyll-seo-tag will emit
       <meta name="msvalidate.01" content="...">
-    on every page — no separate file required.
+    on every page: no separate file required.
 -->
 <users>
   <user>REPLACE_WITH_REAL_CODE_BEFORE_DEPLOYING</user>

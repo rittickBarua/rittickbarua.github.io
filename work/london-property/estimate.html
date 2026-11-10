@@ -51,7 +51,7 @@ tr:nth-child(even) td { background: #fafafa; }
 <body>
   <h1>Estimate my property's price</h1>
   <p class="subtitle">Runs your property through the v3_clean model
-    (trained only on Land Registry sold transactions — no asking-price leakage).
+    (trained only on Land Registry sold transactions, with no asking-price leakage).
     Returns the model's predicted sold price (v3_clean)
     and the median of nearby comparable sales.</p>
 
@@ -150,7 +150,7 @@ const API_BASE = (() => {
   return API_BASE_PROD;
 })();
 
-// True on the deployed site (anything that isn't local dev) — picks the offline
+// True on the deployed site (anything that isn't local dev): picks the offline
 // message shown when the home backend is unreachable.
 const PUBLIC_HOST = !["", "localhost", "127.0.0.1"].includes(window.location.hostname);
 
@@ -167,7 +167,7 @@ async function checkApi() {
     if (PUBLIC_HOST) {
       el.innerHTML = `<strong>Valuation backend is offline.</strong>
         This form posts to a home-hosted Flask backend (a Raspberry Pi reached via
-        Tailscale Funnel) which isn't guaranteed 24/7 — it may be asleep.
+        Tailscale Funnel) which isn't guaranteed 24/7, so it may be asleep.
         Try again later, or browse <a href="report.html">the pre-computed top-3 listings page</a>
         which works offline.`;
     } else {
@@ -224,7 +224,7 @@ document.getElementById("form").addEventListener("submit", async (e) => {
 });
 
 function fmt(n) {
-  if (n == null || isNaN(n)) return "—";
+  if (n == null || isNaN(n)) return "-";
   return "£" + Math.round(n).toLocaleString();
 }
 
@@ -249,7 +249,7 @@ function renderResult(r) {
 
   document.getElementById("primaryResult").innerHTML = `
     <div class="price">${fmt(primary)}</div>
-    <div class="priceSubtitle">${primaryLabel} — ${r.city} (postcode outward ${r.postcode_outward})</div>
+    <div class="priceSubtitle">${primaryLabel}, ${r.city} (postcode outward ${r.postcode_outward})</div>
     <div class="predGrid">
       <div class="predTile primary">
         <div class="label">Pure PPD estimate</div>
@@ -259,7 +259,7 @@ function renderResult(r) {
       <div class="predTile">
         <div class="label">Asking-calibrated</div>
         <div class="value">${fmt(p.asking_calibrated_estimate)}</div>
-        <div class="small">Not used in v3 — the clean model has no asking calibration</div>
+        <div class="small">Not used in v3: the clean model has no asking calibration</div>
       </div>
       <div class="predTile">
         <div class="label">Comp median</div>
@@ -268,7 +268,7 @@ function renderResult(r) {
       </div>
       <div class="predTile">
         <div class="label">Sold-price range</div>
-        <div class="value">${fmt(p.comp_q25)} — ${fmt(p.comp_q75)}</div>
+        <div class="value">${fmt(p.comp_q25)} to ${fmt(p.comp_q75)}</div>
         <div class="small">Q25-Q75 of HPI-adjusted nearby sold</div>
       </div>
     </div>
@@ -285,12 +285,12 @@ function renderResult(r) {
     </tr></thead><tbody>`;
     c.forEach(x => {
       tbl += `<tr>
-        <td>${x.date ?? "—"}</td>
-        <td>${x.postcode ?? "—"}</td>
-        <td>${x.property_type ?? "—"}</td>
-        <td>${x.beds_inferred ?? "—"}</td>
-        <td>${x.epc_total_floor_area != null ? x.epc_total_floor_area.toFixed(0) : "—"}</td>
-        <td>${x.distance_km != null ? x.distance_km.toFixed(2) : "—"}</td>
+        <td>${x.date ?? "-"}</td>
+        <td>${x.postcode ?? "-"}</td>
+        <td>${x.property_type ?? "-"}</td>
+        <td>${x.beds_inferred ?? "-"}</td>
+        <td>${x.epc_total_floor_area != null ? x.epc_total_floor_area.toFixed(0) : "-"}</td>
+        <td>${x.distance_km != null ? x.distance_km.toFixed(2) : "-"}</td>
         <td style="text-align:right">${fmt(x.price_sold_nominal)}</td>
         <td style="text-align:right;font-weight:600">${fmt(x.price_today_hpi)}</td>
       </tr>`;
@@ -312,7 +312,7 @@ function renderResult(r) {
     <ul style="margin:0;padding-left:18px;font-size:13px;color:#4b5563;line-height:1.6">
       <li><strong>Pure PPD estimate</strong>: your inputs fed through ${r.city}'s
         <code>p_v3_clean_london</code> model (v3_clean XGBoost, 29 features, trained
-        on Land Registry sold transactions — no asking-price leakage). Missing features are filled via
+        on Land Registry sold transactions, with no asking-price leakage). Missing features are filled via
         k=50 nearest training rows of the same property type.</li>
       <li><strong>Asking-calibrated estimate</strong>: not used by v3_clean. V1 added an asking-vs-pred lift learned from Rightmove asking prices; v3_clean is a clean sold-price model with no asking-price leakage, so this field is always blank.</li>
       <li><strong>Comp median</strong>: k=20 nearest sold transactions of the

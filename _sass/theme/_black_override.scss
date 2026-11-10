@@ -1,31 +1,132 @@
 /* ==========================================================================
-   Light skin — white background, dark text. Inverted from the earlier
+   Light skin: white background, dark text. Inverted from the earlier
    mishalaskin-dark palette. All layout / typography / defensive overrides
    below stay the same; only the colour tokens change.
 
    Imported LAST after the air_light / air_dark themes so it wins
-   regardless of theme-toggle state. Toggle still works but both states
-   render identical (this skin overrides them both).
+   over both. It defines its own light and dark colour sets below.
 
    To revert: remove the "theme/black_override" line from
    assets/css/main.scss.
    ========================================================================== */
 
-/* ----- Palette — light, neutral, zinc-based -------------------- */
+/* ----- Self-hosted fonts (SIL Open Font License 1.1) ------------
+   Figtree for everything; Fraunces italic for the single accent phrase.
+   Latin subsets only. No third-party font requests. */
 
-$skin-bg                : #ffffff;       /* pure white */
-$skin-bg-elevated       : #fafafa;       /* footer, code, table-head — near-white */
-$skin-border            : #e4e4e7;       /* zinc-200 — very subtle */
-$skin-border-strong     : #d4d4d8;       /* zinc-300 */
-$skin-text              : #3f3f46;       /* zinc-700 — body, soft dark grey */
-$skin-text-strong       : #18181b;       /* zinc-900 — headings, near-black */
-$skin-text-muted        : #71717a;       /* zinc-500 — captions */
-$skin-link              : #18181b;       /* near-black with underline (mishalaskin-style) */
-$skin-link-hover        : #000000;
-$skin-code-bg           : #f4f4f5;       /* zinc-100 */
-$skin-code-text         : #18181b;
+@font-face {
+    font-family: "Figtree Variable";
+    font-style: normal;
+    font-weight: 300 900;
+    font-display: swap;
+    src: url("../fonts/figtree-latin-wght-normal.woff2") format("woff2-variations");
+}
 
-/* ----- CSS variables — win against :root and both data-theme states ----- */
+@font-face {
+    font-family: "Fraunces Variable";
+    font-style: italic;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url("../fonts/fraunces-latin-wght-italic.woff2") format("woff2-variations");
+}
+
+/* ----- Palette ----------------------------------------------------
+   Every colour is a CSS variable so the page can switch between a light
+   and a dark set. Light: white canvas and ink text. Dark: the same roles
+   on a near-black canvas. One cobalt accent, a navy button, three label
+   fills, and a multi-colour strip along the top edge of the page.
+
+   The dark set applies when <html> carries data-theme="dark". An inline
+   script in _includes/head.html sets that before first paint from the
+   visitor's saved choice or, failing that, their system setting. The
+   masthead toggle flips and remembers it. */
+
+@mixin skin-light {
+    --skin-bg               : #ffffff;       /* canvas */
+    --skin-bg-elevated      : #f6f6f7;       /* code, table-head, menus */
+    --skin-border           : #e4e4e7;       /* hairlines: tables, sidebar rule */
+    --skin-border-strong    : #d4d4d8;
+    --skin-text             : #2e2e2e;       /* body */
+    --skin-text-strong      : #1a1a1a;       /* headings */
+    --skin-text-muted       : #565656;       /* captions */
+    --skin-link             : #1a1a1a;
+    --skin-link-hover       : #000000;
+    --skin-line             : #1a1a1a;       /* card and chip borders, hard shadows */
+    --skin-accent           : #2f5bea;       /* the accent phrase, nothing else */
+    --skin-button-bg        : #12173d;       /* primary button */
+    --skin-button-text      : #ffffff;
+    --skin-dots             : rgba(26, 26, 26, 0.16);
+    color-scheme: light;
+}
+
+@mixin skin-dark {
+    --skin-bg               : #111214;
+    --skin-bg-elevated      : #1b1c20;
+    --skin-border           : #2b2c32;
+    --skin-border-strong    : #3d3e46;
+    --skin-text             : #d1d1d6;
+    --skin-text-strong      : #f4f4f5;
+    --skin-text-muted       : #a1a1aa;
+    --skin-link             : #f4f4f5;
+    --skin-link-hover       : #ffffff;
+    --skin-line             : #e4e4e7;
+    --skin-accent           : #8ea6ff;
+    --skin-button-bg        : #bcdcff;
+    --skin-button-text      : #12173d;
+    --skin-dots             : rgba(255, 255, 255, 0.13);
+    color-scheme: dark;
+}
+
+:root {
+    @include skin-light;
+}
+
+html[data-theme="dark"] {
+    @include skin-dark;
+}
+
+/* Without JavaScript nothing sets data-theme, so follow the system. */
+@media (prefers-color-scheme: dark) {
+    html.no-js {
+        @include skin-dark;
+    }
+}
+
+$skin-bg                : var(--skin-bg);
+$skin-bg-elevated       : var(--skin-bg-elevated);
+$skin-border            : var(--skin-border);
+$skin-border-strong     : var(--skin-border-strong);
+$skin-text              : var(--skin-text);
+$skin-text-strong       : var(--skin-text-strong);
+$skin-text-muted        : var(--skin-text-muted);
+$skin-link              : var(--skin-link);
+$skin-link-hover        : var(--skin-link-hover);
+$skin-code-bg           : var(--skin-bg-elevated);
+$skin-code-text         : var(--skin-text-strong);
+$skin-line              : var(--skin-line);
+$skin-accent            : var(--skin-accent);
+
+$skin-ink               : #1a1a1a;       /* text on the fills, both themes */
+$skin-cobalt            : #2f5bea;       /* card colours: cobalt, amber, teal */
+$skin-orange            : #ffa946;       /* amber; also in the strip */
+$skin-teal              : #0b7a66;
+$skin-green             : #034f46;       /* strip only */
+$skin-coral             : #ff6c4c;       /* strip only */
+$skin-pink              : #ffbcf2;       /* strip only */
+$skin-lilac             : #f0d7ff;       /* strip only */
+
+/* The colour strip across the top and bottom of every page: flat blocks,
+   no blending between them. */
+$skin-strip: repeating-linear-gradient(
+    90deg,
+    $skin-green 0 28px,
+    $skin-coral 28px 56px,
+    $skin-orange 56px 84px,
+    $skin-pink 84px 112px,
+    $skin-lilac 112px 140px
+);
+
+/* ----- CSS variables: win against :root and both data-theme states ----- */
 
 :root,
 html[data-theme="light"],
@@ -62,28 +163,28 @@ body {
     border-color: $skin-border !important;
 }
 
-/* ----- Typography pass — smaller scale, lighter weights, calmer ----- */
+/* ----- Typography pass: smaller scale, lighter weights, calmer ----- */
 
-/* Drop the base size from 16px to 15px — every em-based heading
+/* Drop the base size from 16px to 15px; every em-based heading
    scales proportionally. */
 html {
-    font-size: 15px;
+    font-size: 16px;
 }
 
 /* Headings: render bright and DIM the weight from the theme's heavy
    default to semibold (600). The contrast between bright heading
-   colour and soft body text now does the hierarchy work — not weight. */
+   colour and soft body text now does the hierarchy work; not weight. */
 h1, h2, h3, h4, h5, h6,
 .page__title,
 .archive__subtitle,
 .author__name {
     color: $skin-text-strong;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    line-height: 1.25;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
 }
 
-/* Body paragraphs — more line-height for breathing space, softer colour. */
+/* Body paragraphs: more line-height for breathing space, softer colour. */
 p,
 li,
 .page__content p,
@@ -92,7 +193,7 @@ li,
     line-height: 1.65;
 }
 
-/* Bold inside body copy — promote to the bright colour so it actually
+/* Bold inside body copy: promote to the bright colour so it actually
    reads as emphasis against the muted base. */
 strong, b {
     color: $skin-text-strong;
@@ -113,7 +214,7 @@ a:hover, a:focus {
     text-decoration-color: $skin-link-hover;
 }
 
-/* Strip underlines from places where they're noise — nav, buttons,
+/* Strip underlines from places where they're noise; nav, buttons,
    sidebar icons. */
 .masthead a,
 .greedy-nav a,
@@ -123,7 +224,7 @@ a:hover, a:focus {
     text-decoration: none;
 }
 
-/* Author sidebar — quieter typography. Name still bright, supporting
+/* Author sidebar: quieter typography. Name still bright, supporting
    text softer. */
 .author__bio,
 .author__pronouns,
@@ -153,7 +254,7 @@ hr, table, th, td {
 }
 
 /* ==========================================================================
-   Layout — small sidebar (square photo + social icons) + centred content.
+   Layout: small sidebar (square photo + social icons) + centred content.
    Uses flexbox: deterministic, no float-collapse issues.
    ========================================================================== */
 
@@ -174,7 +275,7 @@ hr, table, th, td {
     }
 }
 
-/* Sidebar — narrow column, fixed width on desktop. */
+/* Sidebar: narrow column, fixed width on desktop. */
 .sidebar,
 .sidebar.sticky {
     display: block !important;
@@ -218,7 +319,7 @@ hr, table, th, td {
     margin-right: 0;
 }
 
-/* The theme's susy-grid responsive widths — neutralise. */
+/* The theme's susy-grid responsive widths; neutralise. */
 @media (min-width: 60em) {
     #main .page,
     #main .archive {
@@ -243,7 +344,7 @@ hr, table, th, td {
     display: none !important;
 }
 
-/* Employer line ("University of Cambridge") — small block under the
+/* Employer line: small block under the
    photo, separated from the social icons by a faint underline. */
 .author__urls li.author__desktop {
     margin-bottom: 0.9rem;
@@ -253,23 +354,26 @@ hr, table, th, td {
     font-weight: 500;
 }
 
-/* Square avatar, 140px, no rounded corners. */
+/* Avatar, 140px, framed like a card: ink border, rounded, hard shadow. */
 .author__avatar {
     width: 140px;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
 }
 
 .author__avatar img,
 img.author__avatar {
     width: 140px;
     height: 140px;
-    border-radius: 0;
+    padding: 0;
+    border: 2px solid $skin-line;
+    border-radius: 1rem;
+    box-shadow: 4px 4px 0 $skin-line;
     object-fit: cover;
     display: block;
     margin: 0;
 }
 
-/* Social icons list — vertical stack, no bullets, smaller text. */
+/* Social icons list: vertical stack, no bullets, smaller text. */
 .author__urls-wrapper {
     margin: 0;
     padding: 0;
@@ -305,7 +409,7 @@ img.author__avatar {
 }
 
 /* ==========================================================================
-   Masthead — minimal nav, top-right aligned, no heavy background.
+   Masthead: minimal nav, top-right aligned, no heavy background.
    ========================================================================== */
 
 .masthead {
@@ -326,7 +430,7 @@ img.author__avatar {
     padding: 0 !important;
 }
 
-/* Hide the site-title link inside the masthead — the homepage already
+/* Hide the site-title link inside the masthead; the homepage already
    shows the name as h1. The masthead is just a nav. */
 .masthead__menu-item--lg {
     display: none !important;
@@ -346,8 +450,8 @@ img.author__avatar {
 
 /* Quieter nav text */
 .masthead a {
-    font-size: 0.875rem;
-    font-weight: 400;
+    font-size: 0.9375rem;
+    font-weight: 600;
     text-transform: none;
     letter-spacing: 0;
     color: $skin-text-strong;
@@ -359,16 +463,29 @@ img.author__avatar {
     text-underline-offset: 0.25em;
 }
 
-/* Don't underline nav by default — only on hover */
+/* Don't underline nav by default; only on hover */
 .masthead a,
 .masthead a:link,
 .masthead a:visited {
     text-decoration: none;
 }
 
-/* Theme toggle button — keep small + visible */
-#theme-toggle button {
+/* Theme toggle: an ordinary inline icon button at the end of the nav.
+   The theme's ".greedy-nav button" rule is meant for the overflow menu
+   button only, so undo its absolute positioning here. */
+.greedy-nav .visible-links #theme-toggle {
+    padding-left: 0.5rem;
+}
+
+.greedy-nav .visible-links #theme-toggle button {
+    position: static;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    background: transparent;
     color: $skin-text-strong;
+    font-size: 0.9375rem;
+    z-index: auto;
 }
 
 /* Hamburger only shows when nav overflows; style for dark */
@@ -383,16 +500,17 @@ img.author__avatar {
 }
 
 /* ==========================================================================
-   Body content — name as page-h1, tighter spacing.
+   Body content: name as page-h1, tighter spacing.
    ========================================================================== */
 
 #main h1:first-of-type,
 #main .page__content h1:first-of-type {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.5rem;
+    font-weight: 800;
     margin-top: 0.5rem;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.015em;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
 }
 
 #main h2 {
@@ -407,15 +525,16 @@ img.author__avatar {
     margin-bottom: 0.75rem;
 }
 
-/* Drop the theme's "page__title" h1 (the one rendered from page.title) —
+/* Drop the theme's "page__title" h1 (the one rendered from page.title)
    only relevant on pages WITH a page.title. On homepage it's empty so
    nothing renders. */
 .page__title {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.5rem;
+    font-weight: 800;
     margin-top: 0.5rem;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.015em;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
 }
 
 /* Lede paragraph spacing */
@@ -424,12 +543,12 @@ img.author__avatar {
 }
 
 /* ==========================================================================
-   Footer — minimal one-liner. Copyright left, RSS right.
+   Footer: minimal one-liner. Copyright left, RSS right.
    ========================================================================== */
 
 .page__footer {
     background-color: transparent !important;
-    border-top: 1px solid $skin-border;
+    border-top: 2px dashed $skin-line !important;
     margin-top: 4rem;
     padding: 1.25rem 0 1.5rem;
     clear: both;             /* sit below the floated sidebar */
@@ -463,7 +582,7 @@ img.author__avatar {
     margin-left: auto;
 }
 
-/* Follow-icons row + sitemap link (legacy) — hidden, replaced by the
+/* Follow-icons row + sitemap link (legacy): hidden, replaced by the
    simplified copyright + RSS row. */
 .page__footer-follow,
 .page__footer a[href="/sitemap/"] {
@@ -482,7 +601,7 @@ img.author__avatar {
 }
 
 /* Social-share buttons under articles (the theme adds these to
-   publications / work detail pages) — hide for now to keep it clean.
+   publications / work detail pages): hide for now to keep it clean.
    Drop this rule if you want them back. */
 .page__share {
     display: none;
@@ -502,7 +621,7 @@ span[style*="color:#000080"] {
     font-weight: 600;
 }
 
-/* The skyblue "Paper" buttons used by older publication entries —
+/* The skyblue "Paper" buttons used by older publication entries
    restyle as quiet inline link buttons so they stop screaming on a
    dark background. */
 .btn-info,
@@ -519,7 +638,7 @@ button[style*="background-color:skyblue"] {
 }
 
 /* ==========================================================================
-   Selected work block on the homepage — tighter list typography.
+   Selected work block on the homepage; tighter list typography.
    ========================================================================== */
 
 .page__content h2 + ul,
@@ -533,7 +652,7 @@ button[style*="background-color:skyblue"] {
 }
 
 /* ==========================================================================
-   404 page — minimal centred Vercel / Next.js style. Wrapper-class targets
+   404 page: minimal centred Vercel / Next.js style. Wrapper-class targets
    via :has() so this page overrides the standard sidebar + flex layout
    without needing a dedicated Jekyll layout file.
    ========================================================================== */
@@ -616,3 +735,348 @@ button[style*="background-color:skyblue"] {
     color: $skin-link-hover;
 }
 
+
+/* ==========================================================================
+   Refresh components: a small, restrained set borrowed from the Nokshi
+   Technology style guide: one italic accent phrase, pill chips, cards with
+   an ink border and a hard offset shadow, a navy pill button and a faint
+   dot grid behind the top of the page. Flat colour only.
+   ========================================================================== */
+
+/* Faint dot grid behind the masthead and page title. Fades out so it never
+   sits behind long-form text. */
+body {
+    position: relative;
+    isolation: isolate;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20rem;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(var(--skin-dots) 1px, transparent 1.5px);
+    background-size: 20px 20px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent);
+    mask-image: linear-gradient(to bottom, #000 35%, transparent);
+}
+
+/* Homepage statement line under the name, with the one accent phrase. */
+#main .statement {
+    margin: -0.5rem 0 1.5rem;
+    color: $skin-text-strong;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+}
+
+.accent {
+    color: $skin-accent;
+    font-family: "Fraunces Variable", Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+#main .lede {
+    color: $skin-text-strong;
+    font-size: 1.1875rem;
+    line-height: 1.55;
+}
+
+/* Pill labels. */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.chip,
+.page__content .chips li.chip {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 0.2rem 0.75rem;
+    border: 2px solid $skin-line;
+    border-radius: 999px;
+    background: $skin-bg;
+    color: $skin-text-strong;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+/* Cards: white block, ink border, rounded, and a hard offset shadow in one
+   of three palette colours. The whole card is the link and presses in on
+   hover. Its labels sit along the bottom edge in the same colour and reuse
+   the wording of the specialism pills above, so a reader can match each
+   project to an area of expertise. The colours are saturated, not pastel:
+   cobalt, amber and teal. */
+.card--blue  { --card-colour: #{$skin-cobalt}; --card-label: #ffffff; }
+.card--amber { --card-colour: #{$skin-orange}; --card-label: #{$skin-ink}; }
+.card--teal  { --card-colour: #{$skin-teal};   --card-label: #ffffff; }
+
+.cards {
+    display: grid;
+    gap: 1.25rem;
+    margin: 1.25rem 0 0;
+}
+
+a.card,
+a.card:link,
+a.card:visited {
+    display: block;
+    padding: 1.25rem 1.375rem 1.375rem;
+    border: 2px solid $skin-line;
+    border-radius: 1.25rem;
+    background: $skin-bg;
+    box-shadow: 5px 5px 0 0 var(--card-colour, #{$skin-line}), 5px 5px 0 2px $skin-line;
+    color: $skin-text;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+a.card:hover,
+a.card:focus-visible {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 0 var(--card-colour, #{$skin-line}), 2px 2px 0 2px $skin-line;
+}
+
+#main .card__title {
+    margin: 0.75rem 0 0.4rem;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+}
+
+#main .card p {
+    margin: 0;
+}
+
+.card__foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.card__labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.card .chip {
+    border-color: $skin-ink;
+    background: var(--card-colour, #{$skin-bg});
+    color: var(--card-label, #{$skin-ink});
+}
+
+.card__arrow {
+    flex: none;
+    color: $skin-text-strong;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.4;
+    transition: transform 0.15s ease;
+}
+
+a.card:hover .card__arrow,
+a.card:focus-visible .card__arrow {
+    transform: translateX(3px);
+}
+
+/* Primary button: a pill, navy on light and sky on dark. Lifts slightly on hover. */
+a.btn-primary,
+a.btn-primary:link,
+a.btn-primary:visited {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: 0.55rem 1.25rem;
+    border: 2px solid var(--skin-button-bg);
+    border-radius: 999px;
+    background: var(--skin-button-bg);
+    color: var(--skin-button-text);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+a.btn-primary:hover,
+a.btn-primary:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 0 $skin-line;
+    color: var(--skin-button-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    a.card,
+    a.card .card__arrow,
+    a.btn-primary {
+        transition: none;
+    }
+}
+
+/* Let the dot grid show through the masthead: no fill, no hairline. */
+.masthead {
+    border-bottom: 0 !important;
+}
+
+.masthead::after {
+    display: none;
+}
+
+.masthead__inner-wrap,
+.masthead__menu,
+.greedy-nav {
+    background: transparent !important;
+}
+
+/* Content never starts hidden: drop the theme's fade-in so the page is
+   readable even if the animation does not run. */
+.masthead,
+.breadcrumbs,
+#main,
+.page__hero,
+.sidebar,
+.page__footer {
+    -webkit-animation: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+}
+
+.masthead__menu-item {
+    background-color: transparent;
+}
+
+/* Phone width: tighten the nav so all four links fit on one row and
+   nothing is pushed into the overflow menu. */
+@media (max-width: 480px) {
+    .greedy-nav .visible-links a {
+        margin-left: 0.35rem;
+        margin-right: 0.35rem;
+        font-size: 0.8125rem;
+    }
+
+    .greedy-nav .visible-links #theme-toggle {
+        padding-left: 0.15rem;
+    }
+
+    .greedy-nav .visible-links #theme-toggle button {
+        width: 1.75rem;
+    }
+}
+
+/* On very narrow screens the overflow menu button can still appear. It is
+   pinned to the right edge, so move the links clear of it. */
+.greedy-nav > button:not(.hidden) ~ .visible-links {
+    margin-right: 3rem;
+}
+
+/* Sidebar links are always visible. The theme hides them below 925px
+   behind a "Follow" button, which this skin removes, so without this
+   they could not be reached on a phone or tablet. */
+.author__urls-wrapper {
+    display: block;
+    cursor: default;
+}
+
+.author__urls,
+.author__urls.social-icons {
+    display: block !important;
+    position: static;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    z-index: auto;
+}
+
+.author__urls::before,
+.author__urls::after {
+    display: none !important;
+}
+
+.author__urls li.author__desktop:not(:has(.fa-location-dot)) {
+    display: list-item;
+}
+
+/* Phone width: photo, then the links as one wrapping row. */
+@media (max-width: 639px) {
+    .author__urls,
+    .author__urls.social-icons {
+        display: flex !important;
+        flex-wrap: wrap;
+        gap: 0.35rem 1.1rem;
+    }
+
+    .author__urls li {
+        margin-bottom: 0;
+    }
+
+    .author__urls li.author__desktop {
+        flex: 0 0 100%;
+        margin-bottom: 0.2rem;
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
+}
+
+/* One quiet colour for every sidebar icon, so none disappears on dark. */
+.author__urls i,
+.author__urls a i {
+    color: $skin-text-muted !important;
+}
+
+.greedy-nav .visible-links #theme-toggle button,
+.greedy-nav .visible-links #theme-toggle button.hidden {
+    visibility: visible;
+}
+
+@media (max-width: 639px) {
+    .author__urls-wrapper {
+        margin-top: 1.25rem;
+    }
+}
+
+/* Small italic line under a card title: stack, venue, year. */
+#main .card .card__meta {
+    margin: 0 0 0.5rem;
+    color: $skin-text-muted;
+    font-size: 0.9375rem;
+    font-style: italic;
+}
+
+/* Cards that open with a title (no chip above it). */
+#main .card > .card__title:first-child {
+    margin-top: 0;
+}
+
+/* Keep the line under the photo clear of the photo's offset shadow at
+   every width. */
+.sidebar .author__avatar {
+    display: block;
+    margin-bottom: 0;
+}
+
+.sidebar .author__urls-wrapper {
+    margin-top: 1.5rem;
+}
+
+
+/* Colour strip along the top edge of every page. */
+body {
+    border-top: 10px solid transparent;
+    border-image: $skin-strip 10;
+}
