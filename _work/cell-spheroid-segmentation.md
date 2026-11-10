@@ -7,6 +7,9 @@ date: 2025-01-01
 tagline: "Deep-learning computer vision · U-Net, PyTorch · clinical research"
 description: "A plain U-Net deep-learning model that segments tumour cell spheroids in high-throughput microscopy, reaching a validation IoU of 0.968 and Dice of 0.983."
 excerpt: "A plain U-Net segmentation model for high-throughput cell-spheroid microscopy, built as research engineering for a surgical-biotechnology group, reaching a validation intersection-over-union of 0.968 and Dice coefficient of 0.983."
+labels:
+  - "Computer vision"
+  - "Image segmentation"
 ---
 
 **Role:** Research engineering. **Context:** UCL, Royal Free Hospital, Department of Surgical Biotechnology.

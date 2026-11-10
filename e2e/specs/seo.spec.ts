@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * SEO metadata — title, description, canonical, OG, Twitter card, JSON-LD.
+ * SEO metadata: title, description, canonical, OG, Twitter card, JSON-LD.
  */
 
 const SITE_DEFAULT_DESC =
-  'Product leader and applied data scientist. 7+ years taking enterprise ML and GenAI solutions from discovery to scaled adoption. Cambridge Engineering PhD.';
+  'AI product owner, product engineer and software developer building AI systems, specialising in NLP, language models and computer vision. Cambridge PhD.';
 
 const pages = [
   { path: '/', name: 'homepage' },
@@ -97,14 +97,14 @@ for (const { path, name } of pages) {
       expect(href, 'profile image preload href').toMatch(/profile\.jpeg$/);
     });
 
-    // Sidebar avatar is hidden in the mishalaskin-style redesign — the
+    // Sidebar avatar is hidden in the mishalaskin-style redesign; the
     // image is still present in the DOM via the include but display:none,
     // so width/height attributes are no longer required for CLS. Skipping
     // this assertion across all pages.
   });
 }
 
-// ScholarlyArticle + BreadcrumbList — only on publication detail pages.
+// ScholarlyArticle + BreadcrumbList: only on publication detail pages.
 test.describe('seo: publication detail pages', () => {
   const pubs = [
     'barua-dsit-cyber-security-risks-to-ai',
@@ -169,7 +169,7 @@ test.describe('seo: publication detail pages', () => {
   });
 });
 
-// CreativeWork + BreadcrumbList — only on work detail pages.
+// CreativeWork + BreadcrumbList: only on work detail pages.
 test.describe('seo: work detail pages', () => {
   const projects = ['chat-r', 'cell-spheroid-segmentation', 'london-property'];
 
@@ -233,7 +233,7 @@ test.describe('seo: sitewide', () => {
     expect(body).toContain('/work/cell-spheroid-segmentation/');
     expect(body).toContain('/work/london-property/');
     expect(body).not.toContain('PLACEHOLDER');
-    // /categories/ and /tags/ are empty archive pages — excluded from sitemap via sitemap: false.
+    // /categories/ and /tags/ are empty archive pages; excluded from sitemap via sitemap: false.
     expect(body).not.toMatch(/<loc>[^<]*\/categories\/<\/loc>/);
     expect(body).not.toMatch(/<loc>[^<]*\/tags\/<\/loc>/);
   });

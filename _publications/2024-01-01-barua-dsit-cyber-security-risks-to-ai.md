@@ -17,6 +17,8 @@ authors:
   - "Jamie Crossman-Smith"
 paperurl: "https://assets.publishing.service.gov.uk/media/664333b1ae748c43d3793a40/Cyber_security_risks_to_artificial_intelligence.pdf"
 citation: "Rittick Barua, Kevin McCay, Mohammed Al-Khalidi, Yonghong Peng, Jamie Crossman-Smith. (2024). <i>Cyber security risks to artificial intelligence (Whitepaper)</i>. Department for Science, Innovation and Technology."
+labels:
+  - "AI security"
 ---
 
 Whitepaper for the UK Department for Science, Innovation and Technology (DSIT). Synthesises insights from cross-sector subject-matter experts to identify critical threat vectors across the AI lifecycle (data, model and deployment layers) and to propose practical governance, evaluation and guardrail patterns for securing production AI systems.

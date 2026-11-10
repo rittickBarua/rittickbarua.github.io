@@ -7,6 +7,8 @@ date: 2026-01-01
 tagline: "Applied ML · XGBoost, quantile regression, geospatial · self-directed research"
 description: "London Property Finder, an interactive tool scoring live London listings against a stacked ML ensemble trained on 2.18 million Land Registry transactions."
 excerpt: "An interactive single-page tool that scores live London property listings against a stacked machine-learning ensemble trained on 2.18 million Land Registry transactions, to test whether public data alone can identify mispriced homes."
+labels:
+  - "Applied machine learning"
 ---
 
 **Role:** Applied machine learning, self-directed research. **Timeline:** 2026.

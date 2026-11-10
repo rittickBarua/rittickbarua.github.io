@@ -31,7 +31,7 @@
         <li class="author__desktop"><i class="fas fa-fw fa-building-columns icon-pad-right" aria-hidden="true"></i>{{ author.employer }}</li>
       {% endif %}
       {%- comment -%}
-        Website link (author.uri) intentionally removed — it pointed back to
+        Website link (author.uri) intentionally removed; it pointed back to
         this site and was redundant. The four populated social profiles
         (LinkedIn, GitHub, Google Scholar, ResearchGate) are hoisted up
         here in the user's preferred display order. Email follows.
@@ -75,7 +75,7 @@
       {% if author.pubmed %}
         <li><a href="{{ author.pubmed }}"><i class="ai ai-pubmed ai-fw icon-pad-right"></i>PubMed</a></li>
       {% endif %}                        
-      {%- comment -%}ResearchGate hoisted up — see top of social block.{%- endcomment -%}
+      {%- comment -%}ResearchGate hoisted up; see top of social block.{%- endcomment -%}
       {% if author.scopus %}
         <li><a href="{{ author.scopus }}"><i class="ai ai-scopus ai-fw icon-pad-right"></i>Scopus</a></li>
       {% endif %}
@@ -93,7 +93,7 @@
       {% if author.dribbble %}
         <li><a target="_blank" rel="noopener noreferrer me" href="https://dribbble.com/{{ author.dribbble }}"><i class="fab fa-fw fa-dribbble icon-pad-right" aria-hidden="true"></i>Dribbble</a></li>
       {% endif %}      
-      {%- comment -%}GitHub hoisted up — see top of social block.{%- endcomment -%}
+      {%- comment -%}GitHub hoisted up; see top of social block.{%- endcomment -%}
       {% if author.kaggle %}
         <li><a target="_blank" rel="noopener noreferrer me" href="https://kaggle.com/{{ author.kaggle }}"><i class="fab fa-fw fa-kaggle icon-pad-right" aria-hidden="true"></i>Kaggle</a></li>
       {% endif %}      
@@ -132,7 +132,7 @@
       {% if author.lastfm %}
         <li><a target="_blank" rel="noopener noreferrer me" href="https://last.fm/user/{{ author.lastfm }}"><i class="fab fa-fw fa-lastfm icon-pad-right" aria-hidden="true"></i>Last.fm</a></li>
       {% endif %}      
-      {%- comment -%}LinkedIn hoisted up — see top of social block.{%- endcomment -%}
+      {%- comment -%}LinkedIn hoisted up; see top of social block.{%- endcomment -%}
       {% if author.mastodon %}
         <li><a href="{{ author.mastodon }}"><i class="fab fa-fw fa-mastodon icon-pad-right" aria-hidden="true"></i>Mastodon</a></li>
       {% endif %}
