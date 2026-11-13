@@ -454,9 +454,8 @@ function colorForPct(p,negMin,posMax){
 function ensureMap(){
   if(map)return;
   map=L.map("map").setView([51.5074,-0.1278],10);
-  // Voyager basemap: pale palette but shows parks (green), water (blue),
-  // and tube/rail station symbols + names.
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",{maxZoom:19,subdomains:"abcd",attribution:"&copy; OpenStreetMap, &copy; CARTO"}).addTo(map);
+  // OpenStreetMap standard tiles (keyless; attribution required).
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors"}).addTo(map);
   clusterLayer=L.markerClusterGroup({chunkedLoading:true,disableClusteringAtZoom:14,maxClusterRadius:40});
   map.addLayer(clusterLayer);
 }
